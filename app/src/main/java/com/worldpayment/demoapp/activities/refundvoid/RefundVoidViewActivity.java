@@ -169,7 +169,6 @@ public class RefundVoidViewActivity extends WorldBaseActivity implements View.On
 
                 reversalRequest.setTransactionId(field_transaction_id.getValue());
 
-
                 if (!TextUtils.isEmpty(field_transaction_amount.getValue())) {
                     BigDecimal transactionAmount = new BigDecimal(field_transaction_amount.getValue().replaceAll("[^\\d.]", ""));
 
@@ -184,7 +183,6 @@ public class RefundVoidViewActivity extends WorldBaseActivity implements View.On
 
             }
         } else if (count == 1) {
-            Log.d("count", "" + count);
             if (validateVoid.validateAll()) {
                 reversalRequest.setTransactionId(field_transaction_id.getValue());
                 voidCalling(reversalRequest);

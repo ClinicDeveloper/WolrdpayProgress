@@ -12,7 +12,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.worldpay.library.enums.ReversalType;
 import com.worldpay.library.enums.TransactionResult;
+import com.worldpay.library.enums.VoidType;
 import com.worldpay.library.utils.iM3Logger;
 import com.worldpay.library.views.iM3CurrencyTextWatcher;
 import com.worldpay.library.views.iM3Form;
@@ -164,6 +166,7 @@ public class RefundVoidViewActivity extends WorldBaseActivity implements View.On
         reversalRequest.setMerchantKey(MERCHANT_KEY);
         reversalRequest.setApplicationVersion(BuildConfig.VERSION_NAME);
         reversalRequest.setDeveloperId(BuildConfig.DEVELOPER_ID);
+
         if (count == 0) {
             if (validateRefund.validateAll()) {
 
@@ -174,6 +177,8 @@ public class RefundVoidViewActivity extends WorldBaseActivity implements View.On
 
                     if (!transactionAmount.toString().equals("0.00")) {
                         reversalRequest.setAmount(transactionAmount);
+                        reversalRequest.setReversalType(ReversalType.REFUND);
+                      //  reversalRequest.setVoidType(VoidType.VoidTypeMerchant);
                         refundCalling(reversalRequest);
                     } else {
                         Toast.makeText(this, getResources().getString(R.string.greaterThanZero), Toast.LENGTH_SHORT).show();
@@ -185,6 +190,8 @@ public class RefundVoidViewActivity extends WorldBaseActivity implements View.On
         } else if (count == 1) {
             if (validateVoid.validateAll()) {
                 reversalRequest.setTransactionId(field_transaction_id.getValue());
+                reversalRequest.setReversalType(ReversalType.VOID);
+                reversalRequest.setVoidType(VoidType.VoidTypeMerchant);
                 voidCalling(reversalRequest);
             }
         }
@@ -209,10 +216,15 @@ public class RefundVoidViewActivity extends WorldBaseActivity implements View.On
                     dismissProgressBar(progressDialog);
                     return;
                 }
+
+                Log.d("RFUND RESPONSE : ", "" + paymentResponse.toJson());
                 if (paymentResponse != null && paymentResponse.getHttpStatusCode() == iM3HttpResponse.iM3HttpStatus.OK) {
-                    if (paymentResponse.getTransactionResponse() != null) {
+
+                    Log.d("RFUND RESPONSE : ", "" + paymentResponse.getTransactionResponse().getResponseText());
+                    if (!paymentResponse.getTransactionResponse().getAmount().toString().trim().equals("0.0".trim())) {
                         openApprovedDialog(getResources().getString(R.string.approvedNoVault), paymentResponse.getTransactionResponse(), RefundVoidViewActivity.this);
-                    }
+                    } else
+                        showSuccessDialog(getResources().getString(R.string.error), "" + paymentResponse.getTransactionResponse().getResponseText(), RefundVoidViewActivity.this);
                 } else {
                     showSuccessDialog(getResources().getString(R.string.error), getResources().getString(R.string.transactionFailed) + "\n" + paymentResponse.getMessage(), RefundVoidViewActivity.this);
                 }
@@ -241,11 +253,13 @@ public class RefundVoidViewActivity extends WorldBaseActivity implements View.On
                     dismissProgressBar(progressDialog);
                     return;
                 }
-                Log.d("reversalRequest", "" + paymentResponse.getTransactionResponse());
+                Log.d("reversalRequest", "" + paymentResponse.toJson());
                 if (paymentResponse != null && paymentResponse.getHttpStatusCode() == iM3HttpResponse.iM3HttpStatus.OK) {
-                    if (paymentResponse.getTransactionResponse() != null) {
+                    if (!paymentResponse.getTransactionResponse().getAmount().toString().trim().equals("0.0".trim())) {
                         openApprovedDialog(getResources().getString(R.string.approvedNoVault), paymentResponse.getTransactionResponse(), RefundVoidViewActivity.this);
-                    }
+                    } else
+                        showSuccessDialog(getResources().getString(R.string.error), "" + paymentResponse.getTransactionResponse().getResponseText(), RefundVoidViewActivity.this);
+
                 } else {
                     showSuccessDialog(getResources().getString(R.string.error), getResources().getString(R.string.transactionFailed) + "\n" + paymentResponse.getMessage(), RefundVoidViewActivity.this);
                 }

@@ -42,17 +42,6 @@ public class TransactionDetails extends AppCompatActivity implements View.OnClic
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Transaction Details");
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
 
         //TRANSACTION OVERVIEW
         tv_transaction_id = (TextView) findViewById(R.id.tv_transaction_id);
@@ -102,16 +91,36 @@ public class TransactionDetails extends AppCompatActivity implements View.OnClic
             tv_card_no.setText("" + response.getCard().getNumber());
             tv_first_name.setText("" + response.getCard().getFirstName());
             tv_last_name.setText("" + response.getCard().getLastName());
-            tv_expiration.setText("" + response.getCard().getExpirationMonth() + "/" + response.getCard().getExpirationYear());
+
+            if (response.getCard().getExpirationMonth() != null && response.getCard().getExpirationYear() != null) {
+                tv_expiration.setText("" + response.getCard().getExpirationMonth() + "/" + response.getCard().getExpirationYear());
+            }
         }
         //BILLING ADDRESS
         if (response.getBillAddress() != null) {
-            tv_street.setText("" + response.getBillAddress().getLine1());
-            tv_city.setText("" + response.getBillAddress().getCity());
-            tv_state.setText("" + response.getBillAddress().getState());
-            tv_zip_code.setText("" + response.getBillAddress().getZip());
-            tv_company.setText("" + response.getBillAddress().getCity());
-            tv_phone.setText("" + response.getBillAddress().getPhone());
+            if (response.getBillAddress().getLine1() != null) {
+                tv_street.setText("" + response.getBillAddress().getLine1());
+            }
+
+            if (response.getBillAddress().getCity() != null) {
+                tv_city.setText("" + response.getBillAddress().getCity());
+            }
+
+            if (response.getBillAddress().getState() != null) {
+                tv_state.setText("" + response.getBillAddress().getState());
+            }
+
+            if (response.getBillAddress().getZip() != null) {
+                tv_zip_code.setText("" + response.getBillAddress().getZip());
+            }
+
+            if (response.getBillAddress().getCity() != null) {
+                tv_company.setText("" + response.getBillAddress().getCity());
+            }
+
+            if (response.getBillAddress().getPhone() != null) {
+                tv_phone.setText("" + response.getBillAddress().getPhone());
+            }
         }
         //CUSTOMER
         tv_customer_id.setText("" + response.getCustomerId());
@@ -129,5 +138,14 @@ public class TransactionDetails extends AppCompatActivity implements View.OnClic
                 finish();
                 break;
         }
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent credit = new Intent(TransactionDetails.this, Navigation.class);
+        startActivity(credit);
+        finish();
     }
 }

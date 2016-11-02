@@ -222,7 +222,7 @@ public class RefundVoidViewActivity extends WorldBaseActivity implements View.On
 
                     Log.d("RFUND RESPONSE : ", "" + paymentResponse.getTransactionResponse().getResponseText());
                     if (!paymentResponse.getTransactionResponse().getAmount().toString().trim().equals("0.0".trim())) {
-                        openApprovedDialog(getResources().getString(R.string.approvedNoVault), paymentResponse.getTransactionResponse(), RefundVoidViewActivity.this);
+                        openApprovedDialog("APPROVED", paymentResponse.getTransactionResponse(), RefundVoidViewActivity.this);
                     } else
                         showSuccessDialog(getResources().getString(R.string.error), "" + paymentResponse.getTransactionResponse().getResponseText(), RefundVoidViewActivity.this);
                 } else {
@@ -246,7 +246,7 @@ public class RefundVoidViewActivity extends WorldBaseActivity implements View.On
                 progressDialog = new ProgressDialog(RefundVoidViewActivity.this);
                 startProgressBar(progressDialog, "Paying void...");
             }
-
+//115515187/91
             @Override
             protected void onPostExecute(PaymentResponse paymentResponse) {
                 if (paymentResponse.hasError()) {
@@ -256,7 +256,7 @@ public class RefundVoidViewActivity extends WorldBaseActivity implements View.On
                 Log.d("reversalRequest", "" + paymentResponse.toJson());
                 if (paymentResponse != null && paymentResponse.getHttpStatusCode() == iM3HttpResponse.iM3HttpStatus.OK) {
                     if (!paymentResponse.getTransactionResponse().getAmount().toString().trim().equals("0.0".trim())) {
-                        openApprovedDialog(getResources().getString(R.string.approvedNoVault), paymentResponse.getTransactionResponse(), RefundVoidViewActivity.this);
+                        openApprovedDialog("APPROVED", paymentResponse.getTransactionResponse(), RefundVoidViewActivity.this);
                     } else
                         showSuccessDialog(getResources().getString(R.string.error), "" + paymentResponse.getTransactionResponse().getResponseText(), RefundVoidViewActivity.this);
 

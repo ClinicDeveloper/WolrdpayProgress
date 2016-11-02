@@ -34,6 +34,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.worldpay.library.domain.ExtendedData;
 import com.worldpay.library.domain.TransactionData;
 import com.worldpay.library.enums.CaptureMode;
 import com.worldpay.library.enums.TransactionResult;
@@ -80,6 +81,7 @@ public class CreditDebitActivity extends WorldBaseActivity
     private Spinner spn_transaction_types;
 
     private iM3FormEditText dialog_field_transaction_amount, field_customer_id, field_payment_id;
+    private iM3FormEditText order_date, purchase_order_no, notes;
     LinearLayout checkVaultLayout;
     CheckBox addToVaultCheckBox;
     private iM3CurrencyTextWatcher transactionAmountTextWatcher;
@@ -134,6 +136,9 @@ public class CreditDebitActivity extends WorldBaseActivity
         field_payment_id.addValidator(new iM3NotEmptyValidator("Payment ID required!"));
         validatingIDs.addItem(field_payment_id);
 
+        order_date = (iM3FormEditText) findViewById(R.id.order_date);
+        purchase_order_no = (iM3FormEditText) findViewById(R.id.purchase_order_no);
+        notes = (iM3FormEditText) findViewById(R.id.notes);
 
         btn_no_card = (Button) findViewById(R.id.btn_no_card);
         btn_no_card.setOnClickListener(this);
@@ -195,6 +200,7 @@ public class CreditDebitActivity extends WorldBaseActivity
         });
         spn_transaction_types.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
                 TransactionType.values()));
+        spn_transaction_types.setSelection(1);
 
     }
 
@@ -249,7 +255,6 @@ public class CreditDebitActivity extends WorldBaseActivity
 
             case R.id.extended_layout:
                 KeyboardUtility.closeKeyboard(this, view);
-                //      extended_info_LL.setVisibility(View.VISIBLE);
                 visibleInvisible(extended_info_LL, (ImageView) findViewById(R.id.extended_image));
                 break;
             default:
@@ -281,9 +286,9 @@ public class CreditDebitActivity extends WorldBaseActivity
             case APPROVED:
                 if (paymentResponse.getTransactionResponse() != null) {
                     if (addToVaultCheckBox.isChecked())
-                        openApprovedDialog(getResources().getString(R.string.approvedVault), paymentResponse.getTransactionResponse(), this);
+                        openApprovedDialog(result.toString(), paymentResponse.getTransactionResponse(), this);
                     else
-                        openApprovedDialog(getResources().getString(R.string.approvedNoVault), paymentResponse.getTransactionResponse(), this);
+                        openApprovedDialog(result.toString(), paymentResponse.getTransactionResponse(), this);
                 }
                 break;
             case AMOUNT_REJECTED:
@@ -317,7 +322,13 @@ public class CreditDebitActivity extends WorldBaseActivity
             case DECLINED_REVERSAL_FAILED:
                 break;
             case DECLINED:
-                showSuccessDialog(getResources().getString(R.string.error), getResources().getString(R.string.transactionFailed) + "\n" + result, CreditDebitActivity.this);
+//                showSuccessDialog(getResources().getString(R.string.error), getResources().getString(R.string.transactionFailed) + "\n" + result, CreditDebitActivity.this);
+                if (paymentResponse.getTransactionResponse() != null) {
+                    if (addToVaultCheckBox.isChecked())
+                        openApprovedDialog(result.toString(), paymentResponse.getTransactionResponse(), this);
+                    else
+                        openApprovedDialog(result.toString(), paymentResponse.getTransactionResponse(), this);
+                }
                 break;
             default:
                 break;
@@ -340,20 +351,24 @@ public class CreditDebitActivity extends WorldBaseActivity
     public static void openApprovedDialog(String messageStr, final TransactionResponse response, final Context context) {
 
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-        final View dialogSignature = layoutInflater.inflate(R.layout.master_popup, null);
+        final View dialogSignature = layoutInflater.inflate(R.layout.approved_layout, null);
 
-        final android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(
-                context);
-
+        final android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(context);
 
         alertDialogBuilder.setView(dialogSignature);
         TextView title = (TextView) dialogSignature.findViewById(R.id.title);
         TextView message = (TextView) dialogSignature.findViewById(R.id.message);
+        TextView transaction_id = (TextView) dialogSignature.findViewById(R.id.transaction_id);
 
         title.setTextColor(Color.parseColor("#007867"));
-        title.setText("" + com.miura.sdk.enums.TransactionResult.APPROVED);
-        message.setText("" + messageStr);
-
+        title.setText("" + messageStr);
+        if (messageStr.equals("APPROVED")) {
+            transaction_id.setText("" + response.getId());
+            message.setText("" + response.getResponseText());
+        } else if (messageStr.equals("DECLINE")) {
+            transaction_id.setVisibility(View.GONE);
+            message.setText("Message : " + response.getResponseText());
+        }
         responseTransactionDetails = response;
 
         Button dialog_btn_negative = (Button) dialogSignature.findViewById(R.id.dialog_btn_negative);
@@ -648,6 +663,10 @@ public class CreditDebitActivity extends WorldBaseActivity
                 } else {
                     transactionData.setAddCardToVault(false);
                 }
+                ExtendedData extendedData = new ExtendedData();
+                //  extendedData.setOrderId(""+order_date.getValue());
+                extendedData.setInvoiceNumber("" + purchase_order_no.getValue());
+                extendedData.setNotes("" + notes.getValue());
 
                 transactionDialogFragment.setTransactionData(transactionData);
                 transactionDialogFragment.setApplicationVersion(BuildConfig.VERSION_NAME);
@@ -723,5 +742,11 @@ public class CreditDebitActivity extends WorldBaseActivity
 
             Toast.makeText(this, "Missing in SDK now!", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
     }
 }

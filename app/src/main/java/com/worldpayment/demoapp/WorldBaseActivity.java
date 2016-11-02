@@ -69,7 +69,7 @@ public class WorldBaseActivity extends AppCompatActivity {
                 toolbar.setTitle("Refund/Void");
             }
             if (worldBaseActivity instanceof CreditDebitActivity) {
-                toolbar.setTitle("Credit/Debit");
+                toolbar.setTitle("Debit/Credit");
             }
 
             if (worldBaseActivity instanceof ActivitySettlement) {
@@ -226,7 +226,8 @@ public class WorldBaseActivity extends AppCompatActivity {
 
             btn2.setTextColor(Color.WHITE);
             btn2.setBackgroundResource(R.drawable.button_disable);
-        } if (flag == 2) {
+        }
+        if (flag == 2) {
             btn1.setTextColor(Color.WHITE);
             btn1.setBackgroundResource(R.drawable.button_shap);
 

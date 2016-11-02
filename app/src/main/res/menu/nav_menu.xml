@@ -14,7 +14,7 @@
             android:id="@+id/debit_credit"
             android:checked="false"
             android:icon="@mipmap/ic_credit_debit"
-            android:title="Debit/Credit " />
+            android:title="Credit/Debit" />
 
         <item
             android:id="@+id/refund_void"

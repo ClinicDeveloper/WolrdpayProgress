@@ -9,14 +9,17 @@
     <string name="openDrawer">Navigation View Open</string>
     <string name="card">Card</string>
     <string name="no_card">No Card</string>
+    <string name="vault_payment">Vault Payment</string>
+
     <string name="transaction">Transaction</string>
-    <string name="transaction_types">Transaction Types</string>
+    <string name="transaction_types">Transaction Type</string>
 
     <string name="external_dir">GetSignature</string>
 
     <string name="Void">Void</string>
     <string name="refund">Refund</string>
 
+    <string name="get_curr_batch">Get Current Batch</string>
     <string name="get_batch">Get Batch</string>
     <string name="close_batch">Close Current Batch</string>
 

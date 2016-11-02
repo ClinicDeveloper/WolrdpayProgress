@@ -28,7 +28,7 @@ import java.util.List;
 import static com.worldpayment.demoapp.WorldBaseActivity.dismissProgressBar;
 import static com.worldpayment.demoapp.WorldBaseActivity.showSuccessDialog;
 import static com.worldpayment.demoapp.WorldBaseActivity.startProgressBar;
-import static com.worldpayment.demoapp.activities.debitcredit.DebitCreditActivity.PREF_AUTH_TOKEN;
+import static com.worldpayment.demoapp.activities.debitcredit.CreditDebitActivity.PREF_AUTH_TOKEN;
 
 public class TransactionListActivity extends AppCompatActivity {
 

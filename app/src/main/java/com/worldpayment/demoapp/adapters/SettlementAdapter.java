@@ -16,7 +16,7 @@ import com.worldpayment.demoapp.activities.debitcredit.TransactionDetails;
 
 import java.util.List;
 
-import static com.worldpayment.demoapp.activities.debitcredit.DebitCreditActivity.responseTransactionDetails;
+import static com.worldpayment.demoapp.activities.debitcredit.CreditDebitActivity.responseTransactionDetails;
 
 public class SettlementAdapter extends RecyclerView.Adapter<SettlementAdapter.RecyclerViewHolders> {
 

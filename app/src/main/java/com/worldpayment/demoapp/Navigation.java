@@ -29,7 +29,7 @@ import com.worldpay.library.enums.Swiper;
 import com.worldpay.library.webservices.services.authtokens.AuthTokenCreateRequest;
 import com.worldpay.library.webservices.services.authtokens.AuthTokenCreateResponse;
 import com.worldpay.library.webservices.tasks.CreateAuthTokenTask;
-import com.worldpayment.demoapp.activities.debitcredit.DebitCreditActivity;
+import com.worldpayment.demoapp.activities.debitcredit.CreditDebitActivity;
 import com.worldpayment.demoapp.activities.refundvoid.RefundVoidViewActivity;
 import com.worldpayment.demoapp.activities.settlement.ActivitySettlement;
 import com.worldpayment.demoapp.activities.vaultcustomers.VaultOperations;
@@ -38,7 +38,7 @@ import com.worldpayment.demoapp.utility.KeyboardUtility;
 
 import static com.worldpayment.demoapp.BuildConfig.MERCHANT_ID;
 import static com.worldpayment.demoapp.BuildConfig.MERCHANT_KEY;
-import static com.worldpayment.demoapp.activities.debitcredit.DebitCreditActivity.PREF_AUTH_TOKEN;
+import static com.worldpayment.demoapp.activities.debitcredit.CreditDebitActivity.PREF_AUTH_TOKEN;
 
 public class Navigation extends AppCompatActivity implements View.OnClickListener {
 
@@ -127,7 +127,7 @@ public class Navigation extends AppCompatActivity implements View.OnClickListene
                         return true;
 
                     case R.id.debit_credit:
-                        Intent intent = new Intent(Navigation.this, DebitCreditActivity.class);
+                        Intent intent = new Intent(Navigation.this, CreditDebitActivity.class);
                         startActivity(intent);
                         return true;
 

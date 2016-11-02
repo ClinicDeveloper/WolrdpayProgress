@@ -11,7 +11,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import com.worldpayment.demoapp.R;
-import com.worldpayment.demoapp.activities.debitcredit.DebitCreditActivity;
+import com.worldpayment.demoapp.activities.debitcredit.CreditDebitActivity;
 import com.worldpayment.demoapp.activities.refundvoid.RefundVoidViewActivity;
 import com.worldpayment.demoapp.activities.settlement.ActivitySettlement;
 import com.worldpayment.demoapp.activities.vaultcustomers.VaultOperations;
@@ -55,7 +55,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         switch (view.getId()) {
 
             case R.id.debit_credit_button:
-                Intent credit = new Intent(getActivity(), DebitCreditActivity.class);
+                Intent credit = new Intent(getActivity(), CreditDebitActivity.class);
                 startActivity(credit);
 
                 break;

@@ -29,7 +29,7 @@ import com.worldpay.ui.TransactionDialogFragment;
 import com.worldpayment.demoapp.BuildConfig;
 import com.worldpayment.demoapp.R;
 import com.worldpayment.demoapp.WorldBaseActivity;
-import com.worldpayment.demoapp.activities.debitcredit.DebitCreditActivity;
+import com.worldpayment.demoapp.activities.debitcredit.CreditDebitActivity;
 import com.worldpayment.demoapp.utility.KeyboardUtility;
 
 import java.math.BigDecimal;
@@ -37,8 +37,8 @@ import java.util.Locale;
 
 import static com.worldpayment.demoapp.BuildConfig.MERCHANT_ID;
 import static com.worldpayment.demoapp.BuildConfig.MERCHANT_KEY;
-import static com.worldpayment.demoapp.activities.debitcredit.DebitCreditActivity.PREF_AUTH_TOKEN;
-import static com.worldpayment.demoapp.activities.debitcredit.DebitCreditActivity.openApprovedDialog;
+import static com.worldpayment.demoapp.activities.debitcredit.CreditDebitActivity.PREF_AUTH_TOKEN;
+import static com.worldpayment.demoapp.activities.debitcredit.CreditDebitActivity.openApprovedDialog;
 
 public class RefundVoidViewActivity extends WorldBaseActivity implements View.OnClickListener, TransactionDialogFragment.TransactionDialogFragmentListener {
 
@@ -91,7 +91,7 @@ public class RefundVoidViewActivity extends WorldBaseActivity implements View.On
 
     @Override
     public void onTransactionComplete(TransactionResult result, PaymentResponse paymentResponse) {
-        iM3Logger.d(DebitCreditActivity.TAG,
+        iM3Logger.d(CreditDebitActivity.TAG,
                 "onTransactionComplete :: result=" + result + ";paymentResponse=" +
                         paymentResponse);
 
@@ -121,12 +121,12 @@ public class RefundVoidViewActivity extends WorldBaseActivity implements View.On
     @Override
     public void onTransactionError(@NonNull TransactionDialogFragment.TransactionError error,
                                    @Nullable String message) {
-        iM3Logger.d(DebitCreditActivity.TAG, "onTransactionError :: error=" + error + ";message=" + message);
+        iM3Logger.d(CreditDebitActivity.TAG, "onTransactionError :: error=" + error + ";message=" + message);
     }
 
     @Override
     public void onTransactionReversalFailed(ReversalRequest reversalRequest) {
-        iM3Logger.d(DebitCreditActivity.TAG, "onTransactionReversalFailed :: reversalType=" + reversalRequest.toString());
+        iM3Logger.d(CreditDebitActivity.TAG, "onTransactionReversalFailed :: reversalType=" + reversalRequest.toString());
     }
 
     @Override
@@ -178,7 +178,7 @@ public class RefundVoidViewActivity extends WorldBaseActivity implements View.On
                     if (!transactionAmount.toString().equals("0.00")) {
                         reversalRequest.setAmount(transactionAmount);
                         reversalRequest.setReversalType(ReversalType.REFUND);
-                      //  reversalRequest.setVoidType(VoidType.VoidTypeMerchant);
+                        //  reversalRequest.setVoidType(VoidType.VoidTypeMerchant);
                         refundCalling(reversalRequest);
                     } else {
                         Toast.makeText(this, getResources().getString(R.string.greaterThanZero), Toast.LENGTH_SHORT).show();

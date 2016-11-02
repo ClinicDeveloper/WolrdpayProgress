@@ -25,7 +25,7 @@ import static com.worldpayment.demoapp.BuildConfig.MERCHANT_KEY;
 import static com.worldpayment.demoapp.WorldBaseActivity.dismissProgressBar;
 import static com.worldpayment.demoapp.WorldBaseActivity.showSuccessDialog;
 import static com.worldpayment.demoapp.WorldBaseActivity.startProgressBar;
-import static com.worldpayment.demoapp.activities.debitcredit.DebitCreditActivity.PREF_AUTH_TOKEN;
+import static com.worldpayment.demoapp.activities.debitcredit.CreditDebitActivity.PREF_AUTH_TOKEN;
 
 public class RetrieveCustomer extends AppCompatActivity implements View.OnClickListener {
 

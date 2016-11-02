@@ -20,7 +20,7 @@ import com.worldpayment.demoapp.utility.KeyboardUtility;
 
 import static com.worldpayment.demoapp.BuildConfig.MERCHANT_ID;
 import static com.worldpayment.demoapp.BuildConfig.MERCHANT_KEY;
-import static com.worldpayment.demoapp.activities.debitcredit.DebitCreditActivity.PREF_AUTH_TOKEN;
+import static com.worldpayment.demoapp.activities.debitcredit.CreditDebitActivity.PREF_AUTH_TOKEN;
 
 public class ActivitySettlement extends WorldBaseActivity implements View.OnClickListener {
 

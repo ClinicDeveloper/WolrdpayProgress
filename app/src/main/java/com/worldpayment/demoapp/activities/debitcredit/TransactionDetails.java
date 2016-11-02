@@ -31,7 +31,7 @@ public class TransactionDetails extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaction_details);
         initComponents();
-        if (DebitCreditActivity.responseTransactionDetails != null) {
+        if (CreditDebitActivity.responseTransactionDetails != null) {
             settingFields();
         } else {
             Toast.makeText(this, "Null response", Toast.LENGTH_SHORT).show();
@@ -88,7 +88,7 @@ public class TransactionDetails extends AppCompatActivity implements View.OnClic
 
     public void settingFields() {
 
-        TransactionResponse response = DebitCreditActivity.responseTransactionDetails;
+        TransactionResponse response = CreditDebitActivity.responseTransactionDetails;
         //TRANSACTION OVERVIEW
         tv_transaction_id.setText("" + response.getId());
         tv_amount.setText("" + response.getAmount());

@@ -18,7 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.worldpayment.demoapp.activities.debitcredit.DebitCreditActivity;
+import com.worldpayment.demoapp.activities.debitcredit.CreditDebitActivity;
 import com.worldpayment.demoapp.activities.refundvoid.RefundVoidViewActivity;
 import com.worldpayment.demoapp.activities.settlement.ActivitySettlement;
 import com.worldpayment.demoapp.activities.vaultcustomers.VaultOperations;
@@ -68,8 +68,8 @@ public class WorldBaseActivity extends AppCompatActivity {
             if (worldBaseActivity instanceof RefundVoidViewActivity) {
                 toolbar.setTitle("Refund/Void");
             }
-            if (worldBaseActivity instanceof DebitCreditActivity) {
-                toolbar.setTitle("Debit/Credit");
+            if (worldBaseActivity instanceof CreditDebitActivity) {
+                toolbar.setTitle("Credit/Debit");
             }
 
             if (worldBaseActivity instanceof ActivitySettlement) {
@@ -113,7 +113,7 @@ public class WorldBaseActivity extends AppCompatActivity {
                             return true;
 
                         case R.id.debit_credit:
-                            Intent intent = new Intent(WorldBaseActivity.this, DebitCreditActivity.class);
+                            Intent intent = new Intent(WorldBaseActivity.this, CreditDebitActivity.class);
                             startActivity(intent);
                             finish();
                             return true;
@@ -221,6 +221,12 @@ public class WorldBaseActivity extends AppCompatActivity {
             btn2.setTextColor(Color.WHITE);
             btn2.setBackgroundResource(R.drawable.button_disable);
         } else if (flag == 1) {
+            btn1.setTextColor(Color.WHITE);
+            btn1.setBackgroundResource(R.drawable.button_shap);
+
+            btn2.setTextColor(Color.WHITE);
+            btn2.setBackgroundResource(R.drawable.button_disable);
+        } if (flag == 2) {
             btn1.setTextColor(Color.WHITE);
             btn1.setBackgroundResource(R.drawable.button_shap);
 

@@ -28,6 +28,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -62,22 +63,23 @@ import java.util.Locale;
 import static com.worldpayment.demoapp.Navigation.swiper;
 import static com.worldpayment.demoapp.activities.refundvoid.RefundVoidViewActivity.count;
 
-public class DebitCreditActivity extends WorldBaseActivity
+public class CreditDebitActivity extends WorldBaseActivity
         implements View.OnClickListener, TransactionDialogFragment.TransactionDialogFragmentListener {
 
-    public static String TAG = DebitCreditActivity.class.getSimpleName();
+    public static String TAG = CreditDebitActivity.class.getSimpleName();
 
     public static String PREF_AUTH_TOKEN = "auth_token";
 
     public static TransactionResponse responseTransactionDetails;
 
     private Button btn_start_transaction;
-    private Button btn_no_card, btn_card;
-
+    private Button btn_no_card, btn_card, btn_vault_pay;
+    LinearLayout vault_layout, address_layout, extended_layout, user_define_layout;
+    LinearLayout extended_info_LL;
     //   private Spinner spn_swiper_types;
     private Spinner spn_transaction_types;
 
-    private iM3FormEditText dialog_field_transaction_amount;
+    private iM3FormEditText dialog_field_transaction_amount, field_customer_id, field_payment_id;
     LinearLayout checkVaultLayout;
     CheckBox addToVaultCheckBox;
     private iM3CurrencyTextWatcher transactionAmountTextWatcher;
@@ -97,16 +99,102 @@ public class DebitCreditActivity extends WorldBaseActivity
     private EditText field_name;
     Button dialog_clear, dialog_save;
 
-    iM3Form validating;
+    iM3Form validating, validatingIDs;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.debit_credit);
-        setActivity(DebitCreditActivity.this);
+        setActivity(CreditDebitActivity.this);
         authToken = PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_AUTH_TOKEN, null);
         initComponents();
+
+    }
+
+    private void initComponents() {
+
+        count = 1;
+        validating = new iM3Form();
+        validatingIDs = new iM3Form();
+
+        dialog_field_transaction_amount = (iM3FormEditText) findViewById(R.id.dialog_field_transaction_amount);
+        dialog_field_transaction_amount.addValidator(new iM3NotEmptyValidator("Transaction amount required!"));
+        transactionAmountTextWatcher = new iM3CurrencyTextWatcher(dialog_field_transaction_amount, Locale.US,
+                new BigDecimal("999999.99"), true, true);
+        dialog_field_transaction_amount.addTextChangedListener(transactionAmountTextWatcher);
+        validating.addItem(dialog_field_transaction_amount);
+        validatingIDs.addItem(dialog_field_transaction_amount);
+
+        field_customer_id = (iM3FormEditText) findViewById(R.id.field_customer_id);
+        field_customer_id.addValidator(new iM3NotEmptyValidator("Customer ID required!"));
+        validatingIDs.addItem(field_customer_id);
+
+        field_payment_id = (iM3FormEditText) findViewById(R.id.field_payment_id);
+        field_payment_id.addValidator(new iM3NotEmptyValidator("Payment ID required!"));
+        validatingIDs.addItem(field_payment_id);
+
+
+        btn_no_card = (Button) findViewById(R.id.btn_no_card);
+        btn_no_card.setOnClickListener(this);
+
+        btn_card = (Button) findViewById(R.id.btn_card);
+        btn_card.setOnClickListener(this);
+
+        btn_vault_pay = (Button) findViewById(R.id.btn_vault_pay);
+        btn_vault_pay.setOnClickListener(this);
+
+        vault_layout = (LinearLayout) findViewById(R.id.vault_layout);
+
+        extended_layout = (LinearLayout) findViewById(R.id.extended_layout);
+        extended_layout.setOnClickListener(this);
+        extended_info_LL = (LinearLayout) findViewById(R.id.extended_info_LL);
+
+        btn_start_transaction = (Button) findViewById(R.id.btn_start_transaction);
+        btn_start_transaction.setOnClickListener(this);
+
+
+        checkVaultLayout = (LinearLayout) findViewById(R.id.checkVaultLayout);
+        checkVaultLayout.setOnClickListener(this);
+        addToVaultCheckBox = (CheckBox) findViewById(R.id.addToVaultCheckBox);
+        //Swiper Type Spinner
+        //spn_swiper_types = (Spinner) findViewById(spn_swiper_types);
+//        spn_swiper_types.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+////              Swiper swiper = Swiper.fromDescription("Shuttle");
+////
+////                                PreferenceManager.getDefaultSharedPreferences(CreditDebitActivity.this).edit()
+////                        .putString(PREF_BUNDLE_SWIPER, swiper).apply();
+//
+//                //  authenticate();
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//            }
+//        });
+
+//        spn_swiper_types.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
+//                com.worldpay.library.BuildConfig.COMPATIBLE_SWIPERS));
+        //  spnSwiperTypesPos = spn_swiper_types.getSelectedItemPosition();
+
+        //Transaction Type Spinner
+        spn_transaction_types = (Spinner) findViewById(R.id.spn_transaction_types);
+        spn_transaction_types.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                transactionType = (TransactionType) spn_transaction_types.getAdapter().getItem(position);
+                Log.d("transactionType", "" + transactionType);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                transactionType = null;
+            }
+        });
+        spn_transaction_types.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
+                TransactionType.values()));
 
     }
 
@@ -119,7 +207,7 @@ public class DebitCreditActivity extends WorldBaseActivity
                 KeyboardUtility.closeKeyboard(this, view);
                 if (count == 0) {
                     manualTransaction();
-                } else if (count == 1) {
+                } else {
                     showTransactionFragment();
                 }
                 break;
@@ -127,15 +215,27 @@ public class DebitCreditActivity extends WorldBaseActivity
             case R.id.btn_no_card:
                 KeyboardUtility.closeKeyboard(this, view);
                 count = 0;
+                vault_layout.setVisibility(View.GONE);
                 RefundVoidViewActivity.buttonEnabled(btn_no_card, btn_card, count);
+                RefundVoidViewActivity.buttonEnabled(btn_no_card, btn_vault_pay, count);
 
                 break;
 
             case R.id.btn_card:
                 KeyboardUtility.closeKeyboard(this, view);
                 count = 1;
+                vault_layout.setVisibility(View.GONE);
                 RefundVoidViewActivity.buttonEnabled(btn_card, btn_no_card, count);
+                RefundVoidViewActivity.buttonEnabled(btn_card, btn_vault_pay, count);
 
+                break;
+
+            case R.id.btn_vault_pay:
+                KeyboardUtility.closeKeyboard(this, view);
+                count = 2;
+                vault_layout.setVisibility(View.VISIBLE);
+                RefundVoidViewActivity.buttonEnabled(btn_vault_pay, btn_no_card, count);
+                RefundVoidViewActivity.buttonEnabled(btn_vault_pay, btn_card, count);
                 break;
 
             case R.id.checkVaultLayout:
@@ -147,8 +247,23 @@ public class DebitCreditActivity extends WorldBaseActivity
                 }
                 break;
 
+            case R.id.extended_layout:
+                KeyboardUtility.closeKeyboard(this, view);
+                //      extended_info_LL.setVisibility(View.VISIBLE);
+                visibleInvisible(extended_info_LL, (ImageView) findViewById(R.id.extended_image));
+                break;
             default:
                 break;
+        }
+    }
+
+    public void visibleInvisible(LinearLayout linearLayout, ImageView imageView) {
+        if (linearLayout.getVisibility() == View.GONE) {
+            linearLayout.setVisibility(View.VISIBLE);
+            imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_minus));
+        } else {
+            linearLayout.setVisibility(View.GONE);
+            imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_plus));
         }
     }
 
@@ -172,10 +287,10 @@ public class DebitCreditActivity extends WorldBaseActivity
                 }
                 break;
             case AMOUNT_REJECTED:
-                showSuccessDialog(getResources().getString(R.string.error), getResources().getString(R.string.transactionFailed) + "\n" + result, DebitCreditActivity.this);
+                showSuccessDialog(getResources().getString(R.string.error), getResources().getString(R.string.transactionFailed) + "\n" + result, CreditDebitActivity.this);
                 break;
             case CANCELED:
-                showSuccessDialog(getResources().getString(R.string.error), getResources().getString(R.string.transactionFailed) + "\n" + result, DebitCreditActivity.this);
+                showSuccessDialog(getResources().getString(R.string.error), getResources().getString(R.string.transactionFailed) + "\n" + result, CreditDebitActivity.this);
                 break;
             case NOT_EMV:
                 break;
@@ -184,10 +299,10 @@ public class DebitCreditActivity extends WorldBaseActivity
             case CARD_NOT_SUPPORTED:
                 break;
             case READER_ERROR:
-                showSuccessDialog(getResources().getString(R.string.error), getResources().getString(R.string.transactionFailed) + "\n" + result, DebitCreditActivity.this);
+                showSuccessDialog(getResources().getString(R.string.error), getResources().getString(R.string.transactionFailed) + "\n" + result, CreditDebitActivity.this);
                 break;
             case AUTHENTICATION_FAILURE:
-                showSuccessDialog(getResources().getString(R.string.error), getResources().getString(R.string.transactionFailed) + "\n" + result, DebitCreditActivity.this);
+                showSuccessDialog(getResources().getString(R.string.error), getResources().getString(R.string.transactionFailed) + "\n" + result, CreditDebitActivity.this);
                 break;
             case UNKNOWN_ERROR:
                 break;
@@ -202,7 +317,7 @@ public class DebitCreditActivity extends WorldBaseActivity
             case DECLINED_REVERSAL_FAILED:
                 break;
             case DECLINED:
-                showSuccessDialog(getResources().getString(R.string.error), getResources().getString(R.string.transactionFailed) + "\n" + result, DebitCreditActivity.this);
+                showSuccessDialog(getResources().getString(R.string.error), getResources().getString(R.string.transactionFailed) + "\n" + result, CreditDebitActivity.this);
                 break;
             default:
                 break;
@@ -305,7 +420,7 @@ public class DebitCreditActivity extends WorldBaseActivity
     //SIGNATURE POP UP
     public void openSignatureDialog() {
 
-        final Dialog dialog = new Dialog(DebitCreditActivity.this); // Context, this, etc.
+        final Dialog dialog = new Dialog(CreditDebitActivity.this); // Context, this, etc.
         dialog.setContentView(R.layout.activity_take_signature);
 
         Directory = new File(Environment.getExternalStorageDirectory() + "/WorldPay/" + getResources().getString(R.string.external_dir) + "/");
@@ -404,7 +519,7 @@ public class DebitCreditActivity extends WorldBaseActivity
                 file.delete();
             }
             try {
-                Toast.makeText(DebitCreditActivity.this, getResources().getString(R.string.signedSuccess), Toast.LENGTH_LONG).show();
+                Toast.makeText(CreditDebitActivity.this, getResources().getString(R.string.signedSuccess), Toast.LENGTH_LONG).show();
                 FileOutputStream mFileOutStream = new FileOutputStream(file);
 
                 v.draw(canvas);
@@ -503,79 +618,6 @@ public class DebitCreditActivity extends WorldBaseActivity
         }
     }
 
-    private void initComponents() {
-
-        count = 1;
-        validating = new iM3Form();
-
-        dialog_field_transaction_amount = (iM3FormEditText) findViewById(R.id.dialog_field_transaction_amount);
-
-        dialog_field_transaction_amount
-                .addValidator(new iM3NotEmptyValidator("Transaction amount required!"));
-        transactionAmountTextWatcher =
-                new iM3CurrencyTextWatcher(dialog_field_transaction_amount, Locale.US,
-                        new BigDecimal("999999.99"), true, true);
-        dialog_field_transaction_amount.addTextChangedListener(transactionAmountTextWatcher);
-        validating.addItem(dialog_field_transaction_amount);
-
-        btn_no_card = (Button) findViewById(R.id.btn_no_card);
-        btn_no_card.setOnClickListener(this);
-
-        btn_card = (Button) findViewById(R.id.btn_card);
-        btn_card.setOnClickListener(this);
-
-        btn_start_transaction = (Button) findViewById(R.id.btn_start_transaction);
-        btn_start_transaction.setOnClickListener(this);
-
-        checkVaultLayout = (LinearLayout) findViewById(R.id.checkVaultLayout);
-        checkVaultLayout.setOnClickListener(this);
-        addToVaultCheckBox = (CheckBox) findViewById(R.id.addToVaultCheckBox);
-        //Swiper Type Spinner
-        //spn_swiper_types = (Spinner) findViewById(spn_swiper_types);
-//        spn_swiper_types.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-////              Swiper swiper = Swiper.fromDescription("Shuttle");
-////
-////                                PreferenceManager.getDefaultSharedPreferences(DebitCreditActivity.this).edit()
-////                        .putString(PREF_BUNDLE_SWIPER, swiper).apply();
-//
-//                //  authenticate();
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//            }
-//        });
-
-//        spn_swiper_types.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
-//                com.worldpay.library.BuildConfig.COMPATIBLE_SWIPERS));
-        //  spnSwiperTypesPos = spn_swiper_types.getSelectedItemPosition();
-
-        //Transaction Type Spinner
-        spn_transaction_types = (Spinner) findViewById(R.id.spn_transaction_types);
-//        List<Enum> transType = new ArrayList<Enum>();
-//        transType.add(TransactionType.AUTH);
-//        transType.add(TransactionType.SALE);
-        spn_transaction_types.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                transactionType = (TransactionType) spn_transaction_types.getAdapter().getItem(position);
-                Log.d("transactionType", "" + transactionType);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                transactionType = null;
-            }
-        });
-        spn_transaction_types.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
-                TransactionType.values()));
-//        spn_transaction_types.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
-//                transType));
-
-    }
-
     //Manual Transaction
     private void manualTransaction() {
 
@@ -619,6 +661,7 @@ public class DebitCreditActivity extends WorldBaseActivity
                 transactionDialogFragment.setCaptureMode(CaptureMode.MANUAL);
                 transactionDialogFragment.show(getSupportFragmentManager(), TransactionDialogFragment.TAG);
 
+
             }
         }
 
@@ -634,27 +677,6 @@ public class DebitCreditActivity extends WorldBaseActivity
         BigDecimal transactionAmount = BigDecimal.ZERO;
         BigDecimal cashBackAmount = BigDecimal.ZERO;
 
-        iM3Form validates = new iM3Form();
-
-        TransactionData transactionData = new TransactionData();
-
-        if (validates.validateAll()) {
-            if (!TextUtils.isEmpty(dialog_field_transaction_amount.getValue())) {
-                transactionAmount = new BigDecimal(
-                        dialog_field_transaction_amount.getValue().replaceAll("[^\\d.]", ""));
-            }
-        }
-
-        transactionData.setAmount(transactionAmount);
-        transactionData.setCashBackAmount(cashBackAmount);
-        transactionData.setId("115029855");
-
-        if (addToVaultCheckBox.isChecked()) {
-            transactionData.setAddCardToVault(true);
-        } else {
-            transactionData.setAddCardToVault(false);
-        }
-        transactionDialogFragment.setTransactionData(transactionData);
         transactionDialogFragment.setCaptureMode(CaptureMode.SWIPE_TAP_INSERT);
         transactionDialogFragment.setTransactionType(transactionType);
         transactionDialogFragment.setSwiper(swiper);
@@ -664,6 +686,42 @@ public class DebitCreditActivity extends WorldBaseActivity
         transactionDialogFragment.setAuthToken(authToken);
         transactionDialogFragment.setDeveloperId(BuildConfig.DEVELOPER_ID);
         transactionDialogFragment.setApplicationVersion(BuildConfig.VERSION_NAME);
-        transactionDialogFragment.show(getSupportFragmentManager(), TransactionDialogFragment.TAG);
+
+        if (count == 1) {
+            if (validating.validateAll()) {
+                if (!TextUtils.isEmpty(dialog_field_transaction_amount.getValue())) {
+                    TransactionData transactionData = new TransactionData();
+                    transactionAmount = new BigDecimal(dialog_field_transaction_amount.getValue().replaceAll("[^\\d.]", ""));
+                    transactionData.setAmount(transactionAmount);
+                    transactionData.setCashBackAmount(cashBackAmount);
+                    transactionData.setId("115029855");
+                    if (addToVaultCheckBox.isChecked()) {
+                        transactionData.setAddCardToVault(true);
+                    } else {
+                        transactionData.setAddCardToVault(false);
+                    }
+                    transactionDialogFragment.setTransactionData(transactionData);
+                    transactionDialogFragment.show(getSupportFragmentManager(), TransactionDialogFragment.TAG);
+
+                }
+            }
+        } else if (count == 2) {
+            if (validatingIDs.validateAll()) {
+                if (!TextUtils.isEmpty(dialog_field_transaction_amount.getValue())) {
+                    transactionAmount = new BigDecimal(
+                            dialog_field_transaction_amount.getValue().replaceAll("[^\\d.]", ""));
+                }
+
+                if (!TextUtils.isEmpty(field_customer_id.getValue())) {
+                    String customer_id = field_customer_id.getValue();
+                }
+
+                if (!TextUtils.isEmpty(field_payment_id.getValue())) {
+                    String payment_id = field_payment_id.getValue();
+                }
+            }
+
+            Toast.makeText(this, "Missing in SDK now!", Toast.LENGTH_SHORT).show();
+        }
     }
 }

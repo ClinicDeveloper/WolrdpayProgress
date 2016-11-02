@@ -36,7 +36,7 @@ public class CustomerDetailsActivity extends AppCompatActivity implements View.O
             String customer_id = getIntent().getExtras().getString("customer_id");
             if (responseCustomerDetails != null) {
                 settingFields(responseCustomerDetails, customer_id);
-               toolbar.setTitle("CUSTOMER ID : " + customer_id);
+                toolbar.setTitle("CUSTOMER ID : " + customer_id);
             } else {
                 Toast.makeText(this, "Null response", Toast.LENGTH_SHORT).show();
                 finish();
@@ -94,12 +94,29 @@ public class CustomerDetailsActivity extends AppCompatActivity implements View.O
 
         //ADDRESS
         if (response.getAddress() != null) {
-            tv_line_one.setText("" + response.getAddress().getLine1());
-            tv_city.setText("" + response.getAddress().getCity());
-            tv_state.setText("" + response.getAddress().getState());
-            tv_country.setText("" + response.getAddress().getCountry());
-            tv_zip_code.setText("" + response.getAddress().getZip());
+
+            if (response.getAddress().getLine1() != null) {
+                tv_line_one.setText("" + response.getAddress().getLine1());
+            }
+
+            if (response.getAddress().getCity() != null) {
+                tv_city.setText("" + response.getAddress().getCity());
+            }
+
+            if (response.getAddress().getState() != null) {
+                tv_state.setText("" + response.getAddress().getState());
+            }
+
+            if (response.getAddress().getZip() != null) {
+                tv_zip_code.setText("" + response.getAddress().getZip());
+            }
+
+            if (response.getAddress().getCountry() != null) {
+                tv_country.setText("" + response.getAddress().getCountry());
+            }
+
         }
+
         //USER DEFINED FIELDS
         tv_udfname.setText("" + response.getUserDefinedFields());
         tv_udffield.setText("" + response.getUserDefinedFields());

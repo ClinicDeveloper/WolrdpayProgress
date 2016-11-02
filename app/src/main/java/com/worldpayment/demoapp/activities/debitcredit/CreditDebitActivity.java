@@ -44,6 +44,9 @@ import com.worldpay.library.views.iM3CurrencyTextWatcher;
 import com.worldpay.library.views.iM3Form;
 import com.worldpay.library.views.iM3FormEditText;
 import com.worldpay.library.views.iM3NotEmptyValidator;
+import com.worldpay.library.webservices.services.payments.AuthorizeRequest;
+import com.worldpay.library.webservices.services.payments.ChargeRequest;
+import com.worldpay.library.webservices.services.payments.CreditRequest;
 import com.worldpay.library.webservices.services.payments.PaymentResponse;
 import com.worldpay.library.webservices.services.payments.ReversalRequest;
 import com.worldpay.library.webservices.services.payments.TransactionResponse;
@@ -85,7 +88,7 @@ public class CreditDebitActivity extends WorldBaseActivity
     LinearLayout checkVaultLayout;
     CheckBox addToVaultCheckBox;
     private iM3CurrencyTextWatcher transactionAmountTextWatcher;
-
+    ExtendedData extendedData;
     private String authToken;
     //  private Swiper swiper;
     private TransactionType transactionType;
@@ -663,10 +666,15 @@ public class CreditDebitActivity extends WorldBaseActivity
                 } else {
                     transactionData.setAddCardToVault(false);
                 }
-                ExtendedData extendedData = new ExtendedData();
-                //  extendedData.setOrderId(""+order_date.getValue());
-                extendedData.setInvoiceNumber("" + purchase_order_no.getValue());
-                extendedData.setNotes("" + notes.getValue());
+
+                extendedData = new ExtendedData();
+
+                extendedData.setNotes(notes.getValue());
+                ExtendedData.LevelTwoData levelTwoData = new ExtendedData().getLevelTwoData();
+                levelTwoData.setOrderDate(order_date.getValue());
+                levelTwoData.setPurchaseOrderNumber(purchase_order_no.getValue());
+                extendedData.setLevelTwoData(levelTwoData);
+                setExtendedDataMethod(transactionType);
 
                 transactionDialogFragment.setTransactionData(transactionData);
                 transactionDialogFragment.setApplicationVersion(BuildConfig.VERSION_NAME);
@@ -688,6 +696,7 @@ public class CreditDebitActivity extends WorldBaseActivity
 
     //Start Transaction
     private void showTransactionFragment() {
+
         if (transactionDialogFragment == null) {
             transactionDialogFragment = TransactionDialogFragment.newInstance();
         }
@@ -705,6 +714,15 @@ public class CreditDebitActivity extends WorldBaseActivity
         transactionDialogFragment.setAuthToken(authToken);
         transactionDialogFragment.setDeveloperId(BuildConfig.DEVELOPER_ID);
         transactionDialogFragment.setApplicationVersion(BuildConfig.VERSION_NAME);
+
+        extendedData = new ExtendedData();
+
+        extendedData.setNotes(notes.getValue());
+        ExtendedData.LevelTwoData levelTwoData = new ExtendedData().getLevelTwoData();
+        levelTwoData.setOrderDate(order_date.getValue());
+        levelTwoData.setPurchaseOrderNumber(purchase_order_no.getValue());
+        extendedData.setLevelTwoData(levelTwoData);
+        setExtendedDataMethod(transactionType);
 
         if (count == 1) {
             if (validating.validateAll()) {
@@ -748,5 +766,19 @@ public class CreditDebitActivity extends WorldBaseActivity
     protected void onPause() {
         super.onPause();
         finish();
+    }
+
+    public void setExtendedDataMethod(TransactionType transactionType) {
+
+        if (transactionType == TransactionType.AUTH) {
+            AuthorizeRequest authRequest = new AuthorizeRequest();
+            authRequest.setExtendedData(extendedData);
+        } else if (transactionType == TransactionType.SALE) {
+            ChargeRequest chargeRequest = new ChargeRequest();
+            chargeRequest.setExtendedData(extendedData);
+        } else if (transactionType == TransactionType.CREDIT) {
+            CreditRequest creditRequest = new CreditRequest();
+            creditRequest.setExtendedData(extendedData);
+        }
     }
 }

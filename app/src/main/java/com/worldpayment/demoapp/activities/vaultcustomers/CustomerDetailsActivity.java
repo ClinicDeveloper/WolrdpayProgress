@@ -36,7 +36,7 @@ public class CustomerDetailsActivity extends AppCompatActivity implements View.O
             String customer_id = getIntent().getExtras().getString("customer_id");
             if (responseCustomerDetails != null) {
                 settingFields(responseCustomerDetails, customer_id);
-                getSupportActionBar().setTitle("CUSTOMER ID : " + customer_id);
+               toolbar.setTitle("CUSTOMER ID : " + customer_id);
             } else {
                 Toast.makeText(this, "Null response", Toast.LENGTH_SHORT).show();
                 finish();

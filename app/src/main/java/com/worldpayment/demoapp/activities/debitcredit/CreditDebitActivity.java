@@ -671,8 +671,8 @@ public class CreditDebitActivity extends WorldBaseActivity
                 levelTwoData.setPurchaseOrderNumber("" + purchase_order_no.getValue());
                 extendedData.setLevelTwoData(levelTwoData);
 
-                //    setExtendedDataMethod(transactionType);
-
+//                setExtendedDataMethod(transactionType);
+                transactionDialogFragment.setExtendedData(extendedData);
                 transactionDialogFragment.setTransactionData(transactionData);
                 transactionDialogFragment.setApplicationVersion(BuildConfig.VERSION_NAME);
                 transactionDialogFragment.setTransactionType(transactionType);
@@ -685,10 +685,8 @@ public class CreditDebitActivity extends WorldBaseActivity
                 transactionDialogFragment.setCaptureMode(CaptureMode.MANUAL);
                 transactionDialogFragment.show(getSupportFragmentManager(), TransactionDialogFragment.TAG);
 
-
             }
         }
-
     }
 
     //Start Transaction
@@ -718,7 +716,7 @@ public class CreditDebitActivity extends WorldBaseActivity
         levelTwoData.setOrderDate("" + order_date.getValue());
         levelTwoData.setPurchaseOrderNumber("" + purchase_order_no.getValue());
         extendedData.setLevelTwoData(levelTwoData);
-        // setExtendedDataMethod(transactionType);
+        transactionDialogFragment.setExtendedData(extendedData);
 
         if (count == 1) {
             if (validating.validateAll()) {
@@ -764,17 +762,4 @@ public class CreditDebitActivity extends WorldBaseActivity
 //        finish();
 //    }
 
-//    public void setExtendedDataMethod(TransactionType transactionType) {
-//
-//        if (transactionType == TransactionType.AUTH) {
-//            AuthorizeRequest authRequest = new AuthorizeRequest();
-//            authRequest.setExtendedData(extendedData);
-//        } else if (transactionType == TransactionType.SALE) {
-//            ChargeRequest chargeRequest = new ChargeRequest();
-//            chargeRequest.setExtendedData(extendedData);
-//        } else if (transactionType == TransactionType.CREDIT) {
-//            CreditRequest creditRequest = new CreditRequest();
-//            creditRequest.setExtendedData(extendedData);
-//        }
-//    }
 }

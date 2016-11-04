@@ -8,7 +8,10 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +36,8 @@ import com.worldpayment.demoapp.activities.debitcredit.CreditDebitActivity;
 import com.worldpayment.demoapp.utility.KeyboardUtility;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import static com.worldpayment.demoapp.BuildConfig.MERCHANT_ID;
@@ -43,10 +48,12 @@ import static com.worldpayment.demoapp.activities.debitcredit.CreditDebitActivit
 public class RefundVoidViewActivity extends WorldBaseActivity implements View.OnClickListener, TransactionDialogFragment.TransactionDialogFragmentListener {
 
     iM3FormEditText field_transaction_id, field_transaction_amount;
-    private Button btn_refund, btn_void, btn_start_transaction;
+    //    private Button btn_refund, btn_void, btn_start_transaction;
+    private Button btn_start_transaction;
     TextView amount_textView;
     public static int count = 7;
     iM3Form validateRefund, validateVoid;
+    private Spinner spn_transaction_types;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,11 +66,11 @@ public class RefundVoidViewActivity extends WorldBaseActivity implements View.On
 
     public void initComponents() {
 
-        btn_refund = (Button) findViewById(R.id.btn_refund);
-        btn_refund.setOnClickListener(this);
-
-        btn_void = (Button) findViewById(R.id.btn_void);
-        btn_void.setOnClickListener(this);
+//        btn_refund = (Button) findViewById(btn_refund);
+//        btn_refund.setOnClickListener(this);
+//
+//        btn_void = (Button) findViewById(btn_void);
+//        btn_void.setOnClickListener(this);
 
         amount_textView = (TextView) findViewById(R.id.amount_textView);
         field_transaction_id = (iM3FormEditText) findViewById(R.id.field_transaction_id);
@@ -87,6 +94,38 @@ public class RefundVoidViewActivity extends WorldBaseActivity implements View.On
 
         btn_start_transaction = (Button) findViewById(R.id.btn_start_transaction);
         btn_start_transaction.setOnClickListener(this);
+
+        //Transaction Type Spinner
+        final List<String> types = new ArrayList<String>();
+        types.add("REFUND");
+        types.add("VOID");
+        spn_transaction_types = (Spinner) findViewById(R.id.spn_transaction_types);
+        spn_transaction_types.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                String transactionType = parent.getItemAtPosition(position).toString();
+                if (transactionType.equals("REFUND")) {
+                    KeyboardUtility.closeKeyboard(RefundVoidViewActivity.this, view);
+                    count = 0;
+                    field_transaction_amount.setVisibility(View.VISIBLE);
+                    amount_textView.setVisibility(View.VISIBLE);
+                } else {
+                    KeyboardUtility.closeKeyboard(RefundVoidViewActivity.this, view);
+                    count = 1;
+                    amount_textView.setVisibility(View.GONE);
+                    field_transaction_amount.setVisibility(View.GONE);
+                }
+
+                Log.d("transactionType", "" + transactionType);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        spn_transaction_types.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
+                types));
     }
 
     @Override
@@ -133,21 +172,21 @@ public class RefundVoidViewActivity extends WorldBaseActivity implements View.On
     public void onClick(View v) {
         switch (v.getId()) {
 
-            case R.id.btn_refund:
-                KeyboardUtility.closeKeyboard(this, v);
-                count = 0;
-                field_transaction_amount.setVisibility(View.VISIBLE);
-                amount_textView.setVisibility(View.VISIBLE);
-                buttonEnabled(btn_refund, btn_void, count);
-                break;
-
-            case R.id.btn_void:
-                KeyboardUtility.closeKeyboard(this, v);
-                count = 1;
-                amount_textView.setVisibility(View.GONE);
-                field_transaction_amount.setVisibility(View.GONE);
-                buttonEnabled(btn_void, btn_refund, count);
-                break;
+//            case btn_refund:
+//                KeyboardUtility.closeKeyboard(this, v);
+//                count = 0;
+//                field_transaction_amount.setVisibility(View.VISIBLE);
+//                amount_textView.setVisibility(View.VISIBLE);
+//                buttonEnabled(btn_refund, btn_void, count);
+//                break;
+//
+//            case btn_void:
+//                KeyboardUtility.closeKeyboard(this, v);
+//                count = 1;
+//                amount_textView.setVisibility(View.GONE);
+//                field_transaction_amount.setVisibility(View.GONE);
+//                buttonEnabled(btn_void, btn_refund, count);
+//                break;
 
             case R.id.btn_start_transaction:
                 KeyboardUtility.closeKeyboard(this, v);
@@ -246,7 +285,8 @@ public class RefundVoidViewActivity extends WorldBaseActivity implements View.On
                 progressDialog = new ProgressDialog(RefundVoidViewActivity.this);
                 startProgressBar(progressDialog, "Paying void...");
             }
-//115515187/91
+
+            //115515187/91
             @Override
             protected void onPostExecute(PaymentResponse paymentResponse) {
                 if (paymentResponse.hasError()) {

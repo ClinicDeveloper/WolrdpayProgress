@@ -2,24 +2,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.worldpayment.demoapp.DebitCreditActivity">
+    android:orientation="vertical">
 
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
-
-    <Button
-        android:id="@+id/btn_done"
-        style="@style/buttonStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="5dp"
-        android:drawableLeft="@mipmap/ic_done"
-        android:padding="10dp"
-        android:text="Done" />
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -406,4 +393,17 @@
 
         </LinearLayout>
     </ScrollView>
+
+    <Button
+        android:id="@+id/btn_done"
+        style="@style/buttonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="5dp"
+        android:drawableLeft="@mipmap/ic_done"
+        android:padding="10dp"
+        android:text="Done" />
+
 </RelativeLayout>

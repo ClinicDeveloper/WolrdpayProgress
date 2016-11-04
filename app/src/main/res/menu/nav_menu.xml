@@ -34,7 +34,8 @@
             android:layout_gravity="center"
             android:checked="false"
             android:icon="@mipmap/ic_vault"
-            android:title="Vault Customer" />
+            android:title="Vault Customer"
+            android:visible="false" />
 
     </group>
 

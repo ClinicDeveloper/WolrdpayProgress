@@ -69,7 +69,7 @@ public class WorldBaseActivity extends AppCompatActivity {
                 toolbar.setTitle("Refund/Void");
             }
             if (worldBaseActivity instanceof CreditDebitActivity) {
-                toolbar.setTitle("Debit/Credit");
+                toolbar.setTitle("Credit/Debit");
             }
 
             if (worldBaseActivity instanceof ActivitySettlement) {

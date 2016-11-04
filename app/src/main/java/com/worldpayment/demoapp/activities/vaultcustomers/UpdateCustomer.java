@@ -111,16 +111,16 @@ public class UpdateCustomer extends AppCompatActivity implements View.OnClickLis
         validateAlls.addItem(field_last_name);
 
         field_phone_number = (iM3FormEditText) findViewById(R.id.field_phone_number);
-        field_phone_number.addValidator(new iM3NotEmptyValidator("Phone Number is required!"));
-        validateAlls.addItem(field_phone_number);
+//        field_phone_number.addValidator(new iM3NotEmptyValidator("Phone Number is required!"));
+//        validateAlls.addItem(field_phone_number);
 
         field_email_address = (iM3FormEditText) findViewById(R.id.field_email_address);
         field_email_address.addValidator(new iM3NotEmptyValidator("Email is required!"));
         validateAlls.addItem(field_email_address);
 
         field_notes = (iM3FormEditText) findViewById(R.id.field_notes);
-        field_notes.addValidator(new iM3NotEmptyValidator("Note is required!"));
-        validateAlls.addItem(field_notes);
+//        field_notes.addValidator(new iM3NotEmptyValidator("Note is required!"));
+//        validateAlls.addItem(field_notes);
 
 
         field_street_address = (iM3FormEditText) findViewById(R.id.field_street_address);
@@ -132,8 +132,8 @@ public class UpdateCustomer extends AppCompatActivity implements View.OnClickLis
         validateAlls.addItem(field_city);
 
         field_company = (iM3FormEditText) findViewById(R.id.field_company);
-        field_company.addValidator(new iM3NotEmptyValidator("Company is required!"));
-        validateAlls.addItem(field_company);
+        //  field_company.addValidator(new iM3NotEmptyValidator("Company is required!"));
+        //  validateAlls.addItem(field_company);
 
 
         zip = (iM3FormEditText) findViewById(R.id.zip);
@@ -161,8 +161,8 @@ public class UpdateCustomer extends AppCompatActivity implements View.OnClickLis
 
             case R.id.btn_create:
                 KeyboardUtility.closeKeyboard(this, view);
-                Toast.makeText(this, "SDK implementation in process", Toast.LENGTH_SHORT).show();
-                //   validationFields();
+                // Toast.makeText(this, "SDK implementation in process", Toast.LENGTH_SHORT).show();
+                validationFields();
                 break;
 
             case R.id.btn_cancel:
@@ -276,7 +276,10 @@ public class UpdateCustomer extends AppCompatActivity implements View.OnClickLis
         field_last_name.setText("" + response.getLastName());
         field_email_address.setText("" + response.getEmail());
         field_company.setText("" + response.getCompany());
-        field_phone_number.setText("" + response.getPhone());
+
+        if (response.getPhone() != null) {
+            field_phone_number.setText("" + response.getPhone());
+        }
         field_notes.setText("" + response.getNotes());
 
         field_street_address.setText("" + response.getAddress().getLine1());

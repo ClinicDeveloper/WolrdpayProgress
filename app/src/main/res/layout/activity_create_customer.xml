@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
-                android:text="Phone Number" />
+                android:text="Phone Number (optional)" />
 
             <com.worldpay.library.views.iM3FormEditText
                 android:id="@+id/field_phone_number"
@@ -126,7 +126,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
-                android:text="Notes" />
+                android:text="Notes (optional)" />
 
             <com.worldpay.library.views.iM3FormEditText
                 android:id="@+id/field_notes"
@@ -223,7 +223,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
-                android:text="Company" />
+                android:text="Company (optional)" />
 
             <com.worldpay.library.views.iM3FormEditText
                 android:id="@+id/field_company"
@@ -305,8 +305,7 @@
             android:layout_weight="50"
             android:drawableLeft="@mipmap/ic_create"
             android:gravity="center"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
+            android:padding="10dp"
             android:text="@string/create" />
 
         <Button
@@ -320,8 +319,7 @@
             android:layout_weight="50"
             android:drawableLeft="@mipmap/ic_cancel"
             android:gravity="center"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
+            android:padding="10dp"
             android:text="@string/cancel" />
     </LinearLayout>
 

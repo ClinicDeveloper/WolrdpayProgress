@@ -29,35 +29,38 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:orientation="vertical">
 
-                <LinearLayout
-                    android:id="@+id/button_LL"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:orientation="horizontal"
-                    android:weightSum="100">
+                <!--<LinearLayout-->
+                <!--android:id="@+id/button_LL"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_margin="10dp"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:weightSum="100">-->
 
-                    <Button
-                        android:id="@+id/btn_refund"
-                        style="@style/buttonStyle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="50"
-                        android:text="@string/refund" />
+                <!--<Button-->
+                <!--android:id="@+id/btn_refund"-->
+                <!--style="@style/buttonStyle"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:layout_weight="50"-->
+                <!--android:text="@string/refund" />-->
 
-                    <Button
-                        android:id="@+id/btn_void"
-                        style="@style/buttonWithNoColorStyle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="10dp"
-                        android:layout_weight="50"
-                        android:text="@string/Void" />
-                </LinearLayout>
+                <!--<Button-->
+                <!--android:id="@+id/btn_void"-->
+                <!--style="@style/buttonWithNoColorStyle"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:layout_marginLeft="10dp"-->
+                <!--android:layout_weight="50"-->
+                <!--android:text="@string/Void" />-->
+                <!--</LinearLayout>-->
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -71,7 +74,6 @@
                     style="@style/EditTextField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end"
                     android:gravity="right"
                     android:inputType="number" />
 
@@ -81,19 +83,31 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
                     android:text="Amount" />
 
                 <com.worldpay.library.views.iM3FormEditText
                     android:id="@+id/field_transaction_amount"
+                    style="@style/EditTextField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:imeOptions="actionNext"
+                    android:inputType="number" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/transaction_types" />
+
+                <com.worldpay.library.views.iM3SimpleFormSpinner
+                    android:id="@+id/spn_transaction_types"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/edittext_rounded"
-                    android:gravity="end"
-                    android:imeOptions="actionNext"
-                    android:inputType="number"
-                    android:padding="10dp" />
+                    android:layout_marginRight="10dp" />
 
             </LinearLayout>
         </ScrollView>

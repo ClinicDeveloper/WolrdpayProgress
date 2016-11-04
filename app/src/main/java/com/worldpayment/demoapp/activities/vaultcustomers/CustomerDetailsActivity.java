@@ -84,7 +84,11 @@ public class CustomerDetailsActivity extends AppCompatActivity implements View.O
         tv_last_name.setText("" + response.getLastName());
         tv_email.setText("" + response.getEmail());
         tv_company.setText("" + response.getCompany());
-        tv_phone.setText("" + response.getPhone());
+
+        if (response.getPhone() != null) {
+            tv_phone.setText("" + response.getPhone());
+        }
+
 
         tv_notes.setText("" + response.getNotes());
         if (response.isSendEmailReceipts() == true)

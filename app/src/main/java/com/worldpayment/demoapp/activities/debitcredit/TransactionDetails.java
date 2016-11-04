@@ -143,9 +143,6 @@ public class TransactionDetails extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        Intent credit = new Intent(TransactionDetails.this, Navigation.class);
-        startActivity(credit);
-        finish();
+        return;
     }
 }

@@ -25,24 +25,39 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
-                android:text="Batch ID"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:text="Batch ID :"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size20" />
 
             <com.worldpay.library.views.iM3FormEditText
                 android:id="@+id/field_transaction_id"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="10dp"
+                android:layout_weight="60"
                 android:background="@drawable/edittext_rounded"
-                android:gravity="right"
+                android:gravity="center"
+                android:hint="Current"
                 android:imeOptions="actionNext"
                 android:inputType="number"
                 android:padding="10dp"
                 android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btn_get_batch"
+                style="@style/buttonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="20"
+                android:text="@string/get_batch"
+                android:textAllCaps="false" />
         </LinearLayout>
 
         <LinearLayout
@@ -52,17 +67,6 @@
             android:layout_margin="10dp"
             android:orientation="vertical">
 
-            <Button
-                android:id="@+id/btn_get_batch"
-                style="@style/buttonStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:text="@string/get_curr_batch"
-                android:textAllCaps="false" />
 
             <Button
                 android:id="@+id/btn_close_current_batch"

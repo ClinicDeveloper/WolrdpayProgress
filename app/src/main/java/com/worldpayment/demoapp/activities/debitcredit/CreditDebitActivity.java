@@ -672,7 +672,7 @@ public class CreditDebitActivity extends WorldBaseActivity
                 extendedData.setLevelTwoData(levelTwoData);
 
 //                setExtendedDataMethod(transactionType);
-                transactionDialogFragment.setExtendedData(extendedData);
+              //  transactionDialogFragment.setExtendedData(extendedData);
                 transactionDialogFragment.setTransactionData(transactionData);
                 transactionDialogFragment.setApplicationVersion(BuildConfig.VERSION_NAME);
                 transactionDialogFragment.setTransactionType(transactionType);
@@ -716,7 +716,7 @@ public class CreditDebitActivity extends WorldBaseActivity
         levelTwoData.setOrderDate("" + order_date.getValue());
         levelTwoData.setPurchaseOrderNumber("" + purchase_order_no.getValue());
         extendedData.setLevelTwoData(levelTwoData);
-        transactionDialogFragment.setExtendedData(extendedData);
+     //   transactionDialogFragment.setExtendedData(extendedData);
 
         if (count == 1) {
             if (validating.validateAll()) {

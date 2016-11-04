@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -59,9 +60,12 @@ public class CreateCustomer extends AppCompatActivity implements View.OnClickLis
 
     public void mappingViews() {
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Create Customer");
+        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
+        Toolbar toolbar = (Toolbar) appBarLayout.findViewById(R.id.toolbar);
+        TextView toolbar_title = (TextView) appBarLayout.findViewById(R.id.toolbar_title);
         setSupportActionBar(toolbar);
+        toolbar_title.setText("Create Customer");
+        getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 

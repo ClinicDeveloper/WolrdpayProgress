@@ -16,9 +16,7 @@
             android:layout_above="@+id/btn_start_transaction"
             android:orientation="vertical">
 
-            <include
-                android:id="@+id/toolbar"
-                layout="@layout/toolbar" />
+            <include layout="@layout/toolbar" />
 
             <ScrollView
                 android:layout_width="match_parent"

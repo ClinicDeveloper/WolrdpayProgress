@@ -2,6 +2,7 @@ package com.worldpayment.demoapp.activities.vaultcustomers;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -46,8 +47,12 @@ public class CustomerDetailsActivity extends AppCompatActivity implements View.O
 
     public void initComponents() {
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Customer Details");
+        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
+        Toolbar toolbar = (Toolbar) appBarLayout.findViewById(R.id.toolbar);
+        TextView toolbar_title = (TextView) appBarLayout.findViewById(R.id.toolbar_title);
+        setSupportActionBar(toolbar);
+        toolbar_title.setText("Customer Details");
+        getSupportActionBar().setTitle("");
 
         //CUSTOMER INFO
         tv_customer_id = (TextView) findViewById(R.id.tv_customer_id);

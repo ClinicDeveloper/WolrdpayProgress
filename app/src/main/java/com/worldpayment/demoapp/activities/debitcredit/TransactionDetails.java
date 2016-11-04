@@ -2,6 +2,7 @@ package com.worldpayment.demoapp.activities.debitcredit;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -40,9 +41,12 @@ public class TransactionDetails extends AppCompatActivity implements View.OnClic
 
     public void initComponents() {
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Transaction Details");
-
+        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
+        Toolbar toolbar = (Toolbar) appBarLayout.findViewById(R.id.toolbar);
+        TextView toolbar_title = (TextView) appBarLayout.findViewById(R.id.toolbar_title);
+        setSupportActionBar(toolbar);
+        toolbar_title.setText("Transaction Details");
+        getSupportActionBar().setTitle("");
         //TRANSACTION OVERVIEW
         tv_transaction_id = (TextView) findViewById(R.id.tv_transaction_id);
         tv_amount = (TextView) findViewById(R.id.tv_amount);

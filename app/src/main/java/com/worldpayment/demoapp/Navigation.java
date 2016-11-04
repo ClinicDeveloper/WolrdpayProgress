@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -67,9 +68,11 @@ public class Navigation extends AppCompatActivity implements View.OnClickListene
         profilePhoto = (ImageView) header.findViewById(R.id.profile_image);
         profileLayout = (LinearLayout) header.findViewById(R.id.profileLayout);
 
+        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
         drawer = (DrawerLayout) findViewById(R.id.drawer);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) appBarLayout.findViewById(R.id.toolbar);
 
+        TextView toolbar_title = (TextView) appBarLayout.findViewById(R.id.toolbar_title);
         //Swiper SHuttle
         swiper = Swiper.fromDescription("Shuttle");
 
@@ -84,7 +87,8 @@ public class Navigation extends AppCompatActivity implements View.OnClickListene
         HomeFragment homeFragment = new HomeFragment();
         FragmentTransaction homeFragmentTransaction = getSupportFragmentManager().beginTransaction();
         homeFragmentTransaction.replace(R.id.frame, homeFragment);
-        setTitle("Home");
+        toolbar_title.setText("Home");
+        getSupportActionBar().setTitle("");
         homeFragmentTransaction.commit();
 
         if (getIntent().getExtras() != null) {

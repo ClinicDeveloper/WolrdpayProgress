@@ -3,6 +3,7 @@ package com.worldpayment.demoapp.activities.debitcredit;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -10,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.worldpay.library.webservices.network.iM3HttpResponse;
 import com.worldpay.library.webservices.services.batches.BatchResponse;
@@ -34,7 +36,7 @@ public class TransactionListActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     TransactionResponse[] transactionResponses;
-    Toolbar toolbar;
+    TextView toolbar_title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,11 +44,15 @@ public class TransactionListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_transaction_search);
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
+        Toolbar toolbar = (Toolbar) appBarLayout.findViewById(R.id.toolbar);
+        toolbar_title = (TextView) appBarLayout.findViewById(R.id.toolbar_title);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("Batch Details");
+        toolbar_title.setText("Batch Details");
+        getSupportActionBar().setTitle("");
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,7 +66,7 @@ public class TransactionListActivity extends AppCompatActivity {
 
             GetTransactionsBatchRequest getTransactionsBatchRequest = new GetTransactionsBatchRequest();
             String batchId = getIntent().getExtras().getString("batchId");
-            getSupportActionBar().setTitle("Batch ID : " + batchId);
+            toolbar_title.setText("Batch ID : " + batchId);
             getTransactionsBatchRequest.setBatchId(batchId);
             getTransactionsBatchRequest.setApplicationVersion(BuildConfig.VERSION_NAME);
             getTransactionsBatchRequest.setMerchantId(BuildConfig.MERCHANT_ID);
@@ -101,7 +107,7 @@ public class TransactionListActivity extends AppCompatActivity {
                     return;
                 }
                 if (batchResponse != null && batchResponse.getHttpStatusCode() == iM3HttpResponse.iM3HttpStatus.OK) {
-                    getSupportActionBar().setTitle("Batch ID : " + batchResponse.getId());
+                    toolbar_title.setText("Batch ID : " + batchResponse.getId());
                     transactionResponses = batchResponse.getTransactions();
                     if (transactionResponses != null) {
                         SettlementAdapter adapter = new SettlementAdapter(TransactionListActivity.this, transactionResponses);

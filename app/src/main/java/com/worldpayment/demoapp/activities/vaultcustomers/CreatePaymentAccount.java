@@ -1,10 +1,12 @@
 package com.worldpayment.demoapp.activities.vaultcustomers;
 
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.worldpayment.demoapp.R;
 
@@ -22,9 +24,12 @@ public class CreatePaymentAccount extends AppCompatActivity implements View.OnCl
 
     public void mappingViews() {
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Create Payment Account");
+        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
+        Toolbar toolbar = (Toolbar) appBarLayout.findViewById(R.id.toolbar);
+        TextView toolbar_title = (TextView) appBarLayout.findViewById(R.id.toolbar_title);
         setSupportActionBar(toolbar);
+        toolbar_title.setText("Create Payment Account");
+        getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 

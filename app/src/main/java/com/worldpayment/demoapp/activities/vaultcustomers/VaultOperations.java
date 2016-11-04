@@ -27,7 +27,6 @@ public class VaultOperations extends WorldBaseActivity implements View.OnClickLi
         retrieve_customer_button = (Button) findViewById(R.id.retrieve_customer_button);
         create_payment_account_button = (Button) findViewById(R.id.create_payment_account_button);
 
-
         create_customer_button.setOnClickListener(this);
         retrieve_customer_button.setOnClickListener(this);
         create_payment_account_button.setOnClickListener(this);

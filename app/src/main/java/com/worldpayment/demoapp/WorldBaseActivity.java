@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -51,13 +52,17 @@ public class WorldBaseActivity extends AppCompatActivity {
     }
 
     public void setUpToolBar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
+        Toolbar toolbar = (Toolbar) appBarLayout.findViewById(R.id.toolbar);
+        TextView toolbar_title = (TextView) appBarLayout.findViewById(R.id.toolbar_title);
+
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer);
         final NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
         if (null != toolbar) {
 
             setSupportActionBar(toolbar);
             toolbar.setNavigationIcon(R.mipmap.logo_launcher);
+            getSupportActionBar().setTitle("");
 
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
@@ -66,18 +71,18 @@ public class WorldBaseActivity extends AppCompatActivity {
                 }
             });
             if (worldBaseActivity instanceof RefundVoidViewActivity) {
-                toolbar.setTitle("Refund/Void");
+                toolbar_title.setText("Refund/Void");
             }
             if (worldBaseActivity instanceof CreditDebitActivity) {
-                toolbar.setTitle("Credit/Debit");
+                toolbar_title.setText("Credit/Debit");
             }
 
             if (worldBaseActivity instanceof ActivitySettlement) {
-                toolbar.setTitle("Settlement");
+                toolbar_title.setText("Settlement");
             }
 
             if (worldBaseActivity instanceof VaultOperations) {
-                toolbar.setTitle("Vault");
+                toolbar_title.setText("Vault");
             }
 
 

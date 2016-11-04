@@ -63,7 +63,6 @@
             android:gravity="left|center_vertical"
             android:text="Message: " />
 
-
         <TextView
             android:id="@+id/message"
             style="?android:attr/textAppearanceSmall"

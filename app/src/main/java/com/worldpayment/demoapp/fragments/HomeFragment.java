@@ -34,7 +34,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         return root;
     }
-
+//115583672
 
     public void mappingViews() {
 

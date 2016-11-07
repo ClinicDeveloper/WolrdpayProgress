@@ -15,6 +15,8 @@ android {
         buildConfigField 'String', 'DEVELOPER_ID', '"12345678"'
         buildConfigField 'String', 'MERCHANT_ID', '"8005812"'
         buildConfigField 'String', 'MERCHANT_KEY', '"tcfOg/GvPNm8"'
+//        buildConfigField 'String', 'MERCHANT_ID', '""'
+//        buildConfigField 'String', 'MERCHANT_KEY', '""'
         buildConfigField 'com.worldpay.library.enums.MerchantGatewayType', 'MERCHANT_GATEWAY',
                 'com.worldpay.library.enums.MerchantGatewayType.SECURENET'
     }

@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.design.widget.AppBarLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,21 +26,18 @@ import com.worldpay.library.webservices.services.customers.CustomerResponse;
 import com.worldpay.library.webservices.tasks.CustomerCreateTask;
 import com.worldpayment.demoapp.BuildConfig;
 import com.worldpayment.demoapp.R;
+import com.worldpayment.demoapp.WorldBaseActivity;
 import com.worldpayment.demoapp.utility.KeyboardUtility;
 
 import java.util.Locale;
 
 import static com.worldpayment.demoapp.BuildConfig.MERCHANT_ID;
 import static com.worldpayment.demoapp.BuildConfig.MERCHANT_KEY;
-import static com.worldpayment.demoapp.WorldBaseActivity.dismissProgressBar;
-import static com.worldpayment.demoapp.WorldBaseActivity.showSuccessDialog;
-import static com.worldpayment.demoapp.WorldBaseActivity.startProgressBar;
 import static com.worldpayment.demoapp.activities.debitcredit.CreditDebitActivity.PREF_AUTH_TOKEN;
-import static com.worldpayment.demoapp.activities.refundvoid.RefundVoidViewActivity.buttonEnabled;
 import static com.worldpayment.demoapp.activities.refundvoid.RefundVoidViewActivity.count;
 import static com.worldpayment.demoapp.activities.vaultcustomers.RetrieveCustomer.responseCustomerDetails;
 
-public class CreateCustomer extends AppCompatActivity implements View.OnClickListener {
+public class CreateCustomer extends WorldBaseActivity implements View.OnClickListener {
     Toolbar toolbar;
     Button btn_create, btn_cancel, btn_yes, btn_no;
     iM3FormEditText field_first_name, field_last_name, field_phone_number, field_email_address, field_notes;
@@ -55,26 +50,11 @@ public class CreateCustomer extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_customer);
+        setActivity(CreateCustomer.this);
         mappingViews();
     }
 
     public void mappingViews() {
-
-        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
-        Toolbar toolbar = (Toolbar) appBarLayout.findViewById(R.id.toolbar);
-        TextView toolbar_title = (TextView) appBarLayout.findViewById(R.id.toolbar_title);
-        setSupportActionBar(toolbar);
-        toolbar_title.setText("Create Customer");
-        getSupportActionBar().setTitle("");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
 
         btn_create = (Button) findViewById(R.id.btn_create);
         btn_cancel = (Button) findViewById(R.id.btn_cancel);

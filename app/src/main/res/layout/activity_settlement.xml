@@ -18,25 +18,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:weightSum="100">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"
+                android:layout_weight="30"
                 android:text="Batch ID :"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size20" />
 
             <com.worldpay.library.views.iM3FormEditText
                 android:id="@+id/field_transaction_id"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="10dp"
-                android:layout_weight="60"
+                android:layout_weight="40"
                 android:background="@drawable/edittext_rounded"
                 android:gravity="center"
                 android:hint="Current"
@@ -48,12 +50,10 @@
             <Button
                 android:id="@+id/btn_get_batch"
                 style="@style/buttonStyle"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_weight="20"
+                android:layout_weight="30"
                 android:text="@string/get_batch"
                 android:textAllCaps="false" />
         </LinearLayout>
@@ -72,7 +72,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="8dp"
+                android:layout_marginTop="10dp"
                 android:text="@string/close_batch"
                 android:textAllCaps="false" />
         </LinearLayout>

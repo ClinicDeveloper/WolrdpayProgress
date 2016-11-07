@@ -22,6 +22,10 @@ import android.widget.TextView;
 import com.worldpayment.demoapp.activities.debitcredit.CreditDebitActivity;
 import com.worldpayment.demoapp.activities.refundvoid.RefundVoidViewActivity;
 import com.worldpayment.demoapp.activities.settlement.ActivitySettlement;
+import com.worldpayment.demoapp.activities.settlement.TransactionListActivity;
+import com.worldpayment.demoapp.activities.vaultcustomers.CreateCustomer;
+import com.worldpayment.demoapp.activities.vaultcustomers.CreatePaymentAccount;
+import com.worldpayment.demoapp.activities.vaultcustomers.UpdateCustomer;
 import com.worldpayment.demoapp.activities.vaultcustomers.VaultOperations;
 import com.worldpayment.demoapp.utility.KeyboardUtility;
 
@@ -38,8 +42,21 @@ public class WorldBaseActivity extends AppCompatActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        //  setUpNavigationDrawer();
-        setUpToolBar();
+
+        if (worldBaseActivity instanceof RefundVoidViewActivity ||
+                worldBaseActivity instanceof CreditDebitActivity ||
+                worldBaseActivity instanceof ActivitySettlement ||
+                worldBaseActivity instanceof VaultOperations) {
+            setUpToolBar();
+        }
+
+        if (worldBaseActivity instanceof TransactionListActivity ||
+                worldBaseActivity instanceof CreateCustomer ||
+                worldBaseActivity instanceof UpdateCustomer ||
+                worldBaseActivity instanceof CreatePaymentAccount) {
+            setUpToolbarNoNavigation();
+        }
+
     }
 
 
@@ -239,5 +256,37 @@ public class WorldBaseActivity extends AppCompatActivity {
             btn2.setTextColor(Color.WHITE);
             btn2.setBackgroundResource(R.drawable.button_disable);
         }
+    }
+
+    public void setUpToolbarNoNavigation() {
+
+        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
+        Toolbar toolbar = (Toolbar) appBarLayout.findViewById(R.id.toolbar);
+        TextView toolbar_title = (TextView) appBarLayout.findViewById(R.id.toolbar_title);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        if (worldBaseActivity instanceof CreateCustomer) {
+            toolbar_title.setText("Create Customer");
+        }
+        if (worldBaseActivity instanceof UpdateCustomer) {
+            toolbar_title.setText("Update Customer");
+        }
+        if (worldBaseActivity instanceof TransactionListActivity) {
+            toolbar_title.setText("Batch Details");
+        }
+        if (worldBaseActivity instanceof CreatePaymentAccount) {
+            toolbar_title.setText("Create Payment Account");
+        }
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
     }
 }

@@ -4,13 +4,10 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.design.widget.AppBarLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.worldpay.library.views.iM3Form;
 import com.worldpay.library.views.iM3FormEditText;
@@ -20,16 +17,14 @@ import com.worldpay.library.webservices.services.customers.GetCustomerRequest;
 import com.worldpay.library.webservices.tasks.CustomerGetTask;
 import com.worldpayment.demoapp.BuildConfig;
 import com.worldpayment.demoapp.R;
+import com.worldpayment.demoapp.WorldBaseActivity;
 import com.worldpayment.demoapp.utility.KeyboardUtility;
 
 import static com.worldpayment.demoapp.BuildConfig.MERCHANT_ID;
 import static com.worldpayment.demoapp.BuildConfig.MERCHANT_KEY;
-import static com.worldpayment.demoapp.WorldBaseActivity.dismissProgressBar;
-import static com.worldpayment.demoapp.WorldBaseActivity.showSuccessDialog;
-import static com.worldpayment.demoapp.WorldBaseActivity.startProgressBar;
 import static com.worldpayment.demoapp.activities.debitcredit.CreditDebitActivity.PREF_AUTH_TOKEN;
 
-public class RetrieveCustomer extends AppCompatActivity implements View.OnClickListener {
+public class RetrieveCustomer extends WorldBaseActivity implements View.OnClickListener {
 
     Toolbar toolbar;
     Button btn_search, btn_update;
@@ -42,26 +37,12 @@ public class RetrieveCustomer extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_retrieve_customer);
+        setActivity(RetrieveCustomer.this);
         mappingViews();
     }
 
     public void mappingViews() {
 
-        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
-        Toolbar toolbar = (Toolbar) appBarLayout.findViewById(R.id.toolbar);
-        TextView toolbar_title = (TextView) appBarLayout.findViewById(R.id.toolbar_title);
-        setSupportActionBar(toolbar);
-        toolbar_title.setText("Retrieve/Update Customer");
-        getSupportActionBar().setTitle("");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
         field_customer_id = (iM3FormEditText) findViewById(R.id.field_customer_id);
         btn_search = (Button) findViewById(R.id.btn_search);
         btn_update = (Button) findViewById(R.id.btn_update);

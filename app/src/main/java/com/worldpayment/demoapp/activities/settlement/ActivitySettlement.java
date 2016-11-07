@@ -15,7 +15,6 @@ import com.worldpay.library.webservices.tasks.BatchCloseCurrentTask;
 import com.worldpayment.demoapp.BuildConfig;
 import com.worldpayment.demoapp.R;
 import com.worldpayment.demoapp.WorldBaseActivity;
-import com.worldpayment.demoapp.activities.debitcredit.TransactionListActivity;
 import com.worldpayment.demoapp.utility.KeyboardUtility;
 
 import static com.worldpayment.demoapp.BuildConfig.MERCHANT_ID;
@@ -52,7 +51,7 @@ public class ActivitySettlement extends WorldBaseActivity implements View.OnClic
         switch (view.getId()) {
             case R.id.btn_get_batch:
                 if (!field_transaction_id.getText().equals(" ") && field_transaction_id.getText().length() > 5) {
-
+//3674699
                     KeyboardUtility.closeKeyboard(this, view);
                     Intent intent = new Intent(ActivitySettlement.this, TransactionListActivity.class);
                     intent.putExtra("batchId", field_transaction_id.getText().toString());

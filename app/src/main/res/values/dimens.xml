@@ -19,4 +19,6 @@
     <dimen name="text_size15">15dp</dimen>
     <dimen name="text_size16">16dp</dimen>
     <dimen name="text_size17">17dp</dimen>
+    <dimen name="text_size30">30dp</dimen>
+
 </resources>

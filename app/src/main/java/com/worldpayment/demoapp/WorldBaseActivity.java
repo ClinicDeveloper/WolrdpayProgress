@@ -3,6 +3,8 @@ package com.worldpayment.demoapp;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -37,6 +39,9 @@ public class WorldBaseActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
 
+        if (isTablet(this)) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
     }
 
     @Override
@@ -288,5 +293,10 @@ public class WorldBaseActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+
+    public static boolean isTablet(Context context) {
+        return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 }

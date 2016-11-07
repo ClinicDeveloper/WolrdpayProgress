@@ -27,11 +27,11 @@ public class SplashActivity extends AppCompatActivity {
         Animation blinking = AnimationUtils.loadAnimation(this, R.anim.blink);
         movingTV.startAnimation(blinking);
 
-//        Animation zooming = AnimationUtils.loadAnimation(this, R.anim.zoom);
-//        splshIV.startAnimation(zooming);
+        Animation zooming = AnimationUtils.loadAnimation(this, R.anim.zoom);
+        splshIV.startAnimation(zooming);
 
-        Animation rotate = AnimationUtils.loadAnimation(this, R.anim.rotation);
-        splshIV.startAnimation(rotate);
+//        Animation rotate = AnimationUtils.loadAnimation(this, R.anim.rotation);
+//        splshIV.startAnimation(rotate);
 
 
         new Handler().postDelayed(new Runnable() {

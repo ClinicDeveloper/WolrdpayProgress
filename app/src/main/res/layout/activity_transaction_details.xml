@@ -32,7 +32,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:text="TRANSACTION VIEW " />
+                    android:text="Transaction Overview " />
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -44,7 +44,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
-                        android:text="TRANSACTION ID : " />
+                        android:text="Transaction Id : " />
 
                     <com.worldpay.library.views.iM3TextView
                         android:id="@+id/tv_transaction_id"
@@ -65,7 +65,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
-                        android:text="AMOUNT : " />
+                        android:text="Amount : " />
 
                     <com.worldpay.library.views.iM3TextView
                         android:id="@+id/tv_amount"
@@ -86,7 +86,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
-                        android:text="GRATUITY : " />
+                        android:text="Gratuity : " />
 
                     <com.worldpay.library.views.iM3TextView
                         android:id="@+id/tv_gratuity"
@@ -107,7 +107,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
-                        android:text="PAYMENT TYPE : " />
+                        android:text="Payment Type : " />
 
                     <com.worldpay.library.views.iM3TextView
                         android:id="@+id/tv_payment_type"
@@ -130,7 +130,7 @@
                         android:layout_gravity="start"
                         android:layout_weight="1"
                         android:gravity="left"
-                        android:text="RESPONESE TEXT : " />
+                        android:text="Response Text : " />
 
                     <com.worldpay.library.views.iM3TextView
                         android:id="@+id/tv_response_text"
@@ -153,7 +153,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
-                        android:text="RESPONSE MESSAGE : " />
+                        android:text="Response Message : " />
 
                     <com.worldpay.library.views.iM3TextView
                         android:id="@+id/tv_response_message"
@@ -177,7 +177,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:text="CARD DATA " />
+                    android:text="Card Data " />
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -189,7 +189,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
-                        android:text="CARD NUMBER : " />
+                        android:text="Card Number : " />
 
                     <com.worldpay.library.views.iM3TextView
                         android:id="@+id/tv_card_no"
@@ -210,7 +210,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
-                        android:text="FIRST NAME : " />
+                        android:text="First Name : " />
 
                     <com.worldpay.library.views.iM3TextView
                         android:id="@+id/tv_first_name"
@@ -231,7 +231,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
-                        android:text="LAST NAME : " />
+                        android:text="Last Name : " />
 
                     <com.worldpay.library.views.iM3TextView
                         android:id="@+id/tv_last_name"
@@ -252,7 +252,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
-                        android:text="EXPIRATION : " />
+                        android:text="Expiration : " />
 
                     <com.worldpay.library.views.iM3TextView
                         android:id="@+id/tv_expiration"
@@ -277,7 +277,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:text="BILLING ADDRESS " />
+                    android:text="Billing Address " />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -290,7 +290,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
                         android:layout_weight="1"
-                        android:text="STREET : " />
+                        android:text="Street : " />
 
                     <com.worldpay.library.views.iM3TextView
                         android:id="@+id/tv_street"
@@ -313,7 +313,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
-                        android:text="CITY : " />
+                        android:text="City : " />
 
                     <com.worldpay.library.views.iM3TextView
                         android:id="@+id/tv_city"
@@ -334,7 +334,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
-                        android:text="STATE : " />
+                        android:text="State : " />
 
                     <com.worldpay.library.views.iM3TextView
                         android:id="@+id/tv_state"
@@ -355,7 +355,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
-                        android:text="ZIP CODE : " />
+                        android:text="Zip Code : " />
 
                     <com.worldpay.library.views.iM3TextView
                         android:id="@+id/tv_zip_code"
@@ -376,7 +376,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
-                        android:text="COMPANY : " />
+                        android:text="Company : " />
 
                     <com.worldpay.library.views.iM3TextView
                         android:id="@+id/tv_company"
@@ -397,7 +397,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
-                        android:text="PHONE : " />
+                        android:text="Phone : " />
 
                     <com.worldpay.library.views.iM3TextView
                         android:id="@+id/tv_phone"
@@ -421,7 +421,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:text="CUSTOMER" />
+                    android:text="Customer" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -434,7 +434,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
                         android:layout_weight="1"
-                        android:text="CUSTOMER ID : " />
+                        android:text="Customer Id : " />
 
                     <com.worldpay.library.views.iM3TextView
                         android:id="@+id/tv_customer_id"
@@ -457,7 +457,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
-                        android:text="E-MAIL : " />
+                        android:text="E-Mail : " />
 
                     <com.worldpay.library.views.iM3TextView
                         android:id="@+id/tv_email"

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WorldPay Progress</string>
+    <string name="app_name">Worldpay</string>
     <string name="error_no_token">We had an error requesting the authorization token. Please, try again.</string>
     <string name="loading_title">Getting authorization token</string>
     <string name="loading_data">Please, be patient!</string>

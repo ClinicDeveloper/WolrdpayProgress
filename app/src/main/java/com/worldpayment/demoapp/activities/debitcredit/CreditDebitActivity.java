@@ -1,5 +1,6 @@
 package com.worldpayment.demoapp.activities.debitcredit;
 
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -27,6 +28,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -39,11 +41,11 @@ import com.worldpay.library.domain.TransactionData;
 import com.worldpay.library.enums.CaptureMode;
 import com.worldpay.library.enums.TransactionResult;
 import com.worldpay.library.enums.TransactionType;
-import com.worldpay.library.utils.iM3Logger;
-import com.worldpay.library.views.iM3CurrencyTextWatcher;
-import com.worldpay.library.views.iM3Form;
-import com.worldpay.library.views.iM3FormEditText;
-import com.worldpay.library.views.iM3NotEmptyValidator;
+import com.worldpay.library.utils.WPLogger;
+import com.worldpay.library.views.WPCurrencyTextWatcher;
+import com.worldpay.library.views.WPForm;
+import com.worldpay.library.views.WPFormEditText;
+import com.worldpay.library.views.WPNotEmptyValidator;
 import com.worldpay.library.webservices.services.payments.PaymentResponse;
 import com.worldpay.library.webservices.services.payments.ReversalRequest;
 import com.worldpay.library.webservices.services.payments.TransactionResponse;
@@ -80,15 +82,21 @@ public class CreditDebitActivity extends WorldBaseActivity
     //   private Spinner spn_swiper_types;
     private Spinner spn_transaction_types;
 
-    private iM3FormEditText dialog_field_transaction_amount, field_customer_id, field_payment_id;
-    private iM3FormEditText order_date, purchase_order_no, notes;
+    private WPFormEditText dialog_field_transaction_amount, field_customer_id, field_payment_id;
+    private WPFormEditText order_date, purchase_order_no, notes;
     LinearLayout checkVaultLayout;
     CheckBox addToVaultCheckBox;
-    private iM3CurrencyTextWatcher transactionAmountTextWatcher;
+    private WPCurrencyTextWatcher transactionAmountTextWatcher;
     ExtendedData extendedData;
     private String authToken;
     //  private Swiper swiper;
     private TransactionType transactionType;
+
+    //Date picker
+    static final int DATE_PICKER_ID = 1111;
+    private int year;
+    private int month;
+    private int day;
 
     private TransactionDialogFragment transactionDialogFragment;
 //    Toolbar toolbar;
@@ -101,7 +109,7 @@ public class CreditDebitActivity extends WorldBaseActivity
     private EditText field_name;
     Button dialog_clear, dialog_save;
 
-    iM3Form validating, validatingIDs;
+    WPForm validating, validatingIDs;
 
 
     @Override
@@ -117,28 +125,35 @@ public class CreditDebitActivity extends WorldBaseActivity
     private void initComponents() {
 
         count = 1;
-        validating = new iM3Form();
-        validatingIDs = new iM3Form();
+        validating = new WPForm();
+        validatingIDs = new WPForm();
 
-        dialog_field_transaction_amount = (iM3FormEditText) findViewById(R.id.dialog_field_transaction_amount);
-        dialog_field_transaction_amount.addValidator(new iM3NotEmptyValidator("Transaction amount required!"));
-        transactionAmountTextWatcher = new iM3CurrencyTextWatcher(dialog_field_transaction_amount, Locale.US,
+        dialog_field_transaction_amount = (WPFormEditText) findViewById(R.id.dialog_field_transaction_amount);
+        dialog_field_transaction_amount.addValidator(new WPNotEmptyValidator("Transaction amount required!"));
+        transactionAmountTextWatcher = new WPCurrencyTextWatcher(dialog_field_transaction_amount, Locale.US,
                 new BigDecimal("999999.99"), true, true);
         dialog_field_transaction_amount.addTextChangedListener(transactionAmountTextWatcher);
         validating.addItem(dialog_field_transaction_amount);
         validatingIDs.addItem(dialog_field_transaction_amount);
 
-        field_customer_id = (iM3FormEditText) findViewById(R.id.field_customer_id);
-        field_customer_id.addValidator(new iM3NotEmptyValidator("Customer ID required!"));
+        field_customer_id = (WPFormEditText) findViewById(R.id.field_customer_id);
+        field_customer_id.addValidator(new WPNotEmptyValidator("Customer ID required!"));
         validatingIDs.addItem(field_customer_id);
 
-        field_payment_id = (iM3FormEditText) findViewById(R.id.field_payment_id);
-        field_payment_id.addValidator(new iM3NotEmptyValidator("Payment ID required!"));
+        field_payment_id = (WPFormEditText) findViewById(R.id.field_payment_id);
+        field_payment_id.addValidator(new WPNotEmptyValidator("Payment ID required!"));
         validatingIDs.addItem(field_payment_id);
 
-        order_date = (iM3FormEditText) findViewById(R.id.order_date);
-        purchase_order_no = (iM3FormEditText) findViewById(R.id.purchase_order_no);
-        notes = (iM3FormEditText) findViewById(R.id.notes);
+        order_date = (WPFormEditText) findViewById(R.id.order_date);
+        order_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog(DATE_PICKER_ID);
+            }
+        });
+//        order_date.addTextChangedListener(dateWatcher);
+        purchase_order_no = (WPFormEditText) findViewById(R.id.purchase_order_no);
+        notes = (WPFormEditText) findViewById(R.id.notes);
 
         btn_no_card = (Button) findViewById(R.id.btn_no_card);
         btn_no_card.setOnClickListener(this);
@@ -338,12 +353,12 @@ public class CreditDebitActivity extends WorldBaseActivity
     @Override
     public void onTransactionError(@NonNull TransactionDialogFragment.TransactionError error,
                                    @Nullable String message) {
-        iM3Logger.d(TAG, "onTransactionError :: error=" + error + ";message=" + message);
+        WPLogger.d(TAG, "onTransactionError :: error=" + error + ";message=" + message);
     }
 
     @Override
     public void onTransactionReversalFailed(ReversalRequest reversalRequest) {
-        iM3Logger.d(TAG, "onTransactionReversalFailed :: reversalType=" + reversalRequest.toString());
+        WPLogger.d(TAG, "onTransactionReversalFailed :: reversalType=" + reversalRequest.toString());
     }
 
 
@@ -671,8 +686,8 @@ public class CreditDebitActivity extends WorldBaseActivity
                 levelTwoData.setPurchaseOrderNumber("" + purchase_order_no.getValue());
                 extendedData.setLevelTwoData(levelTwoData);
 
-//                setExtendedDataMethod(transactionType);
-              //  transactionDialogFragment.setExtendedData(extendedData);
+                //         setExtendedDataMethod(transactionType);
+//               transactionDialogFragment.setsetExtendedData(extendedData);
                 transactionDialogFragment.setTransactionData(transactionData);
                 transactionDialogFragment.setApplicationVersion(BuildConfig.VERSION_NAME);
                 transactionDialogFragment.setTransactionType(transactionType);
@@ -716,7 +731,7 @@ public class CreditDebitActivity extends WorldBaseActivity
         levelTwoData.setOrderDate("" + order_date.getValue());
         levelTwoData.setPurchaseOrderNumber("" + purchase_order_no.getValue());
         extendedData.setLevelTwoData(levelTwoData);
-     //   transactionDialogFragment.setExtendedData(extendedData);
+        // transactionDialogFragment.setExtendedData(extendedData);
 
         if (count == 1) {
             if (validating.validateAll()) {
@@ -756,10 +771,32 @@ public class CreditDebitActivity extends WorldBaseActivity
         }
     }
 
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//        finish();
-//    }
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+            case DATE_PICKER_ID:
 
+                DatePickerDialog datePickerDialog = new DatePickerDialog(this, pickerListener, year, day, month);
+                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+
+                return datePickerDialog;
+        }
+        return null;
+    }
+
+    private DatePickerDialog.OnDateSetListener pickerListener = new DatePickerDialog.OnDateSetListener() {
+
+        @Override
+        public void onDateSet(DatePicker view, int selectedYear,
+                              int selectedMonth, int selectedDay) {
+
+            year = selectedYear;
+            month = selectedMonth;
+            day = selectedDay;
+            // Show selected date
+            order_date.setText(new StringBuilder().append(month + 1)
+                    .append("/").append(day).append("/").append(year)
+                    .append(" "));
+        }
+    };
 }

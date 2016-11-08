@@ -14,13 +14,13 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.worldpay.library.domain.Address;
-import com.worldpay.library.views.iM3Form;
-import com.worldpay.library.views.iM3FormEditText;
-import com.worldpay.library.views.iM3NotEmptyValidator;
-import com.worldpay.library.views.iM3PostalCodeValidator;
-import com.worldpay.library.views.iM3SimpleFormSpinner;
-import com.worldpay.library.views.iM3StateCodeValidator;
-import com.worldpay.library.webservices.network.iM3HttpResponse;
+import com.worldpay.library.views.WPForm;
+import com.worldpay.library.views.WPFormEditText;
+import com.worldpay.library.views.WPNotEmptyValidator;
+import com.worldpay.library.views.WPPostalCodeValidator;
+import com.worldpay.library.views.WPSimpleFormSpinner;
+import com.worldpay.library.views.WPStateCodeValidator;
+import com.worldpay.library.webservices.network.WPHttpResponse;
 import com.worldpay.library.webservices.services.customers.CreateCustomerRequest;
 import com.worldpay.library.webservices.services.customers.CustomerResponse;
 import com.worldpay.library.webservices.tasks.CustomerCreateTask;
@@ -40,11 +40,11 @@ import static com.worldpayment.demoapp.activities.vaultcustomers.RetrieveCustome
 public class CreateCustomer extends WorldBaseActivity implements View.OnClickListener {
     Toolbar toolbar;
     Button btn_create, btn_cancel, btn_yes, btn_no;
-    iM3FormEditText field_first_name, field_last_name, field_phone_number, field_email_address, field_notes;
-    iM3FormEditText field_street_address, field_city, zip, field_company;
-    iM3FormEditText field_user_defined1, field_user_defined2, field_user_defined3, field_user_defined4;
-    iM3SimpleFormSpinner spinner_state;
-    private iM3Form validateAlls;
+    WPFormEditText field_first_name, field_last_name, field_phone_number, field_email_address, field_notes;
+    WPFormEditText field_street_address, field_city, zip, field_company;
+    WPFormEditText field_user_defined1, field_user_defined2, field_user_defined3, field_user_defined4;
+    WPSimpleFormSpinner spinner_state;
+    private WPForm validateAlls;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,53 +67,53 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
         btn_no.setOnClickListener(this);
 
 
-        validateAlls = new iM3Form();
+        validateAlls = new WPForm();
 
-        field_first_name = (iM3FormEditText) findViewById(R.id.field_first_name);
-        field_first_name.addValidator(new iM3NotEmptyValidator("First Name is required!"));
+        field_first_name = (WPFormEditText) findViewById(R.id.field_first_name);
+        field_first_name.addValidator(new WPNotEmptyValidator("First Name is required!"));
         validateAlls.addItem(field_first_name);
 
-        field_last_name = (iM3FormEditText) findViewById(R.id.field_last_name);
-        field_last_name.addValidator(new iM3NotEmptyValidator("Last Name is required!"));
+        field_last_name = (WPFormEditText) findViewById(R.id.field_last_name);
+        field_last_name.addValidator(new WPNotEmptyValidator("Last Name is required!"));
         validateAlls.addItem(field_last_name);
 
-        field_phone_number = (iM3FormEditText) findViewById(R.id.field_phone_number);
-        field_phone_number.addValidator(new iM3NotEmptyValidator("Phone Number is required!"));
+        field_phone_number = (WPFormEditText) findViewById(R.id.field_phone_number);
+        field_phone_number.addValidator(new WPNotEmptyValidator("Phone Number is required!"));
         validateAlls.addItem(field_phone_number);
 
-        field_email_address = (iM3FormEditText) findViewById(R.id.field_email_address);
-        field_email_address.addValidator(new iM3NotEmptyValidator("Email is required!"));
+        field_email_address = (WPFormEditText) findViewById(R.id.field_email_address);
+        field_email_address.addValidator(new WPNotEmptyValidator("Email is required!"));
         validateAlls.addItem(field_email_address);
 
-        field_notes = (iM3FormEditText) findViewById(R.id.field_notes);
-        field_notes.addValidator(new iM3NotEmptyValidator("Note is required!"));
+        field_notes = (WPFormEditText) findViewById(R.id.field_notes);
+        field_notes.addValidator(new WPNotEmptyValidator("Note is required!"));
         validateAlls.addItem(field_notes);
 
 
-        field_street_address = (iM3FormEditText) findViewById(R.id.field_street_address);
-        field_street_address.addValidator(new iM3NotEmptyValidator("Line1 is required!"));
+        field_street_address = (WPFormEditText) findViewById(R.id.field_street_address);
+        field_street_address.addValidator(new WPNotEmptyValidator("Line1 is required!"));
         validateAlls.addItem(field_street_address);
 
-        field_city = (iM3FormEditText) findViewById(R.id.field_city);
-        field_city.addValidator(new iM3NotEmptyValidator("City is required!"));
+        field_city = (WPFormEditText) findViewById(R.id.field_city);
+        field_city.addValidator(new WPNotEmptyValidator("City is required!"));
         validateAlls.addItem(field_city);
 
-        field_company = (iM3FormEditText) findViewById(R.id.field_company);
-        field_company.addValidator(new iM3NotEmptyValidator("Company is required!"));
+        field_company = (WPFormEditText) findViewById(R.id.field_company);
+        field_company.addValidator(new WPNotEmptyValidator("Company is required!"));
         validateAlls.addItem(field_company);
 
 
-        zip = (iM3FormEditText) findViewById(R.id.zip);
-        zip.addValidator(new iM3PostalCodeValidator("Zip Code is invalid!", Locale.US));
+        zip = (WPFormEditText) findViewById(R.id.zip);
+        zip.addValidator(new WPPostalCodeValidator("Zip Code is invalid!", Locale.US));
         validateAlls.addItem(zip);
 
-        field_user_defined1 = (iM3FormEditText) findViewById(R.id.field_user_defined1);
-        field_user_defined2 = (iM3FormEditText) findViewById(R.id.field_user_defined2);
-        field_user_defined3 = (iM3FormEditText) findViewById(R.id.field_user_defined3);
-        field_user_defined4 = (iM3FormEditText) findViewById(R.id.field_user_defined4);
+        field_user_defined1 = (WPFormEditText) findViewById(R.id.field_user_defined1);
+        field_user_defined2 = (WPFormEditText) findViewById(R.id.field_user_defined2);
+        field_user_defined3 = (WPFormEditText) findViewById(R.id.field_user_defined3);
+        field_user_defined4 = (WPFormEditText) findViewById(R.id.field_user_defined4);
 
-        spinner_state = (iM3SimpleFormSpinner) findViewById(R.id.spinner_state);
-        spinner_state.addValidator(new iM3StateCodeValidator("State is invalid!", Locale.US));
+        spinner_state = (WPSimpleFormSpinner) findViewById(R.id.spinner_state);
+        spinner_state.addValidator(new WPStateCodeValidator("State is invalid!", Locale.US));
         spinner_state.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
                 getResources().getStringArray(com.worldpay.library.R.array.states)));
         validateAlls.addItem(spinner_state);
@@ -213,7 +213,7 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
                     return;
                 }
 
-                if (customerResponse != null && customerResponse.getHttpStatusCode() == iM3HttpResponse.iM3HttpStatus.OK) {
+                if (customerResponse != null && customerResponse.getHttpStatusCode() == WPHttpResponse.HttpStatus.OK) {
                     createdDialog(getResources().getString(R.string.success), customerResponse, CreateCustomer.this);
                 } else {
                     showSuccessDialog(getResources().getString(R.string.error), customerResponse.getMessage(), CreateCustomer.this);

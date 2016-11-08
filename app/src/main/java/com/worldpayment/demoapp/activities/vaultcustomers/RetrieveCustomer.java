@@ -9,9 +9,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.worldpay.library.views.iM3Form;
-import com.worldpay.library.views.iM3FormEditText;
-import com.worldpay.library.views.iM3NotEmptyValidator;
+import com.worldpay.library.views.WPForm;
+import com.worldpay.library.views.WPFormEditText;
+import com.worldpay.library.views.WPNotEmptyValidator;
 import com.worldpay.library.webservices.services.customers.CustomerResponse;
 import com.worldpay.library.webservices.services.customers.GetCustomerRequest;
 import com.worldpay.library.webservices.tasks.CustomerGetTask;
@@ -28,8 +28,8 @@ public class RetrieveCustomer extends WorldBaseActivity implements View.OnClickL
 
     Toolbar toolbar;
     Button btn_search, btn_update;
-    private iM3FormEditText field_customer_id;
-    iM3Form validateID;
+    private WPFormEditText field_customer_id;
+    WPForm validateID;
 
     public static CustomerResponse responseCustomerDetails;
 
@@ -43,16 +43,16 @@ public class RetrieveCustomer extends WorldBaseActivity implements View.OnClickL
 
     public void mappingViews() {
 
-        field_customer_id = (iM3FormEditText) findViewById(R.id.field_customer_id);
+        field_customer_id = (WPFormEditText) findViewById(R.id.field_customer_id);
         btn_search = (Button) findViewById(R.id.btn_search);
         btn_update = (Button) findViewById(R.id.btn_update);
 
         btn_search.setOnClickListener(this);
         btn_update.setOnClickListener(this);
 
-        validateID = new iM3Form();
-        field_customer_id = (iM3FormEditText) findViewById(R.id.field_customer_id);
-        field_customer_id.addValidator(new iM3NotEmptyValidator("Customer ID is required!"));
+        validateID = new WPForm();
+        field_customer_id = (WPFormEditText) findViewById(R.id.field_customer_id);
+        field_customer_id.addValidator(new WPNotEmptyValidator("Customer ID is required!"));
         validateID.addItem(field_customer_id);
 
 

@@ -27,7 +27,7 @@
                 android:layout_marginTop="10dp"
                 android:text="Fisr Name" />
 
-            <com.worldpay.library.views.iM3FormEditText
+            <com.worldpay.library.views.WPFormEditText
                 android:id="@+id/field_first_name"
                 style="@style/EditTextField"
                 android:layout_width="match_parent"
@@ -41,7 +41,7 @@
                 android:layout_marginTop="10dp"
                 android:text="Last Name" />
 
-            <com.worldpay.library.views.iM3FormEditText
+            <com.worldpay.library.views.WPFormEditText
                 android:id="@+id/field_last_name"
                 style="@style/EditTextField"
                 android:layout_width="match_parent"
@@ -55,7 +55,7 @@
                 android:layout_marginTop="10dp"
                 android:text="Phone Number (optional)" />
 
-            <com.worldpay.library.views.iM3FormEditText
+            <com.worldpay.library.views.WPFormEditText
                 android:id="@+id/field_phone_number"
                 style="@style/EditTextField"
                 android:layout_width="match_parent"
@@ -69,7 +69,7 @@
                 android:layout_marginTop="10dp"
                 android:text="E-Mail Address" />
 
-            <com.worldpay.library.views.iM3FormEditText
+            <com.worldpay.library.views.WPFormEditText
                 android:id="@+id/field_email_address"
                 style="@style/EditTextField"
                 android:layout_width="match_parent"
@@ -126,7 +126,7 @@
                 android:layout_marginTop="10dp"
                 android:text="Notes (optional)" />
 
-            <com.worldpay.library.views.iM3FormEditText
+            <com.worldpay.library.views.WPFormEditText
                 android:id="@+id/field_notes"
                 style="@style/EditTextField"
                 android:layout_width="match_parent"
@@ -142,7 +142,7 @@
                 android:layout_marginTop="10dp"
                 android:text="Street Address" />
 
-            <com.worldpay.library.views.iM3FormEditText
+            <com.worldpay.library.views.WPFormEditText
                 android:id="@+id/field_street_address"
                 style="@style/EditTextField"
                 android:layout_width="match_parent"
@@ -155,7 +155,7 @@
                 android:layout_marginTop="10dp"
                 android:text="City" />
 
-            <com.worldpay.library.views.iM3FormEditText
+            <com.worldpay.library.views.WPFormEditText
                 android:id="@+id/field_city"
                 style="@style/EditTextField"
                 android:layout_width="match_parent"
@@ -175,7 +175,7 @@
                     android:layout_weight="1"
                     android:orientation="vertical">
 
-                    <com.worldpay.library.views.iM3TextView
+                    <com.worldpay.library.views.WPTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -183,7 +183,7 @@
                         android:imeOptions="actionNext"
                         android:inputType="textPersonName" />
 
-                    <com.worldpay.library.views.iM3SimpleFormSpinner
+                    <com.worldpay.library.views.WPSimpleFormSpinner
                         android:id="@+id/spinner_state"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -203,7 +203,7 @@
                         android:layout_height="wrap_content"
                         android:text="Zip Code" />
 
-                    <com.worldpay.library.views.iM3FormEditText
+                    <com.worldpay.library.views.WPFormEditText
                         android:id="@+id/zip"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -223,7 +223,7 @@
                 android:layout_marginTop="10dp"
                 android:text="Company (optional)" />
 
-            <com.worldpay.library.views.iM3FormEditText
+            <com.worldpay.library.views.WPFormEditText
                 android:id="@+id/field_company"
                 style="@style/EditTextField"
                 android:layout_width="match_parent"
@@ -236,7 +236,7 @@
                 android:layout_marginTop="10dp"
                 android:text="User Defined Field #1" />
 
-            <com.worldpay.library.views.iM3FormEditText
+            <com.worldpay.library.views.WPFormEditText
                 android:id="@+id/field_user_defined1"
                 style="@style/EditTextField"
                 android:layout_width="match_parent"
@@ -249,7 +249,7 @@
                 android:layout_marginTop="10dp"
                 android:text="User Defined Field #2" />
 
-            <com.worldpay.library.views.iM3FormEditText
+            <com.worldpay.library.views.WPFormEditText
                 android:id="@+id/field_user_defined2"
                 style="@style/EditTextField"
                 android:layout_width="match_parent"
@@ -262,7 +262,7 @@
                 android:layout_marginTop="10dp"
                 android:text="User Defined Field #3" />
 
-            <com.worldpay.library.views.iM3FormEditText
+            <com.worldpay.library.views.WPFormEditText
                 android:id="@+id/field_user_defined3"
                 style="@style/EditTextField"
                 android:layout_width="match_parent"
@@ -275,7 +275,7 @@
                 android:layout_marginTop="10dp"
                 android:text="User Defined Field #4" />
 
-            <com.worldpay.library.views.iM3FormEditText
+            <com.worldpay.library.views.WPFormEditText
                 android:id="@+id/field_user_defined4"
                 style="@style/EditTextField"
                 android:layout_width="match_parent"

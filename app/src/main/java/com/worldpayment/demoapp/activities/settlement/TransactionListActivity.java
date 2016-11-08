@@ -9,7 +9,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
-import com.worldpay.library.webservices.network.iM3HttpResponse;
+import com.worldpay.library.webservices.network.WPHttpResponse;
 import com.worldpay.library.webservices.services.batches.BatchResponse;
 import com.worldpay.library.webservices.services.batches.GetCurrentBatchRequest;
 import com.worldpay.library.webservices.services.payments.TransactionResponse;
@@ -88,7 +88,7 @@ public class TransactionListActivity extends WorldBaseActivity {
                 if (batchResponse.hasError()) {
                     return;
                 }
-                if (batchResponse != null && batchResponse.getHttpStatusCode() == iM3HttpResponse.iM3HttpStatus.OK) {
+                if (batchResponse != null && batchResponse.getHttpStatusCode() == WPHttpResponse.HttpStatus.OK) {
                     toolbar_title.setText("Batch ID : " + batchResponse.getId());
                     transactionResponses = batchResponse.getTransactions();
                     if (transactionResponses != null) {
@@ -135,7 +135,7 @@ public class TransactionListActivity extends WorldBaseActivity {
                     return;
                 }
 
-                if (getTransactionsBatchResponse != null && getTransactionsBatchResponse.getHttpStatusCode() == iM3HttpResponse.iM3HttpStatus.OK) {
+                if (getTransactionsBatchResponse != null && getTransactionsBatchResponse.getHttpStatusCode() == WPHttpResponse.HttpStatus.OK) {
                     transactionResponses = getTransactionsBatchResponse.getTransactions();
                     if (transactionResponses != null) {
                         toolbar_title.setText("Batch ID : " + batchId);

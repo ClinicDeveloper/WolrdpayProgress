@@ -12,7 +12,7 @@
         android:text="Please Sign below ..."
         android:textStyle="bold" />
 
-    <com.worldpay.library.views.iM3FormEditText
+    <com.worldpay.library.views.WPFormEditText
         android:id="@+id/field_name"
         style="@style/EditTextField"
         android:layout_width="match_parent"

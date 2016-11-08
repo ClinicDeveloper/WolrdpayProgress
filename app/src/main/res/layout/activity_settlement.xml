@@ -31,7 +31,7 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size20" />
 
-            <com.worldpay.library.views.iM3FormEditText
+            <com.worldpay.library.views.WPFormEditText
                 android:id="@+id/field_transaction_id"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

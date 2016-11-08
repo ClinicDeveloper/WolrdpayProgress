@@ -18,12 +18,12 @@ import android.widget.Toast;
 import com.worldpay.library.enums.ReversalType;
 import com.worldpay.library.enums.TransactionResult;
 import com.worldpay.library.enums.VoidType;
-import com.worldpay.library.utils.iM3Logger;
-import com.worldpay.library.views.iM3CurrencyTextWatcher;
-import com.worldpay.library.views.iM3Form;
-import com.worldpay.library.views.iM3FormEditText;
-import com.worldpay.library.views.iM3NotEmptyValidator;
-import com.worldpay.library.webservices.network.iM3HttpResponse;
+import com.worldpay.library.utils.WPLogger;
+import com.worldpay.library.views.WPCurrencyTextWatcher;
+import com.worldpay.library.views.WPForm;
+import com.worldpay.library.views.WPFormEditText;
+import com.worldpay.library.views.WPNotEmptyValidator;
+import com.worldpay.library.webservices.network.WPHttpResponse;
 import com.worldpay.library.webservices.services.payments.PaymentResponse;
 import com.worldpay.library.webservices.services.payments.ReversalRequest;
 import com.worldpay.library.webservices.tasks.PaymentRefundTask;
@@ -47,12 +47,12 @@ import static com.worldpayment.demoapp.activities.debitcredit.CreditDebitActivit
 
 public class RefundVoidViewActivity extends WorldBaseActivity implements View.OnClickListener, TransactionDialogFragment.TransactionDialogFragmentListener {
 
-    iM3FormEditText field_transaction_id, field_transaction_amount;
+    WPFormEditText field_transaction_id, field_transaction_amount;
     //    private Button btn_refund, btn_void, btn_start_transaction;
     private Button btn_start_transaction;
     TextView amount_textView;
     public static int count = 7;
-    iM3Form validateRefund, validateVoid;
+    WPForm validateRefund, validateVoid;
     private Spinner spn_transaction_types;
 
     @Override
@@ -73,20 +73,20 @@ public class RefundVoidViewActivity extends WorldBaseActivity implements View.On
 //        btn_void.setOnClickListener(this);
 
         amount_textView = (TextView) findViewById(R.id.amount_textView);
-        field_transaction_id = (iM3FormEditText) findViewById(R.id.field_transaction_id);
-        field_transaction_amount = (iM3FormEditText) findViewById(R.id.field_transaction_amount);
+        field_transaction_id = (WPFormEditText) findViewById(R.id.field_transaction_id);
+        field_transaction_amount = (WPFormEditText) findViewById(R.id.field_transaction_amount);
 
-        validateRefund = new iM3Form();
-        validateVoid = new iM3Form();
+        validateRefund = new WPForm();
+        validateVoid = new WPForm();
 
-        field_transaction_id.addValidator(new iM3NotEmptyValidator("Transaction ID is required!"));
+        field_transaction_id.addValidator(new WPNotEmptyValidator("Transaction ID is required!"));
         validateRefund.addItem(field_transaction_id);
         validateVoid.addItem(field_transaction_id);
 
         field_transaction_amount
-                .addValidator(new iM3NotEmptyValidator("Transaction amount required!"));
-        iM3CurrencyTextWatcher transactionAmountTextWatcher =
-                new iM3CurrencyTextWatcher(field_transaction_amount, Locale.US,
+                .addValidator(new WPNotEmptyValidator("Transaction amount required!"));
+        WPCurrencyTextWatcher transactionAmountTextWatcher =
+                new WPCurrencyTextWatcher(field_transaction_amount, Locale.US,
                         new BigDecimal("999999.99"), true, true);
         field_transaction_amount.addTextChangedListener(transactionAmountTextWatcher);
         validateRefund.addItem(field_transaction_amount);
@@ -108,13 +108,13 @@ public class RefundVoidViewActivity extends WorldBaseActivity implements View.On
                 if (transactionType.equals("REFUND")) {
                     KeyboardUtility.closeKeyboard(RefundVoidViewActivity.this, view);
                     count = 0;
-                    field_transaction_amount.setVisibility(View.VISIBLE);
-                    amount_textView.setVisibility(View.VISIBLE);
+                    //    field_transaction_amount.setVisibility(View.VISIBLE);
+                    //    amount_textView.setVisibility(View.VISIBLE);
                 } else {
                     KeyboardUtility.closeKeyboard(RefundVoidViewActivity.this, view);
                     count = 1;
-                    amount_textView.setVisibility(View.GONE);
-                    field_transaction_amount.setVisibility(View.GONE);
+//                    amount_textView.setVisibility(View.GONE);
+//                    field_transaction_amount.setVisibility(View.GONE);
                 }
 
                 Log.d("transactionType", "" + transactionType);
@@ -130,7 +130,7 @@ public class RefundVoidViewActivity extends WorldBaseActivity implements View.On
 
     @Override
     public void onTransactionComplete(TransactionResult result, PaymentResponse paymentResponse) {
-        iM3Logger.d(CreditDebitActivity.TAG,
+        WPLogger.d(CreditDebitActivity.TAG,
                 "onTransactionComplete :: result=" + result + ";paymentResponse=" +
                         paymentResponse);
 
@@ -160,12 +160,12 @@ public class RefundVoidViewActivity extends WorldBaseActivity implements View.On
     @Override
     public void onTransactionError(@NonNull TransactionDialogFragment.TransactionError error,
                                    @Nullable String message) {
-        iM3Logger.d(CreditDebitActivity.TAG, "onTransactionError :: error=" + error + ";message=" + message);
+        WPLogger.d(CreditDebitActivity.TAG, "onTransactionError :: error=" + error + ";message=" + message);
     }
 
     @Override
     public void onTransactionReversalFailed(ReversalRequest reversalRequest) {
-        iM3Logger.d(CreditDebitActivity.TAG, "onTransactionReversalFailed :: reversalType=" + reversalRequest.toString());
+        WPLogger.d(CreditDebitActivity.TAG, "onTransactionReversalFailed :: reversalType=" + reversalRequest.toString());
     }
 
     @Override
@@ -217,7 +217,6 @@ public class RefundVoidViewActivity extends WorldBaseActivity implements View.On
                     if (!transactionAmount.toString().equals("0.00")) {
                         reversalRequest.setAmount(transactionAmount);
                         reversalRequest.setReversalType(ReversalType.REFUND);
-                        //  reversalRequest.setVoidType(VoidType.VoidTypeMerchant);
                         refundCalling(reversalRequest);
                     } else {
                         Toast.makeText(this, getResources().getString(R.string.greaterThanZero), Toast.LENGTH_SHORT).show();
@@ -228,6 +227,12 @@ public class RefundVoidViewActivity extends WorldBaseActivity implements View.On
             }
         } else if (count == 1) {
             if (validateVoid.validateAll()) {
+                if (field_transaction_amount.getValue() != null && !field_transaction_amount.getValue().equals("")) {
+                    BigDecimal transactionAmount = new BigDecimal(field_transaction_amount.getValue().replaceAll("[^\\d.]", ""));
+                    if (!transactionAmount.toString().equals("0.00")) {
+                        reversalRequest.setAmount(transactionAmount);
+                    }
+                }
                 reversalRequest.setTransactionId(field_transaction_id.getValue());
                 reversalRequest.setReversalType(ReversalType.VOID);
                 reversalRequest.setVoidType(VoidType.VoidTypeMerchant);
@@ -257,7 +262,7 @@ public class RefundVoidViewActivity extends WorldBaseActivity implements View.On
                 }
 
                 Log.d("RFUND RESPONSE : ", "" + paymentResponse.toJson());
-                if (paymentResponse != null && paymentResponse.getHttpStatusCode() == iM3HttpResponse.iM3HttpStatus.OK) {
+                if (paymentResponse != null && paymentResponse.getHttpStatusCode() == WPHttpResponse.HttpStatus.OK) {
 
                     Log.d("RFUND RESPONSE : ", "" + paymentResponse.getTransactionResponse().getResponseText());
                     if (!paymentResponse.getTransactionResponse().getAmount().toString().trim().equals("0.0".trim())) {
@@ -294,7 +299,7 @@ public class RefundVoidViewActivity extends WorldBaseActivity implements View.On
                     return;
                 }
                 Log.d("reversalRequest", "" + paymentResponse.toJson());
-                if (paymentResponse != null && paymentResponse.getHttpStatusCode() == iM3HttpResponse.iM3HttpStatus.OK) {
+                if (paymentResponse != null && paymentResponse.getHttpStatusCode() == WPHttpResponse.HttpStatus.OK) {
                     if (!paymentResponse.getTransactionResponse().getAmount().toString().trim().equals("0.0".trim())) {
                         openApprovedDialog("APPROVED", paymentResponse.getTransactionResponse(), RefundVoidViewActivity.this);
                     } else

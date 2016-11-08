@@ -20,7 +20,7 @@
             android:layout_marginTop="5dp"
             android:text="Customer ID" />
 
-        <com.worldpay.library.views.iM3FormEditText
+        <com.worldpay.library.views.WPFormEditText
             android:id="@+id/field_customer_id"
             style="@style/EditTextField"
             android:layout_width="match_parent"

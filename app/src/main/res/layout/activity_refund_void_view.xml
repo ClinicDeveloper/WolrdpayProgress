@@ -66,7 +66,7 @@
                     android:layout_marginTop="10dp"
                     android:text="Transaction ID" />
 
-                <com.worldpay.library.views.iM3FormEditText
+                <com.worldpay.library.views.WPFormEditText
                     android:id="@+id/field_transaction_id"
                     style="@style/EditTextField"
                     android:layout_width="match_parent"
@@ -83,7 +83,7 @@
                     android:layout_marginTop="10dp"
                     android:text="Amount" />
 
-                <com.worldpay.library.views.iM3FormEditText
+                <com.worldpay.library.views.WPFormEditText
                     android:id="@+id/field_transaction_amount"
                     style="@style/EditTextField"
                     android:layout_width="match_parent"
@@ -99,7 +99,7 @@
                     android:layout_marginTop="10dp"
                     android:text="@string/transaction_types" />
 
-                <com.worldpay.library.views.iM3SimpleFormSpinner
+                <com.worldpay.library.views.WPSimpleFormSpinner
                     android:id="@+id/spn_transaction_types"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -32,7 +32,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:scaleType="fitCenter"
-            android:src="@mipmap/logo" />
+            android:src="@drawable/logo" />
     </LinearLayout>
 
 </LinearLayout>

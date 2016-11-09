@@ -223,7 +223,6 @@ public class RefundVoidViewActivity extends WorldBaseActivity implements View.On
                         return;
                     }
                 }
-
             }
         } else if (count == 1) {
             if (validateVoid.validateAll()) {
@@ -275,9 +274,7 @@ public class RefundVoidViewActivity extends WorldBaseActivity implements View.On
                 dismissProgressBar(progressDialog);
             }
         }.execute();
-
     }
-
 
     public void voidCalling(ReversalRequest reversalRequest) {
 

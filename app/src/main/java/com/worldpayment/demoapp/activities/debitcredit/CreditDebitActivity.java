@@ -36,7 +36,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.worldpay.library.domain.ExtendedData;
 import com.worldpay.library.domain.TransactionData;
 import com.worldpay.library.enums.CaptureMode;
 import com.worldpay.library.enums.TransactionResult;
@@ -87,7 +86,6 @@ public class CreditDebitActivity extends WorldBaseActivity
     LinearLayout checkVaultLayout;
     CheckBox addToVaultCheckBox;
     private WPCurrencyTextWatcher transactionAmountTextWatcher;
-    ExtendedData extendedData;
     private String authToken;
     //  private Swiper swiper;
     private TransactionType transactionType;
@@ -679,15 +677,14 @@ public class CreditDebitActivity extends WorldBaseActivity
                     transactionData.setAddCardToVault(false);
                 }
 
-                extendedData = new ExtendedData();
-                extendedData.setNotes("" + notes.getValue());
-                ExtendedData.LevelTwoData levelTwoData = extendedData.new LevelTwoData();
-                levelTwoData.setOrderDate("" + order_date.getValue());
-                levelTwoData.setPurchaseOrderNumber("" + purchase_order_no.getValue());
-                extendedData.setLevelTwoData(levelTwoData);
+                transactionData.setTransactionNotes("" + notes.getValue());
+                if (order_date.getValue() != null && !order_date.getValue().equals("")) {
+                    Date orderDate = new Date(order_date.getValue());
+                    Log.d("order_date.getValue()", "" + orderDate);
+                    transactionData.setOrderDate(orderDate);
+                }
+                transactionData.setPurchaseOrderNumber("" + purchase_order_no.getValue());
 
-                //         setExtendedDataMethod(transactionType);
-//               transactionDialogFragment.setsetExtendedData(extendedData);
                 transactionDialogFragment.setTransactionData(transactionData);
                 transactionDialogFragment.setApplicationVersion(BuildConfig.VERSION_NAME);
                 transactionDialogFragment.setTransactionType(transactionType);
@@ -725,18 +722,18 @@ public class CreditDebitActivity extends WorldBaseActivity
         transactionDialogFragment.setDeveloperId(BuildConfig.DEVELOPER_ID);
         transactionDialogFragment.setApplicationVersion(BuildConfig.VERSION_NAME);
 
-        extendedData = new ExtendedData();
-        extendedData.setNotes("" + notes.getValue());
-        ExtendedData.LevelTwoData levelTwoData = extendedData.new LevelTwoData();
-        levelTwoData.setOrderDate("" + order_date.getValue());
-        levelTwoData.setPurchaseOrderNumber("" + purchase_order_no.getValue());
-        extendedData.setLevelTwoData(levelTwoData);
-        // transactionDialogFragment.setExtendedData(extendedData);
+        TransactionData transactionData = new TransactionData();
 
+        transactionData.setTransactionNotes("" + notes.getValue());
+        if (order_date.getValue() != null && !order_date.getValue().equals("")) {
+            Date orderDate = new Date(order_date.getValue());
+            Log.d("order_date.getValue()", "" + orderDate);
+            transactionData.setOrderDate(orderDate);
+        }
+        transactionData.setPurchaseOrderNumber("" + purchase_order_no.getValue());
         if (count == 1) {
             if (validating.validateAll()) {
                 if (!TextUtils.isEmpty(dialog_field_transaction_amount.getValue())) {
-                    TransactionData transactionData = new TransactionData();
                     transactionAmount = new BigDecimal(dialog_field_transaction_amount.getValue().replaceAll("[^\\d.]", ""));
                     transactionData.setAmount(transactionAmount);
                     transactionData.setCashBackAmount(cashBackAmount);

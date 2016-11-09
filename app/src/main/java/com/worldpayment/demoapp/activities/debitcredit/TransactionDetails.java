@@ -82,6 +82,7 @@ public class TransactionDetails extends AppCompatActivity implements View.OnClic
     public void settingFields() {
 
         TransactionResponse response = CreditDebitActivity.responseTransactionDetails;
+
         //TRANSACTION OVERVIEW
         tv_transaction_id.setText("" + response.getId());
         tv_amount.setText("" + response.getAmount());

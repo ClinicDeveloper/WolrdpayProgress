@@ -191,7 +191,7 @@
                             android:src="@drawable/ic_plus" />
 
                         <com.worldpay.library.views.WPTextView
-                            android:id="@+id/wp_tx_dialog_field_extended_info"
+                            android:id="@+id/tv_extended_info"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -220,11 +220,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/edittext_rounded"
-                            android:editable="false"
                             android:focusable="false"
                             android:hint="mm/dd/yyyy"
                             android:imeOptions="actionNext"
-                            android:inputType="date"
                             android:padding="10dp" />
 
                         <TextView
@@ -239,6 +237,7 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/edittext_rounded"
                             android:imeOptions="actionNext"
+                            android:inputType="number"
                             android:padding="10dp" />
 
                         <TextView
@@ -254,7 +253,6 @@
                             android:background="@drawable/edittext_rounded"
                             android:imeOptions="actionNext"
                             android:padding="10dp" />
-
 
                     </LinearLayout>
 

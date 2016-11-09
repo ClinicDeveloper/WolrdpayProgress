@@ -45,6 +45,7 @@ import com.worldpay.library.views.WPCurrencyTextWatcher;
 import com.worldpay.library.views.WPForm;
 import com.worldpay.library.views.WPFormEditText;
 import com.worldpay.library.views.WPNotEmptyValidator;
+import com.worldpay.library.views.WPTextView;
 import com.worldpay.library.webservices.services.payments.PaymentResponse;
 import com.worldpay.library.webservices.services.payments.ReversalRequest;
 import com.worldpay.library.webservices.services.payments.TransactionResponse;
@@ -78,7 +79,6 @@ public class CreditDebitActivity extends WorldBaseActivity
     private Button btn_no_card, btn_card, btn_vault_pay;
     LinearLayout vault_layout, address_layout, extended_layout, user_define_layout;
     LinearLayout extended_info_LL;
-    //   private Spinner spn_swiper_types;
     private Spinner spn_transaction_types;
 
     private WPFormEditText dialog_field_transaction_amount, field_customer_id, field_payment_id;
@@ -87,9 +87,9 @@ public class CreditDebitActivity extends WorldBaseActivity
     CheckBox addToVaultCheckBox;
     private WPCurrencyTextWatcher transactionAmountTextWatcher;
     private String authToken;
-    //  private Swiper swiper;
     private TransactionType transactionType;
 
+    WPTextView tv_extended_info;
     //Date picker
     static final int DATE_PICKER_ID = 1111;
     private int year;
@@ -97,7 +97,6 @@ public class CreditDebitActivity extends WorldBaseActivity
     private int day;
 
     private TransactionDialogFragment transactionDialogFragment;
-//    Toolbar toolbar;
 
     private Bitmap bitmap;
     LinearLayout linearLayout;
@@ -149,7 +148,9 @@ public class CreditDebitActivity extends WorldBaseActivity
                 showDialog(DATE_PICKER_ID);
             }
         });
-//        order_date.addTextChangedListener(dateWatcher);
+
+        tv_extended_info = (WPTextView) findViewById(R.id.tv_extended_info);
+
         purchase_order_no = (WPFormEditText) findViewById(R.id.purchase_order_no);
         notes = (WPFormEditText) findViewById(R.id.notes);
 
@@ -203,7 +204,6 @@ public class CreditDebitActivity extends WorldBaseActivity
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 transactionType = (TransactionType) spn_transaction_types.getAdapter().getItem(position);
-                Log.d("transactionType", "" + transactionType);
             }
 
             @Override

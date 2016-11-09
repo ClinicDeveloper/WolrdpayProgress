@@ -288,7 +288,6 @@ public class RefundVoidViewActivity extends WorldBaseActivity implements View.On
                 startProgressBar(progressDialog, "Paying void...");
             }
 
-            //115515187/91
             @Override
             protected void onPostExecute(PaymentResponse paymentResponse) {
                 if (paymentResponse.hasError()) {

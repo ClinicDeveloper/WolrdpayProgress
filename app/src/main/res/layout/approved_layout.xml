@@ -22,6 +22,7 @@
         android:background="@color/disable_gray" />
 
     <LinearLayout
+        android:id="@+id/transaction_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">

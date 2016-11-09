@@ -372,26 +372,29 @@ public class CreditDebitActivity extends WorldBaseActivity
         TextView title = (TextView) dialogSignature.findViewById(R.id.title);
         TextView message = (TextView) dialogSignature.findViewById(R.id.message);
         TextView transaction_id = (TextView) dialogSignature.findViewById(R.id.transaction_id);
+        LinearLayout transaction_layout = (LinearLayout) dialogSignature.findViewById(R.id.transaction_layout);
+
+        final Button dialog_btn_negative = (Button) dialogSignature.findViewById(R.id.dialog_btn_negative);
+        final Button dialog_btn_positive = (Button) dialogSignature.findViewById(R.id.dialog_btn_positive);
+
+        dialog_btn_negative.setText("" + context.getResources().getString(R.string.details));
+        dialog_btn_positive.setText("" + context.getResources().getString(R.string.done));
 
         title.setTextColor(Color.parseColor("#007867"));
         title.setText("" + messageStr);
         if (messageStr.equals("APPROVED")) {
             transaction_id.setText("" + response.getId());
             message.setText("" + response.getResponseText());
-        } else if (messageStr.equals("DECLINE")) {
-            transaction_id.setVisibility(View.GONE);
-            message.setText("Message : " + response.getResponseText());
+        } else if (messageStr.equals("DECLINED")) {
+            transaction_layout.setVisibility(View.GONE);
+            message.setText("" + response.getResponseText());
+            dialog_btn_negative.setVisibility(View.GONE);
+            dialog_btn_positive.setText("OK");
         }
         responseTransactionDetails = response;
 
-        Button dialog_btn_negative = (Button) dialogSignature.findViewById(R.id.dialog_btn_negative);
-        Button dialog_btn_positive = (Button) dialogSignature.findViewById(R.id.dialog_btn_positive);
-
         final android.app.AlertDialog alert = alertDialogBuilder.create();
         alert.show();
-
-        dialog_btn_negative.setText("" + context.getResources().getString(R.string.details));
-        dialog_btn_positive.setText("" + context.getResources().getString(R.string.done));
 
         dialog_btn_negative.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -404,46 +407,17 @@ public class CreditDebitActivity extends WorldBaseActivity
         dialog_btn_positive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                alert.dismiss();
-                Intent navigation = new Intent(context, Navigation.class);
-                context.startActivity(navigation);
+
+                if (dialog_btn_positive.getText().toString().equals("OK")) {
+                    alert.dismiss();
+                } else {
+                    alert.dismiss();
+                    Intent navigation = new Intent(context, Navigation.class);
+                    context.startActivity(navigation);
+                }
             }
         });
     }
-
-//    public static void masterPopup(final String messageStr, final String titleStr,  final Context context) {
-//
-//        LayoutInflater layoutInflater = LayoutInflater.from(context);
-//        View dialogSignature = layoutInflater.inflate(R.layout.master_popup, null);
-//
-//        android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(
-//                context);
-//        alertDialogBuilder.setView(dialogSignature);
-//        TextView title = (TextView) dialogSignature.findViewById(R.id.title);
-//        TextView message = (TextView) dialogSignature.findViewById(R.id.message);
-//
-//        Button dialog_btn_negative = (Button) dialogSignature.findViewById(R.id.dialog_btn_negative);
-//        Button dialog_btn_positive = (Button) dialogSignature.findViewById(R.id.dialog_btn_positive);
-//
-//        dialog_detail.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent transactionDetails = new Intent(context, TransactionDetails.class);
-//                context.startActivity(transactionDetails);
-//            }
-//        });
-//
-//        Button dialog_done = (Button) dialogSignature.findViewById(R.id.dialog_done);
-//        dialog_done.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent navigation = new Intent(context, Navigation.class);
-//                context.startActivity(navigation);
-//            }
-//        });
-//        android.app.AlertDialog alertDialog = alertDialogBuilder.create();
-//        alertDialog.show();
-//    }
 
     //SIGNATURE POP UP
     public void openSignatureDialog() {
@@ -684,7 +658,7 @@ public class CreditDebitActivity extends WorldBaseActivity
                     transactionData.setOrderDate(orderDate);
                 }
                 transactionData.setPurchaseOrderNumber("" + purchase_order_no.getValue());
-
+                transactionData.setTransactionNotes("" + notes.getValue());
                 transactionDialogFragment.setTransactionData(transactionData);
                 transactionDialogFragment.setApplicationVersion(BuildConfig.VERSION_NAME);
                 transactionDialogFragment.setTransactionType(transactionType);
@@ -731,6 +705,8 @@ public class CreditDebitActivity extends WorldBaseActivity
             transactionData.setOrderDate(orderDate);
         }
         transactionData.setPurchaseOrderNumber("" + purchase_order_no.getValue());
+        transactionData.setTransactionNotes("" + notes.getValue());
+
         if (count == 1) {
             if (validating.validateAll()) {
                 if (!TextUtils.isEmpty(dialog_field_transaction_amount.getValue())) {
@@ -753,18 +729,79 @@ public class CreditDebitActivity extends WorldBaseActivity
                 if (!TextUtils.isEmpty(dialog_field_transaction_amount.getValue())) {
                     transactionAmount = new BigDecimal(
                             dialog_field_transaction_amount.getValue().replaceAll("[^\\d.]", ""));
+                    transactionData.setAmount(transactionAmount);
                 }
 
                 if (!TextUtils.isEmpty(field_customer_id.getValue())) {
                     String customer_id = field_customer_id.getValue();
+                    transactionData.setCustomerId(customer_id);
                 }
 
                 if (!TextUtils.isEmpty(field_payment_id.getValue())) {
                     String payment_id = field_payment_id.getValue();
+                    transactionData.setPaymentToken(payment_id);
                 }
+
+                transactionDialogFragment.setTransactionData(transactionData);
+                transactionDialogFragment.show(getSupportFragmentManager(), TransactionDialogFragment.TAG);
             }
 
-            Toast.makeText(this, "Missing in SDK now!", Toast.LENGTH_SHORT).show();
+
+        }
+    }
+
+    //Vault Transaction
+    private void vaultPaymentTransaction() {
+
+        if (count == 0) {
+
+
+            if (transactionDialogFragment == null) {
+                transactionDialogFragment = TransactionDialogFragment.newInstance();
+            }
+            if (transactionDialogFragment.isVisible()) return;
+
+            TransactionData transactionData = new TransactionData();
+
+            if (validating.validateAll()) {
+
+                if (!TextUtils.isEmpty(dialog_field_transaction_amount.getValue())) {
+                    BigDecimal transactionAmount = new BigDecimal(dialog_field_transaction_amount.getValue().replaceAll("[^\\d.]", ""));
+
+                    if (!transactionAmount.toString().equals("0.00")) {
+                        transactionData.setAmount(transactionAmount);
+                    } else {
+                        Toast.makeText(this, getResources().getString(R.string.greaterThanZero), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+                if (addToVaultCheckBox.isChecked()) {
+                    transactionData.setAddCardToVault(true);
+                } else {
+                    transactionData.setAddCardToVault(false);
+                }
+
+                transactionData.setTransactionNotes("" + notes.getValue());
+                if (order_date.getValue() != null && !order_date.getValue().equals("")) {
+                    Date orderDate = new Date(order_date.getValue());
+                    Log.d("order_date.getValue()", "" + orderDate);
+                    transactionData.setOrderDate(orderDate);
+                }
+                transactionData.setPurchaseOrderNumber("" + purchase_order_no.getValue());
+                transactionData.setTransactionNotes("" + notes.getValue());
+                transactionDialogFragment.setTransactionData(transactionData);
+                transactionDialogFragment.setApplicationVersion(BuildConfig.VERSION_NAME);
+                transactionDialogFragment.setTransactionType(transactionType);
+                transactionDialogFragment.setSwiper(swiper);
+
+                transactionDialogFragment.setMerchantId(BuildConfig.MERCHANT_ID);
+                transactionDialogFragment.setMerchantKey(BuildConfig.MERCHANT_KEY);
+                transactionDialogFragment.setAuthToken(authToken);
+                transactionDialogFragment.setDeveloperId(BuildConfig.DEVELOPER_ID);
+                transactionDialogFragment.setCaptureMode(CaptureMode.MANUAL);
+                transactionDialogFragment.show(getSupportFragmentManager(), TransactionDialogFragment.TAG);
+
+            }
         }
     }
 

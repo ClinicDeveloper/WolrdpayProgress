@@ -297,7 +297,7 @@ public class CreditDebitActivity extends WorldBaseActivity
         }
         switch (result) {
             case APPROVED:
-                if (paymentResponse.getTransactionResponse() != null) {
+                if (paymentResponse != null && paymentResponse.getTransactionResponse() != null) {
                     if (addToVaultCheckBox.isChecked())
                         openApprovedDialog(result.toString(), paymentResponse.getTransactionResponse(), this);
                     else
@@ -335,8 +335,7 @@ public class CreditDebitActivity extends WorldBaseActivity
             case DECLINED_REVERSAL_FAILED:
                 break;
             case DECLINED:
-//                showSuccessDialog(getResources().getString(R.string.error), getResources().getString(R.string.transactionFailed) + "\n" + result, CreditDebitActivity.this);
-                if (paymentResponse.getTransactionResponse() != null) {
+                if (paymentResponse != null && paymentResponse.getTransactionResponse() != null) {
                     if (addToVaultCheckBox.isChecked())
                         openApprovedDialog(result.toString(), paymentResponse.getTransactionResponse(), this);
                     else
@@ -625,19 +624,14 @@ public class CreditDebitActivity extends WorldBaseActivity
 
         if (count == 0) {
 
-
             if (transactionDialogFragment == null) {
                 transactionDialogFragment = TransactionDialogFragment.newInstance();
             }
             if (transactionDialogFragment.isVisible()) return;
-
             TransactionData transactionData = new TransactionData();
-
             if (validating.validateAll()) {
-
                 if (!TextUtils.isEmpty(dialog_field_transaction_amount.getValue())) {
                     BigDecimal transactionAmount = new BigDecimal(dialog_field_transaction_amount.getValue().replaceAll("[^\\d.]", ""));
-
                     if (!transactionAmount.toString().equals("0.00")) {
                         transactionData.setAmount(transactionAmount);
                     } else {
@@ -654,7 +648,6 @@ public class CreditDebitActivity extends WorldBaseActivity
                 transactionData.setTransactionNotes("" + notes.getValue());
                 if (order_date.getValue() != null && !order_date.getValue().equals("")) {
                     Date orderDate = new Date(order_date.getValue());
-                    Log.d("order_date.getValue()", "" + orderDate);
                     transactionData.setOrderDate(orderDate);
                 }
                 transactionData.setPurchaseOrderNumber("" + purchase_order_no.getValue());
@@ -687,8 +680,10 @@ public class CreditDebitActivity extends WorldBaseActivity
         BigDecimal cashBackAmount = BigDecimal.ZERO;
 
         transactionDialogFragment.setCaptureMode(CaptureMode.SWIPE_TAP_INSERT);
-        transactionDialogFragment.setTransactionType(transactionType);
         transactionDialogFragment.setSwiper(swiper);
+
+        transactionDialogFragment.setTransactionType(transactionType);
+
 
         transactionDialogFragment.setMerchantId(BuildConfig.MERCHANT_ID);
         transactionDialogFragment.setMerchantKey(BuildConfig.MERCHANT_KEY);
@@ -701,7 +696,6 @@ public class CreditDebitActivity extends WorldBaseActivity
         transactionData.setTransactionNotes("" + notes.getValue());
         if (order_date.getValue() != null && !order_date.getValue().equals("")) {
             Date orderDate = new Date(order_date.getValue());
-            Log.d("order_date.getValue()", "" + orderDate);
             transactionData.setOrderDate(orderDate);
         }
         transactionData.setPurchaseOrderNumber("" + purchase_order_no.getValue());
@@ -721,7 +715,6 @@ public class CreditDebitActivity extends WorldBaseActivity
                     }
                     transactionDialogFragment.setTransactionData(transactionData);
                     transactionDialogFragment.show(getSupportFragmentManager(), TransactionDialogFragment.TAG);
-
                 }
             }
         } else if (count == 2) {
@@ -744,63 +737,6 @@ public class CreditDebitActivity extends WorldBaseActivity
 
                 transactionDialogFragment.setTransactionData(transactionData);
                 transactionDialogFragment.show(getSupportFragmentManager(), TransactionDialogFragment.TAG);
-            }
-
-
-        }
-    }
-
-    //Vault Transaction
-    private void vaultPaymentTransaction() {
-
-        if (count == 0) {
-
-
-            if (transactionDialogFragment == null) {
-                transactionDialogFragment = TransactionDialogFragment.newInstance();
-            }
-            if (transactionDialogFragment.isVisible()) return;
-
-            TransactionData transactionData = new TransactionData();
-
-            if (validating.validateAll()) {
-
-                if (!TextUtils.isEmpty(dialog_field_transaction_amount.getValue())) {
-                    BigDecimal transactionAmount = new BigDecimal(dialog_field_transaction_amount.getValue().replaceAll("[^\\d.]", ""));
-
-                    if (!transactionAmount.toString().equals("0.00")) {
-                        transactionData.setAmount(transactionAmount);
-                    } else {
-                        Toast.makeText(this, getResources().getString(R.string.greaterThanZero), Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                }
-                if (addToVaultCheckBox.isChecked()) {
-                    transactionData.setAddCardToVault(true);
-                } else {
-                    transactionData.setAddCardToVault(false);
-                }
-
-                transactionData.setTransactionNotes("" + notes.getValue());
-                if (order_date.getValue() != null && !order_date.getValue().equals("")) {
-                    Date orderDate = new Date(order_date.getValue());
-                    Log.d("order_date.getValue()", "" + orderDate);
-                    transactionData.setOrderDate(orderDate);
-                }
-                transactionData.setPurchaseOrderNumber("" + purchase_order_no.getValue());
-                transactionData.setTransactionNotes("" + notes.getValue());
-                transactionDialogFragment.setTransactionData(transactionData);
-                transactionDialogFragment.setApplicationVersion(BuildConfig.VERSION_NAME);
-                transactionDialogFragment.setTransactionType(transactionType);
-                transactionDialogFragment.setSwiper(swiper);
-
-                transactionDialogFragment.setMerchantId(BuildConfig.MERCHANT_ID);
-                transactionDialogFragment.setMerchantKey(BuildConfig.MERCHANT_KEY);
-                transactionDialogFragment.setAuthToken(authToken);
-                transactionDialogFragment.setDeveloperId(BuildConfig.DEVELOPER_ID);
-                transactionDialogFragment.setCaptureMode(CaptureMode.MANUAL);
-                transactionDialogFragment.show(getSupportFragmentManager(), TransactionDialogFragment.TAG);
-
             }
         }
     }

@@ -3,7 +3,6 @@ package com.worldpayment.demoapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -17,7 +16,6 @@ public class SplashActivity extends AppCompatActivity {
 
     ImageView splshIV;
     TextView movingTV;
-    private static AlertDialog alertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,18 +28,18 @@ public class SplashActivity extends AppCompatActivity {
 
         if (isTablet(this)) {
             movingTV.setTextSize(70);
-            LinearLayout.LayoutParams parms = new LinearLayout.LayoutParams(500, 500);
+            LinearLayout.LayoutParams parms = new LinearLayout.LayoutParams(400, 500);
             splshIV.setLayoutParams(parms);
         } else {
             movingTV.setTextSize(30);
-            LinearLayout.LayoutParams parms = new LinearLayout.LayoutParams(300, 300);
+            LinearLayout.LayoutParams parms = new LinearLayout.LayoutParams(250, 250);
             splshIV.setLayoutParams(parms);
         }
         Animation blinking = AnimationUtils.loadAnimation(this, R.anim.blink);
         movingTV.startAnimation(blinking);
 
-        Animation zooming = AnimationUtils.loadAnimation(this, R.anim.zoom);
-        splshIV.startAnimation(zooming);
+//        Animation zooming = AnimationUtils.loadAnimation(this, R.anim.zoom);
+//        splshIV.startAnimation(zooming);
 
 //        Animation rotate = AnimationUtils.loadAnimation(this, R.anim.rotation);
 //        splshIV.startAnimation(rotate);

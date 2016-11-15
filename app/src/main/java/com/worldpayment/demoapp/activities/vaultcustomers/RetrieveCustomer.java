@@ -52,7 +52,7 @@ public class RetrieveCustomer extends WorldBaseActivity implements View.OnClickL
 
         validateID = new WPForm();
         field_customer_id = (WPFormEditText) findViewById(R.id.field_customer_id);
-        field_customer_id.addValidator(new WPNotEmptyValidator("Customer ID is required!"));
+        field_customer_id.addValidator(new WPNotEmptyValidator("Customer Id is required!"));
         validateID.addItem(field_customer_id);
 
 

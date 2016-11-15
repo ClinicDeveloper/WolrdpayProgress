@@ -89,7 +89,7 @@ public class TransactionListActivity extends WorldBaseActivity {
                     return;
                 }
                 if (batchResponse != null && batchResponse.getHttpStatusCode() == WPHttpResponse.HttpStatus.OK) {
-                    toolbar_title.setText("Batch ID : " + batchResponse.getId());
+                    toolbar_title.setText("Batch Id : " + batchResponse.getId());
                     transactionResponses = batchResponse.getTransactions();
                     if (transactionResponses != null) {
                         SettlementAdapter adapter = new SettlementAdapter(TransactionListActivity.this, transactionResponses);
@@ -138,7 +138,7 @@ public class TransactionListActivity extends WorldBaseActivity {
                 if (getTransactionsBatchResponse != null && getTransactionsBatchResponse.getHttpStatusCode() == WPHttpResponse.HttpStatus.OK) {
                     transactionResponses = getTransactionsBatchResponse.getTransactions();
                     if (transactionResponses != null) {
-                        toolbar_title.setText("Batch ID : " + batchId);
+                        toolbar_title.setText("Batch Id : " + batchId);
                         SettlementAdapter adapter = new SettlementAdapter(TransactionListActivity.this, transactionResponses);
                         adapter.notifyDataSetChanged();
                         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(TransactionListActivity.this, 1);

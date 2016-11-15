@@ -27,7 +27,7 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"
                 android:layout_weight="30"
-                android:text="Batch ID :"
+                android:text="Batch Id :"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size20" />
 

@@ -58,7 +58,7 @@ public class UpdateCustomer extends WorldBaseActivity implements View.OnClickLis
             customer_id = getIntent().getExtras().getString("customer_id");
             if (responseCustomerDetails != null) {
                 settingFields(responseCustomerDetails);
-                getSupportActionBar().setTitle("CUSTOMER ID : " + customer_id);
+                getSupportActionBar().setTitle("CUSTOMER Id : " + customer_id);
             } else {
                 Toast.makeText(this, "Null response", Toast.LENGTH_SHORT).show();
                 finish();

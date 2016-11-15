@@ -43,7 +43,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
-                        android:text="CUSTOMER ID : " />
+                        android:text="Customer Id : " />
 
                     <com.worldpay.library.views.WPTextView
                         android:id="@+id/tv_customer_id"
@@ -64,7 +64,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
-                        android:text="FIRST NAME : " />
+                        android:text="First NAME : " />
 
                     <com.worldpay.library.views.WPTextView
                         android:id="@+id/tv_first_name"
@@ -85,7 +85,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
-                        android:text="LAST NAME : " />
+                        android:text="Last Name : " />
 
                     <com.worldpay.library.views.WPTextView
                         android:id="@+id/tv_last_name"
@@ -106,7 +106,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
-                        android:text="E-MAIL ADDRESS : " />
+                        android:text="E-Mail Address : " />
 
                     <com.worldpay.library.views.WPTextView
                         android:id="@+id/tv_email_address"
@@ -129,7 +129,7 @@
                         android:layout_gravity="start"
                         android:layout_weight="1"
                         android:gravity="left"
-                        android:text="SEND EMAIL ADDRESS : " />
+                        android:text="Send Email Address : " />
 
                     <com.worldpay.library.views.WPTextView
                         android:id="@+id/tv_send_email_address"
@@ -152,7 +152,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
-                        android:text="NOTES : " />
+                        android:text="Notes : " />
 
                     <com.worldpay.library.views.WPTextView
                         android:id="@+id/tv_notes"
@@ -176,7 +176,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:text="ADDRESS " />
+                    android:text="Address " />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -189,7 +189,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
                         android:layout_weight="1"
-                        android:text="LINE 1 : " />
+                        android:text="Line 1 : " />
 
                     <com.worldpay.library.views.WPTextView
                         android:id="@+id/tv_line_one"
@@ -212,7 +212,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
-                        android:text="CITY : " />
+                        android:text="City : " />
 
                     <com.worldpay.library.views.WPTextView
                         android:id="@+id/tv_city"
@@ -233,7 +233,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
-                        android:text="STATE : " />
+                        android:text="State : " />
 
                     <com.worldpay.library.views.WPTextView
                         android:id="@+id/tv_state"
@@ -254,7 +254,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
-                        android:text="ZIP CODE : " />
+                        android:text="Zip Code : " />
 
                     <com.worldpay.library.views.WPTextView
                         android:id="@+id/tv_zip_code"
@@ -275,7 +275,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
-                        android:text="COUNTRY : " />
+                        android:text="Country : " />
 
                     <com.worldpay.library.views.WPTextView
                         android:id="@+id/tv_country"
@@ -296,7 +296,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
-                        android:text="COMPANY : " />
+                        android:text="Company : " />
 
                     <com.worldpay.library.views.WPTextView
                         android:id="@+id/tv_company"
@@ -317,7 +317,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
-                        android:text="PHONE : " />
+                        android:text="Phone : " />
 
                     <com.worldpay.library.views.WPTextView
                         android:id="@+id/tv_phone"
@@ -341,7 +341,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:text="USER DEFINED FEILDS" />
+                    android:text="User Defined Fields" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -354,7 +354,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
                         android:layout_weight="1"
-                        android:text="udfNAME : " />
+                        android:text="udfNamea : " />
 
                     <com.worldpay.library.views.WPTextView
                         android:id="@+id/tv_udfname"

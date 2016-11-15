@@ -134,11 +134,11 @@ public class CreditDebitActivity extends WorldBaseActivity
         validatingIDs.addItem(dialog_field_transaction_amount);
 
         field_customer_id = (WPFormEditText) findViewById(R.id.field_customer_id);
-        field_customer_id.addValidator(new WPNotEmptyValidator("Customer ID required!"));
+        field_customer_id.addValidator(new WPNotEmptyValidator("Customer Id required!"));
         validatingIDs.addItem(field_customer_id);
 
         field_payment_id = (WPFormEditText) findViewById(R.id.field_payment_id);
-        field_payment_id.addValidator(new WPNotEmptyValidator("Payment ID required!"));
+        field_payment_id.addValidator(new WPNotEmptyValidator("Payment Id required!"));
         validatingIDs.addItem(field_payment_id);
 
         order_date = (WPFormEditText) findViewById(R.id.order_date);
@@ -379,12 +379,13 @@ public class CreditDebitActivity extends WorldBaseActivity
         dialog_btn_negative.setText("" + context.getResources().getString(R.string.details));
         dialog_btn_positive.setText("" + context.getResources().getString(R.string.done));
 
-        title.setTextColor(Color.parseColor("#007867"));
         title.setText("" + messageStr);
         if (messageStr.equals("APPROVED")) {
+            title.setTextColor(Color.parseColor("#007867"));
             transaction_id.setText("" + response.getId());
             message.setText("" + response.getResponseText());
         } else if (messageStr.equals("DECLINED")) {
+            title.setTextColor(Color.parseColor("#f11e15"));
             transaction_layout.setVisibility(View.GONE);
             message.setText("" + response.getResponseText());
             dialog_btn_negative.setVisibility(View.GONE);
@@ -671,9 +672,11 @@ public class CreditDebitActivity extends WorldBaseActivity
     //Start Transaction
     private void showTransactionFragment() {
 
-        if (transactionDialogFragment == null) {
-            transactionDialogFragment = TransactionDialogFragment.newInstance();
-        }
+//        if (transactionDialogFragment == null) {
+//            transactionDialogFragment = TransactionDialogFragment.newInstance();
+//        }
+
+        transactionDialogFragment = TransactionDialogFragment.newInstance();
         if (transactionDialogFragment.isVisible()) return;
 
         BigDecimal transactionAmount = BigDecimal.ZERO;

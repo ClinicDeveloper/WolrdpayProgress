@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
-            android:text="Customer ID" />
+            android:text="Customer Id" />
 
         <com.worldpay.library.views.WPFormEditText
             android:id="@+id/field_customer_id"

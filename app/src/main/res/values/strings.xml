@@ -42,6 +42,6 @@
     <string name="customerCreated">Customer created</string>
     <string name="close">Close</string>
     <string name="retry">Retry</string>
-    <string name="requiredKeyID">Please add Merchant KEY and ID inside the gradle!</string>
+    <string name="requiredKeyID">Please add Merchant KEY and Id inside the gradle!</string>
 
 </resources>

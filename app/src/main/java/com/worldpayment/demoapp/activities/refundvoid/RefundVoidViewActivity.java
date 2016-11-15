@@ -79,7 +79,7 @@ public class RefundVoidViewActivity extends WorldBaseActivity implements View.On
         validateRefund = new WPForm();
         validateVoid = new WPForm();
 
-        field_transaction_id.addValidator(new WPNotEmptyValidator("Transaction ID is required!"));
+        field_transaction_id.addValidator(new WPNotEmptyValidator("Transaction Id is required!"));
         validateRefund.addItem(field_transaction_id);
         validateVoid.addItem(field_transaction_id);
 

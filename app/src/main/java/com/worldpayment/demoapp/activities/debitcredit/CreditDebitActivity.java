@@ -720,7 +720,6 @@ public class CreditDebitActivity extends WorldBaseActivity
             if (validating.validateAll()) {
                 if (!TextUtils.isEmpty(dialog_field_transaction_amount.getValue())) {
                     transactionAmount = new BigDecimal(dialog_field_transaction_amount.getValue().replaceAll("[^\\d.]", ""));
-                    //    transactionData.setAmount(transactionAmount);
 
                     if (!TextUtils.isEmpty(gratitude_amount.getValue())) {
                         BigDecimal gratitudeAmount = new BigDecimal(

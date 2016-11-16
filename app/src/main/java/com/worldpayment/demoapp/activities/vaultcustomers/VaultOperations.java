@@ -48,7 +48,7 @@ public class VaultOperations extends WorldBaseActivity implements View.OnClickLi
                 break;
 
             case R.id.create_payment_account_button:
-                Intent createPaymentAccount = new Intent(VaultOperations.this, CreatePaymentAccount.class);
+                Intent createPaymentAccount = new Intent(VaultOperations.this, CreatePaymentMethod.class);
                 startActivity(createPaymentAccount);
                 break;
 

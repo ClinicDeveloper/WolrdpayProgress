@@ -118,7 +118,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="Amount" />
+                        android:text="Transaction Amount" />
 
                     <com.worldpay.library.views.WPFormEditText
                         android:id="@+id/dialog_field_transaction_amount"
@@ -127,7 +127,25 @@
                         android:layout_marginRight="15dp"
                         android:background="@drawable/edittext_rounded"
                         android:gravity="end"
-                        android:hint="Transaction Amount"
+                        android:hint="$"
+                        android:imeOptions="actionNext"
+                        android:inputType="number"
+                        android:padding="10dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Gratitude Amount" />
+
+                    <com.worldpay.library.views.WPFormEditText
+                        android:id="@+id/gratitude_amount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="15dp"
+                        android:background="@drawable/edittext_rounded"
+                        android:gravity="end"
+                        android:hint="$"
                         android:imeOptions="actionNext"
                         android:inputType="number"
                         android:padding="10dp" />

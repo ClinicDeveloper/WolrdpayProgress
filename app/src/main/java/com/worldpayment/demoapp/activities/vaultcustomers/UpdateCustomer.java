@@ -5,11 +5,11 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.Toast;
 
 import com.worldpay.library.domain.Address;
@@ -33,19 +33,18 @@ import java.util.Locale;
 import static com.worldpayment.demoapp.BuildConfig.MERCHANT_ID;
 import static com.worldpayment.demoapp.BuildConfig.MERCHANT_KEY;
 import static com.worldpayment.demoapp.activities.debitcredit.CreditDebitActivity.PREF_AUTH_TOKEN;
-import static com.worldpayment.demoapp.activities.refundvoid.RefundVoidViewActivity.count;
 import static com.worldpayment.demoapp.activities.vaultcustomers.RetrieveCustomer.responseCustomerDetails;
 
 public class UpdateCustomer extends WorldBaseActivity implements View.OnClickListener {
 
-    Toolbar toolbar;
-    Button btn_create, btn_cancel, btn_yes, btn_no;
+    private Button btn_create, btn_cancel;
     WPFormEditText field_first_name, field_last_name, field_phone_number, field_email_address, field_notes;
     WPFormEditText field_street_address, field_city, zip, field_company;
     WPFormEditText field_user_defined1, field_user_defined2, field_user_defined3, field_user_defined4;
     WPSimpleFormSpinner spinner_state;
     private WPForm validateAlls;
     String customer_id;
+    private CheckBox check_mail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,15 +74,11 @@ public class UpdateCustomer extends WorldBaseActivity implements View.OnClickLis
         btn_create.setCompoundDrawables(img, null, null, null);
 
         btn_cancel = (Button) findViewById(R.id.btn_cancel);
-        btn_yes = (Button) findViewById(R.id.btn_yes);
-        btn_no = (Button) findViewById(R.id.btn_no);
 
         btn_create.setOnClickListener(this);
         btn_cancel.setOnClickListener(this);
-        btn_yes.setOnClickListener(this);
-        btn_no.setOnClickListener(this);
 
-
+        check_mail = (CheckBox) findViewById(R.id.check_mail);
         validateAlls = new WPForm();
 
         field_first_name = (WPFormEditText) findViewById(R.id.field_first_name);
@@ -152,16 +147,6 @@ public class UpdateCustomer extends WorldBaseActivity implements View.OnClickLis
             case R.id.btn_cancel:
                 break;
 
-            case R.id.btn_yes:
-                count = 0;
-                buttonEnabled(btn_yes, btn_no, count);
-                break;
-
-            case R.id.btn_no:
-                count = 1;
-                buttonEnabled(btn_no, btn_yes, count);
-                break;
-
             default:
                 break;
         }
@@ -183,7 +168,7 @@ public class UpdateCustomer extends WorldBaseActivity implements View.OnClickLis
             customer.setPhone("" + field_phone_number.getValue());
             customer.setNotes("" + field_notes.getValue());
 
-            if (count == 0) {
+            if (check_mail.isChecked()) {
                 customer.setSendEmailReceipts(true);
             } else {
                 customer.setSendEmailReceipts(false);
@@ -270,6 +255,12 @@ public class UpdateCustomer extends WorldBaseActivity implements View.OnClickLis
         field_city.setText("" + response.getAddress().getCity());
         field_company.setText("" + response.getCompany());
         zip.setText("" + response.getAddress().getZip());
+
+        if (response.isSendEmailReceipts()) {
+            check_mail.setChecked(true);
+        } else {
+            check_mail.setChecked(false);
+        }
     }
 
 }

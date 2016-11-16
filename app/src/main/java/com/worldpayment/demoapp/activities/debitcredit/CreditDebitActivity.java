@@ -60,7 +60,9 @@ import com.worldpayment.demoapp.utility.KeyboardUtility;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import static com.worldpayment.demoapp.Navigation.swiper;
@@ -81,7 +83,7 @@ public class CreditDebitActivity extends WorldBaseActivity
     LinearLayout extended_info_LL;
     private Spinner spn_transaction_types;
 
-    private WPFormEditText dialog_field_transaction_amount, field_customer_id, field_payment_id;
+    private WPFormEditText dialog_field_transaction_amount, gratitude_amount, field_customer_id, field_payment_id;
     private WPFormEditText order_date, purchase_order_no, notes;
     LinearLayout checkVaultLayout;
     CheckBox addToVaultCheckBox;
@@ -132,6 +134,12 @@ public class CreditDebitActivity extends WorldBaseActivity
         dialog_field_transaction_amount.addTextChangedListener(transactionAmountTextWatcher);
         validating.addItem(dialog_field_transaction_amount);
         validatingIDs.addItem(dialog_field_transaction_amount);
+
+
+        gratitude_amount = (WPFormEditText) findViewById(R.id.gratitude_amount);
+        transactionAmountTextWatcher = new WPCurrencyTextWatcher(gratitude_amount, Locale.US,
+                new BigDecimal("999999.99"), true, true);
+        gratitude_amount.addTextChangedListener(transactionAmountTextWatcher);
 
         field_customer_id = (WPFormEditText) findViewById(R.id.field_customer_id);
         field_customer_id.addValidator(new WPNotEmptyValidator("Customer Id required!"));
@@ -199,22 +207,44 @@ public class CreditDebitActivity extends WorldBaseActivity
         //  spnSwiperTypesPos = spn_swiper_types.getSelectedItemPosition();
 
         //Transaction Type Spinner
+        List<String> categories = new ArrayList<String>();
+        categories.add("Charge");
+        categories.add("Authorized");
+        categories.add("Credit");
         spn_transaction_types = (Spinner) findViewById(R.id.spn_transaction_types);
         spn_transaction_types.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                transactionType = (TransactionType) spn_transaction_types.getAdapter().getItem(position);
+                suitableForRequest(parent.getItemAtPosition(position).toString());
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                transactionType = null;
             }
         });
         spn_transaction_types.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
-                TransactionType.values()));
-        spn_transaction_types.setSelection(1);
+                categories));
+    }
 
+    public void suitableForRequest(String type) {
+
+        switch (type) {
+
+            case "Charge":
+                transactionType = TransactionType.SALE;
+                break;
+
+            case "Authorized":
+                transactionType = TransactionType.AUTH;
+                break;
+
+            case "Credit":
+                transactionType = TransactionType.CREDIT;
+                break;
+
+            default:
+                break;
+        }
     }
 
     @Override
@@ -366,7 +396,7 @@ public class CreditDebitActivity extends WorldBaseActivity
         final View dialogSignature = layoutInflater.inflate(R.layout.approved_layout, null);
 
         final android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(context);
-
+        alertDialogBuilder.setCancelable(false);
         alertDialogBuilder.setView(dialogSignature);
         TextView title = (TextView) dialogSignature.findViewById(R.id.title);
         TextView message = (TextView) dialogSignature.findViewById(R.id.message);
@@ -625,9 +655,7 @@ public class CreditDebitActivity extends WorldBaseActivity
 
         if (count == 0) {
 
-            if (transactionDialogFragment == null) {
-                transactionDialogFragment = TransactionDialogFragment.newInstance();
-            }
+            transactionDialogFragment = TransactionDialogFragment.newInstance();
             if (transactionDialogFragment.isVisible()) return;
             TransactionData transactionData = new TransactionData();
             if (validating.validateAll()) {
@@ -645,7 +673,11 @@ public class CreditDebitActivity extends WorldBaseActivity
                 } else {
                     transactionData.setAddCardToVault(false);
                 }
-
+                if (!TextUtils.isEmpty(gratitude_amount.getValue())) {
+                    BigDecimal gratitudeAmount = new BigDecimal(
+                            gratitude_amount.getValue().replaceAll("[^\\d.]", ""));
+                    transactionData.setGratuityAmount(gratitudeAmount);
+                }
                 transactionData.setTransactionNotes("" + notes.getValue());
                 if (order_date.getValue() != null && !order_date.getValue().equals("")) {
                     Date orderDate = new Date(order_date.getValue());
@@ -653,6 +685,7 @@ public class CreditDebitActivity extends WorldBaseActivity
                 }
                 transactionData.setPurchaseOrderNumber("" + purchase_order_no.getValue());
                 transactionData.setTransactionNotes("" + notes.getValue());
+
                 transactionDialogFragment.setTransactionData(transactionData);
                 transactionDialogFragment.setApplicationVersion(BuildConfig.VERSION_NAME);
                 transactionDialogFragment.setTransactionType(transactionType);
@@ -684,9 +717,7 @@ public class CreditDebitActivity extends WorldBaseActivity
 
         transactionDialogFragment.setCaptureMode(CaptureMode.SWIPE_TAP_INSERT);
         transactionDialogFragment.setSwiper(swiper);
-
         transactionDialogFragment.setTransactionType(transactionType);
-
 
         transactionDialogFragment.setMerchantId(BuildConfig.MERCHANT_ID);
         transactionDialogFragment.setMerchantKey(BuildConfig.MERCHANT_KEY);
@@ -695,7 +726,6 @@ public class CreditDebitActivity extends WorldBaseActivity
         transactionDialogFragment.setApplicationVersion(BuildConfig.VERSION_NAME);
 
         TransactionData transactionData = new TransactionData();
-
         transactionData.setTransactionNotes("" + notes.getValue());
         if (order_date.getValue() != null && !order_date.getValue().equals("")) {
             Date orderDate = new Date(order_date.getValue());
@@ -703,6 +733,12 @@ public class CreditDebitActivity extends WorldBaseActivity
         }
         transactionData.setPurchaseOrderNumber("" + purchase_order_no.getValue());
         transactionData.setTransactionNotes("" + notes.getValue());
+
+        if (!TextUtils.isEmpty(gratitude_amount.getValue())) {
+            BigDecimal gratitudeAmount = new BigDecimal(
+                    gratitude_amount.getValue().replaceAll("[^\\d.]", ""));
+            transactionData.setGratuityAmount(gratitudeAmount);
+        }
 
         if (count == 1) {
             if (validating.validateAll()) {
@@ -727,6 +763,7 @@ public class CreditDebitActivity extends WorldBaseActivity
                             dialog_field_transaction_amount.getValue().replaceAll("[^\\d.]", ""));
                     transactionData.setAmount(transactionAmount);
                 }
+
 
                 if (!TextUtils.isEmpty(field_customer_id.getValue())) {
                     String customer_id = field_customer_id.getValue();

@@ -71,7 +71,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activities.vaultcustomers.CreatePaymentAccount"
+            android:name=".activities.vaultcustomers.CreatePaymentMethod"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />

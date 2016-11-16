@@ -26,7 +26,7 @@ import com.worldpayment.demoapp.activities.refundvoid.RefundVoidViewActivity;
 import com.worldpayment.demoapp.activities.settlement.ActivitySettlement;
 import com.worldpayment.demoapp.activities.settlement.TransactionListActivity;
 import com.worldpayment.demoapp.activities.vaultcustomers.CreateCustomer;
-import com.worldpayment.demoapp.activities.vaultcustomers.CreatePaymentAccount;
+import com.worldpayment.demoapp.activities.vaultcustomers.CreatePaymentMethod;
 import com.worldpayment.demoapp.activities.vaultcustomers.UpdateCustomer;
 import com.worldpayment.demoapp.activities.vaultcustomers.VaultOperations;
 import com.worldpayment.demoapp.utility.KeyboardUtility;
@@ -58,7 +58,7 @@ public class WorldBaseActivity extends AppCompatActivity {
         if (worldBaseActivity instanceof TransactionListActivity ||
                 worldBaseActivity instanceof CreateCustomer ||
                 worldBaseActivity instanceof UpdateCustomer ||
-                worldBaseActivity instanceof CreatePaymentAccount) {
+                worldBaseActivity instanceof CreatePaymentMethod) {
             setUpToolbarNoNavigation();
         }
 
@@ -282,7 +282,7 @@ public class WorldBaseActivity extends AppCompatActivity {
         if (worldBaseActivity instanceof TransactionListActivity) {
             toolbar_title.setText("Batch Details");
         }
-        if (worldBaseActivity instanceof CreatePaymentAccount) {
+        if (worldBaseActivity instanceof CreatePaymentMethod) {
             toolbar_title.setText("Create Payment Account");
         }
 

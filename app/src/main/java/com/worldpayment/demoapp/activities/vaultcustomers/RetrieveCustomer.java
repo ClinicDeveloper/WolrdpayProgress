@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -30,7 +31,7 @@ public class RetrieveCustomer extends WorldBaseActivity implements View.OnClickL
     Button btn_search, btn_update;
     private WPFormEditText field_customer_id;
     WPForm validateID;
-
+    RecyclerView recyclerView;
     public static CustomerResponse responseCustomerDetails;
 
     @Override
@@ -43,6 +44,7 @@ public class RetrieveCustomer extends WorldBaseActivity implements View.OnClickL
 
     public void mappingViews() {
 
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         field_customer_id = (WPFormEditText) findViewById(R.id.field_customer_id);
         btn_search = (Button) findViewById(R.id.btn_search);
         btn_update = (Button) findViewById(R.id.btn_update);
@@ -103,15 +105,15 @@ public class RetrieveCustomer extends WorldBaseActivity implements View.OnClickL
                 @Override
                 protected void onPostExecute(CustomerResponse customerResponse) {
 
-                    Log.d("customerResponse", "" + customerResponse.toJson());
-
+                    if (customerResponse != null) {
+                        Log.d("customerResponse", "" + customerResponse.toJson());
+                    }
                     if (customerResponse.hasError()) {
                         dismissProgressBar(progressDialog);
                         return;
                     }
 
                     if (customerResponse != null) {
-//                        SplashActivity.showSuccessDialog("SUCCESS", customerResponse.toJson(), RetrieveCustomer.this);
                         responseCustomerDetails = customerResponse;
                         if (responseCustomerDetails != null) {
                             dismissProgressBar(progressDialog);

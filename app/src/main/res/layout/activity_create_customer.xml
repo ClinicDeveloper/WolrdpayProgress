@@ -76,48 +76,17 @@
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:text="Send E-Mail Receipts" />
-
-
-            <LinearLayout
+            <CheckBox
+                android:id="@+id/check_mail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:visibility="visible"
-                android:weightSum="100">
-
-                <Button
-                    android:id="@+id/btn_yes"
-                    style="@style/buttonStyle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:layout_weight="30"
-                    android:drawableLeft="@mipmap/ic_done"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:text="Yes" />
-
-                <Button
-                    android:id="@+id/btn_no"
-                    style="@style/buttonWithNoColorStyle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:layout_weight="30"
-                    android:drawableLeft="@mipmap/ic_cancel"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:text="No" />
-
-            </LinearLayout>
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:checked="true"
+                android:paddingBottom="@dimen/text_size5"
+                android:paddingTop="@dimen/text_size5"
+                android:text="@string/send_email" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -130,10 +99,7 @@
                 android:id="@+id/field_notes"
                 style="@style/EditTextField"
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:gravity="start|left"
-                android:inputType="text"
-                android:visibility="visible" />
+                android:layout_height="100dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -289,7 +255,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="5dp"
+        android:layout_margin="10dp"
         android:orientation="horizontal"
         android:weightSum="100">
 
@@ -298,27 +264,37 @@
             style="@style/buttonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="5dp"
-            android:layout_weight="50"
+            android:layout_weight="30"
             android:drawableLeft="@mipmap/ic_create"
             android:gravity="center"
             android:padding="10dp"
-            android:text="@string/create" />
+            android:text="@string/create"
+            android:textSize="@dimen/text_size12" />
+
+        <Button
+            android:id="@+id/payment_method"
+            style="@style/buttonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="40"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/payment_method"
+            android:textSize="@dimen/text_size12" />
 
         <Button
             android:id="@+id/btn_cancel"
             style="@style/buttonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="5dp"
-            android:layout_weight="50"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="30"
             android:drawableLeft="@mipmap/ic_cancel"
             android:gravity="center"
             android:padding="10dp"
-            android:text="@string/cancel" />
+            android:text="@string/cancel"
+            android:textSize="@dimen/text_size12" />
     </LinearLayout>
 
 </RelativeLayout>

@@ -25,7 +25,7 @@ public class CustomerDetailsActivity extends AppCompatActivity implements View.O
     TextView tv_udfname, tv_udffield;
 
     Button btn_done;
-    Toolbar toolbar;
+    TextView toolbar_title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +37,7 @@ public class CustomerDetailsActivity extends AppCompatActivity implements View.O
             String customer_id = getIntent().getExtras().getString("customer_id");
             if (responseCustomerDetails != null) {
                 settingFields(responseCustomerDetails, customer_id);
-                toolbar.setTitle("CUSTOMER Id : " + customer_id);
+                toolbar_title.setText("Customer Id : " + customer_id);
             } else {
                 Toast.makeText(this, "Null response", Toast.LENGTH_SHORT).show();
                 finish();
@@ -49,9 +49,8 @@ public class CustomerDetailsActivity extends AppCompatActivity implements View.O
 
         AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
         Toolbar toolbar = (Toolbar) appBarLayout.findViewById(R.id.toolbar);
-        TextView toolbar_title = (TextView) appBarLayout.findViewById(R.id.toolbar_title);
+        toolbar_title = (TextView) appBarLayout.findViewById(R.id.toolbar_title);
         setSupportActionBar(toolbar);
-        toolbar_title.setText("Customer Details");
         getSupportActionBar().setTitle("");
 
         //CUSTOMER INFO

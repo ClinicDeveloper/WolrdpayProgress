@@ -6,11 +6,11 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.worldpay.library.domain.Address;
@@ -34,17 +34,16 @@ import java.util.Locale;
 import static com.worldpayment.demoapp.BuildConfig.MERCHANT_ID;
 import static com.worldpayment.demoapp.BuildConfig.MERCHANT_KEY;
 import static com.worldpayment.demoapp.activities.debitcredit.CreditDebitActivity.PREF_AUTH_TOKEN;
-import static com.worldpayment.demoapp.activities.refundvoid.RefundVoidViewActivity.count;
 import static com.worldpayment.demoapp.activities.vaultcustomers.RetrieveCustomer.responseCustomerDetails;
 
 public class CreateCustomer extends WorldBaseActivity implements View.OnClickListener {
-    Toolbar toolbar;
-    Button btn_create, btn_cancel, btn_yes, btn_no;
+    Button btn_create, btn_cancel;
     WPFormEditText field_first_name, field_last_name, field_phone_number, field_email_address, field_notes;
     WPFormEditText field_street_address, field_city, zip, field_company;
     WPFormEditText field_user_defined1, field_user_defined2, field_user_defined3, field_user_defined4;
     WPSimpleFormSpinner spinner_state;
     private WPForm validateAlls;
+    private CheckBox check_mail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,14 +57,9 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
 
         btn_create = (Button) findViewById(R.id.btn_create);
         btn_cancel = (Button) findViewById(R.id.btn_cancel);
-        btn_yes = (Button) findViewById(R.id.btn_yes);
-        btn_no = (Button) findViewById(R.id.btn_no);
 
         btn_create.setOnClickListener(this);
         btn_cancel.setOnClickListener(this);
-        btn_yes.setOnClickListener(this);
-        btn_no.setOnClickListener(this);
-
 
         validateAlls = new WPForm();
 
@@ -79,11 +73,13 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
 
         field_phone_number = (WPFormEditText) findViewById(R.id.field_phone_number);
         field_phone_number.addValidator(new WPNotEmptyValidator("Phone Number is required!"));
-        validateAlls.addItem(field_phone_number);
+//        validateAlls.addItem(field_phone_number);
 
         field_email_address = (WPFormEditText) findViewById(R.id.field_email_address);
         field_email_address.addValidator(new WPNotEmptyValidator("Email is required!"));
         validateAlls.addItem(field_email_address);
+
+        check_mail = (CheckBox) findViewById(R.id.check_mail);
 
         field_notes = (WPFormEditText) findViewById(R.id.field_notes);
         field_notes.addValidator(new WPNotEmptyValidator("Note is required!"));
@@ -100,7 +96,7 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
 
         field_company = (WPFormEditText) findViewById(R.id.field_company);
         field_company.addValidator(new WPNotEmptyValidator("Company is required!"));
-        validateAlls.addItem(field_company);
+//        validateAlls.addItem(field_company);
 
 
         zip = (WPFormEditText) findViewById(R.id.zip);
@@ -132,17 +128,8 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
                 break;
 
             case R.id.btn_cancel:
+                KeyboardUtility.closeKeyboard(this, view);
                 finish();
-                break;
-
-            case R.id.btn_yes:
-                count = 0;
-                buttonEnabled(btn_yes, btn_no, count);
-                break;
-
-            case R.id.btn_no:
-                count = 1;
-                buttonEnabled(btn_no, btn_yes, count);
                 break;
 
             default:
@@ -166,7 +153,7 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
             createCustomerRequest.setPhone(field_phone_number.getValue());
             createCustomerRequest.setNotes(field_notes.getValue());
 
-            if (count == 0) {
+            if (check_mail.isChecked()) {
                 createCustomerRequest.setSendEmailReceipts(true);
             } else {
                 createCustomerRequest.setSendEmailReceipts(false);
@@ -214,9 +201,9 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
                 }
 
                 if (customerResponse != null && customerResponse.getHttpStatusCode() == WPHttpResponse.HttpStatus.OK) {
-                    createdDialog(getResources().getString(R.string.success), customerResponse, CreateCustomer.this);
+                    createdDialog(customerResponse.getResult(), customerResponse, CreateCustomer.this);
                 } else {
-                    showSuccessDialog(getResources().getString(R.string.error), customerResponse.getMessage(), CreateCustomer.this);
+                    createdDialog(customerResponse.getResult(), customerResponse, CreateCustomer.this);
                 }
 
                 dismissProgressBar(progressDialog);
@@ -233,23 +220,30 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
         final android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(
                 context);
 
-
         alertDialogBuilder.setView(dialogSignature);
         TextView title = (TextView) dialogSignature.findViewById(R.id.title);
         TextView message = (TextView) dialogSignature.findViewById(R.id.message);
 
-        title.setTextColor(Color.parseColor("#007867"));
         title.setText("" + titleStr);
-        message.setText("" + getResources().getString(R.string.customerCreated));
+        message.setText("" + response.getResponseMessage());
 
         Button dialog_btn_negative = (Button) dialogSignature.findViewById(R.id.dialog_btn_negative);
-        Button dialog_btn_positive = (Button) dialogSignature.findViewById(R.id.dialog_btn_positive);
+        final Button dialog_btn_positive = (Button) dialogSignature.findViewById(R.id.dialog_btn_positive);
 
+        if (titleStr.equals("APPROVED")) {
+            title.setTextColor(Color.parseColor("#007867"));
+            dialog_btn_negative.setText("" + getResources().getString(R.string.details));
+            dialog_btn_positive.setText("" + getResources().getString(R.string.done));
+
+
+        } else {
+            title.setTextColor(Color.parseColor("#f11e15"));
+            dialog_btn_negative.setVisibility(View.GONE);
+            dialog_btn_positive.setText("OK");
+
+        }
         final android.app.AlertDialog alert = alertDialogBuilder.create();
         alert.show();
-
-        dialog_btn_negative.setText("" + getResources().getString(R.string.details));
-        dialog_btn_positive.setText("" + getResources().getString(R.string.done));
 
         responseCustomerDetails = response;
 
@@ -266,10 +260,12 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
             @Override
             public void onClick(View v) {
                 alert.dismiss();
-                Intent navigation = new Intent(CreateCustomer.this, VaultOperations.class);
-                startActivity(navigation);
-                finish();
-
+                if (dialog_btn_positive.getText().equals("OK")) {
+                } else {
+                    Intent navigation = new Intent(CreateCustomer.this, VaultOperations.class);
+                    startActivity(navigation);
+                    finish();
+                }
             }
         });
     }

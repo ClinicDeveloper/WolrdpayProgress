@@ -80,7 +80,7 @@
             android:layout_weight="20"
             android:drawableLeft="@mipmap/ic_vault"
             android:text="Vault Customer"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
     </LinearLayout>
 

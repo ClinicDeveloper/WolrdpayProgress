@@ -184,27 +184,6 @@ public class CreditDebitActivity extends WorldBaseActivity
         checkVaultLayout = (LinearLayout) findViewById(R.id.checkVaultLayout);
         checkVaultLayout.setOnClickListener(this);
         addToVaultCheckBox = (CheckBox) findViewById(R.id.addToVaultCheckBox);
-        //Swiper Type Spinner
-        //spn_swiper_types = (Spinner) findViewById(spn_swiper_types);
-//        spn_swiper_types.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-////              Swiper swiper = Swiper.fromDescription("Shuttle");
-////
-////                                PreferenceManager.getDefaultSharedPreferences(CreditDebitActivity.this).edit()
-////                        .putString(PREF_BUNDLE_SWIPER, swiper).apply();
-//
-//                //  authenticate();
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//            }
-//        });
-
-//        spn_swiper_types.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
-//                com.worldpay.library.BuildConfig.COMPATIBLE_SWIPERS));
-        //  spnSwiperTypesPos = spn_swiper_types.getSelectedItemPosition();
 
         //Transaction Type Spinner
         List<String> categories = new ArrayList<String>();
@@ -658,11 +637,19 @@ public class CreditDebitActivity extends WorldBaseActivity
             transactionDialogFragment = TransactionDialogFragment.newInstance();
             if (transactionDialogFragment.isVisible()) return;
             TransactionData transactionData = new TransactionData();
+            BigDecimal gratitudeAmount = null;
             if (validating.validateAll()) {
                 if (!TextUtils.isEmpty(dialog_field_transaction_amount.getValue())) {
                     BigDecimal transactionAmount = new BigDecimal(dialog_field_transaction_amount.getValue().replaceAll("[^\\d.]", ""));
                     if (!transactionAmount.toString().equals("0.00")) {
-                        transactionData.setAmount(transactionAmount);
+                        if (!TextUtils.isEmpty(gratitude_amount.getValue())) {
+                            gratitudeAmount = new BigDecimal(
+                                    gratitude_amount.getValue().replaceAll("[^\\d.]", ""));
+                            transactionData.setGratuityAmount(gratitudeAmount);
+                            transactionData.setAmount(transactionAmount.add(gratitudeAmount));
+                        } else {
+                            transactionData.setAmount(transactionAmount);
+                        }
                     } else {
                         Toast.makeText(this, getResources().getString(R.string.greaterThanZero), Toast.LENGTH_SHORT).show();
                         return;
@@ -672,11 +659,6 @@ public class CreditDebitActivity extends WorldBaseActivity
                     transactionData.setAddCardToVault(true);
                 } else {
                     transactionData.setAddCardToVault(false);
-                }
-                if (!TextUtils.isEmpty(gratitude_amount.getValue())) {
-                    BigDecimal gratitudeAmount = new BigDecimal(
-                            gratitude_amount.getValue().replaceAll("[^\\d.]", ""));
-                    transactionData.setGratuityAmount(gratitudeAmount);
                 }
                 transactionData.setTransactionNotes("" + notes.getValue());
                 if (order_date.getValue() != null && !order_date.getValue().equals("")) {
@@ -734,17 +716,21 @@ public class CreditDebitActivity extends WorldBaseActivity
         transactionData.setPurchaseOrderNumber("" + purchase_order_no.getValue());
         transactionData.setTransactionNotes("" + notes.getValue());
 
-        if (!TextUtils.isEmpty(gratitude_amount.getValue())) {
-            BigDecimal gratitudeAmount = new BigDecimal(
-                    gratitude_amount.getValue().replaceAll("[^\\d.]", ""));
-            transactionData.setGratuityAmount(gratitudeAmount);
-        }
-
         if (count == 1) {
             if (validating.validateAll()) {
                 if (!TextUtils.isEmpty(dialog_field_transaction_amount.getValue())) {
                     transactionAmount = new BigDecimal(dialog_field_transaction_amount.getValue().replaceAll("[^\\d.]", ""));
-                    transactionData.setAmount(transactionAmount);
+                    //    transactionData.setAmount(transactionAmount);
+
+                    if (!TextUtils.isEmpty(gratitude_amount.getValue())) {
+                        BigDecimal gratitudeAmount = new BigDecimal(
+                                gratitude_amount.getValue().replaceAll("[^\\d.]", ""));
+                        transactionData.setGratuityAmount(gratitudeAmount);
+                        transactionData.setAmount(transactionAmount.add(gratitudeAmount));
+                    } else {
+                        transactionData.setAmount(transactionAmount);
+                    }
+
                     transactionData.setCashBackAmount(cashBackAmount);
                     transactionData.setId("115029855");
                     if (addToVaultCheckBox.isChecked()) {
@@ -761,9 +747,15 @@ public class CreditDebitActivity extends WorldBaseActivity
                 if (!TextUtils.isEmpty(dialog_field_transaction_amount.getValue())) {
                     transactionAmount = new BigDecimal(
                             dialog_field_transaction_amount.getValue().replaceAll("[^\\d.]", ""));
-                    transactionData.setAmount(transactionAmount);
+                    if (!TextUtils.isEmpty(gratitude_amount.getValue())) {
+                        BigDecimal gratitudeAmount = new BigDecimal(
+                                gratitude_amount.getValue().replaceAll("[^\\d.]", ""));
+                        transactionData.setGratuityAmount(gratitudeAmount);
+                        transactionData.setAmount(transactionAmount.add(gratitudeAmount));
+                    } else {
+                        transactionData.setAmount(transactionAmount);
+                    }
                 }
-
 
                 if (!TextUtils.isEmpty(field_customer_id.getValue())) {
                     String customer_id = field_customer_id.getValue();

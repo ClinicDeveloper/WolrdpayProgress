@@ -1,6 +1,8 @@
 package com.worldpayment.demoapp.activities.vaultcustomers;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -8,6 +10,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.worldpay.library.views.WPFormEditText;
+import com.worldpay.library.webservices.services.paymentmethods.CreatePaymentMethodRequest;
+import com.worldpay.library.webservices.services.paymentmethods.PaymentMethodResponse;
+import com.worldpay.library.webservices.tasks.PaymentMethodCreateTask;
 import com.worldpayment.demoapp.R;
 import com.worldpayment.demoapp.WorldBaseActivity;
 
@@ -72,10 +77,52 @@ public class CreatePaymentMethod extends WorldBaseActivity implements View.OnCli
                 break;
 
             case R.id.btn_cancel:
+
+                CreatePaymentMethodRequest createPaymentMethodRequest =  new CreatePaymentMethodRequest();
+//                createPaymentMethodRequest.set
+//                creatingPaymentMethod();
                 finish();
 
             default:
                 break;
         }
     }
+
+
+    public void creatingPaymentMethod(CreatePaymentMethodRequest createPaymentMethodRequest) {
+
+        new PaymentMethodCreateTask(createPaymentMethodRequest) {
+            ProgressDialog progressDialog;
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                progressDialog = new ProgressDialog(CreatePaymentMethod.this);
+                startProgressBar(progressDialog, "Paying refund...");
+            }
+
+            @Override
+            protected void onPostExecute(PaymentMethodResponse paymentMethodResponse) {
+                if (paymentMethodResponse.hasError()) {
+                    dismissProgressBar(progressDialog);
+                    return;
+                }
+
+                if(paymentMethodResponse!=null) {
+                    Log.d("RFUND RESPONSE : ", "" + paymentMethodResponse.toJson());
+                }
+//                if (paymentMethodResponse != null && paymentMethodResponse.getHttpStatusCode() == WPHttpResponse.HttpStatus.OK) {
+//
+//                    if (!paymentMethodResponse.getTransactionResponse().getAmount().toString().trim().equals("0.0".trim())) {
+//                        openApprovedDialog("APPROVED", paymentMethodResponse.getTransactionResponse(), RefundVoidViewActivity.this);
+//                    } else
+//                        showSuccessDialog(getResources().getString(R.string.error), "" + paymentMethodResponse.getTransactionResponse().getResponseText(), RefundVoidViewActivity.this);
+//                } else {
+//                    showSuccessDialog(getResources().getString(R.string.error), getResources().getString(R.string.transactionFailed) + "\n" + paymentResponse.getMessage(), RefundVoidViewActivity.this);
+//                }
+                dismissProgressBar(progressDialog);
+            }
+        }.execute();
+    }
+
 }

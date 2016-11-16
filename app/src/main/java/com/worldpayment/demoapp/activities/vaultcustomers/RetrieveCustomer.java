@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.worldpay.library.views.WPForm;
 import com.worldpay.library.views.WPFormEditText;
@@ -107,6 +108,10 @@ public class RetrieveCustomer extends WorldBaseActivity implements View.OnClickL
 
                     if (customerResponse != null) {
                         Log.d("customerResponse", "" + customerResponse.toJson());
+                    } else {
+                        dismissProgressBar(progressDialog);
+                        Toast.makeText(RetrieveCustomer.this, "Null response from SDK", Toast.LENGTH_SHORT).show();
+                        return;
                     }
                     if (customerResponse.hasError()) {
                         dismissProgressBar(progressDialog);

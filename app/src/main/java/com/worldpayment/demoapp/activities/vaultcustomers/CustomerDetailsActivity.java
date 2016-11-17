@@ -167,6 +167,47 @@ public class CustomerDetailsActivity extends AppCompatActivity implements View.O
         }
     }
 
+//    public void deleteCustomer() {
+//        DeletePaymentMethodRequest deletePaymentMethodRequest = new DeletePaymentMethodRequest();
+//        String authToken = PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_AUTH_TOKEN, null);
+//        deletePaymentMethodRequest.setAuthToken(authToken);
+//        deletePaymentMethodRequest.setDeveloperId(BuildConfig.DEVELOPER_ID);
+//        deletePaymentMethodRequest.setApplicationVersion(BuildConfig.VERSION_NAME);
+//        deletePaymentMethodRequest.setMerchantId(MERCHANT_ID);
+//        deletePaymentMethodRequest.setMerchantKey(MERCHANT_KEY);
+//
+//        new PaymentMethodDeleteTask(deletePaymentMethodRequest) {
+//            ProgressDialog progressDialog;
+//
+//            @Override
+//            protected void onPreExecute() {
+//                super.onPreExecute();
+//                progressDialog = new ProgressDialog(CustomerDetailsActivity.this);
+//                startProgressBar(progressDialog, "Updating...");
+//            }
+//
+//            @Override
+//            protected void onPostExecute(PaymentMethodResponse paymentMethodResponse) {
+//
+//                Log.d("customerResponse", "" + paymentMethodResponse.toJson());
+//
+//                if (paymentMethodResponse.hasError()) {
+//                    dismissProgressBar(progressDialog);
+//                    return;
+//                }
+//
+//                if (paymentMethodResponse != null) {
+//                    dismissProgressBar(progressDialog);
+//
+//                } else {
+//                }
+//                dismissProgressBar(progressDialog);
+//            }
+//        }.execute();
+//
+//
+//    }
+
     @Override
     public void onBackPressed() {
         return;

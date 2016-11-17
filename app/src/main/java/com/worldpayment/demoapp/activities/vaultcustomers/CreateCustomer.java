@@ -39,7 +39,7 @@ import static com.worldpayment.demoapp.activities.vaultcustomers.RetrieveCustome
 
 public class CreateCustomer extends WorldBaseActivity implements View.OnClickListener {
     Button btn_create, btn_cancel;
-    WPFormEditText field_first_name, field_last_name, field_phone_number, field_email_address, field_notes;
+    WPFormEditText field_customer_id, field_first_name, field_last_name, field_phone_number, field_email_address, field_notes;
     WPFormEditText field_street_address, field_city, zip, field_company;
     WPFormEditText field_user_defined1, field_user_defined2, field_user_defined3, field_user_defined4;
     WPSimpleFormSpinner spinner_state;
@@ -63,6 +63,8 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
         btn_cancel.setOnClickListener(this);
 
         validateAlls = new WPForm();
+
+        field_customer_id = (WPFormEditText) findViewById(R.id.field_customer_id);
 
         field_first_name = (WPFormEditText) findViewById(R.id.field_first_name);
         field_first_name.addValidator(new WPNotEmptyValidator("First Name is required!"));
@@ -143,11 +145,9 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
 
         CreateCustomerRequest createCustomerRequest = new CreateCustomerRequest();
 
-        createCustomerRequest.setApplicationVersion(BuildConfig.VERSION_NAME);
-        createCustomerRequest.setDeveloperId(BuildConfig.DEVELOPER_ID);
-
-
         if (validateAlls.validateAll()) {
+
+            //  createCustomerRequest.set
             createCustomerRequest.setFirstName(field_first_name.getValue());
             createCustomerRequest.setLastName(field_last_name.getValue());
             createCustomerRequest.setEmail(field_email_address.getValue());

@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.TextView;
 
 import com.worldpay.library.domain.Address;
 import com.worldpay.library.domain.Customer;
@@ -45,7 +44,6 @@ public class UpdateCustomer extends WorldBaseActivity implements View.OnClickLis
     private WPForm validateAlls;
     String customer_id;
     private CheckBox check_mail;
-    TextView toolbar_title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,17 +82,12 @@ public class UpdateCustomer extends WorldBaseActivity implements View.OnClickLis
         validateAlls.addItem(field_last_name);
 
         field_phone_number = (WPFormEditText) findViewById(R.id.field_phone_number);
-//        field_phone_number.addValidator(new WPNotEmptyValidator("Phone Number is required!"));
-//        validateAlls.addItem(field_phone_number);
 
         field_email_address = (WPFormEditText) findViewById(R.id.field_email_address);
         field_email_address.addValidator(new WPNotEmptyValidator("Email is required!"));
         validateAlls.addItem(field_email_address);
 
         field_notes = (WPFormEditText) findViewById(R.id.field_notes);
-//        field_notes.addValidator(new WPNotEmptyValidator("Note is required!"));
-//        validateAlls.addItem(field_notes);
-
 
         field_street_address = (WPFormEditText) findViewById(R.id.field_street_address);
         field_street_address.addValidator(new WPNotEmptyValidator("Line1 is required!"));
@@ -105,9 +98,6 @@ public class UpdateCustomer extends WorldBaseActivity implements View.OnClickLis
         validateAlls.addItem(field_city);
 
         field_company = (WPFormEditText) findViewById(R.id.field_company);
-        //  field_company.addValidator(new WPNotEmptyValidator("Company is required!"));
-        //  validateAlls.addItem(field_company);
-
 
         zip = (WPFormEditText) findViewById(R.id.zip);
         zip.addValidator(new WPPostalCodeValidator("Zip Code is invalid!", Locale.US));

@@ -25,6 +25,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
+                android:text="Customer Id" />
+
+            <com.worldpay.library.views.WPFormEditText
+                android:id="@+id/field_customer_id"
+                style="@style/EditTextField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
                 android:text="Fisr Name" />
 
             <com.worldpay.library.views.WPFormEditText

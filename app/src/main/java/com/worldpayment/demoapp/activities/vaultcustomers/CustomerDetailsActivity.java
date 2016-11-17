@@ -1,6 +1,5 @@
 package com.worldpayment.demoapp.activities.vaultcustomers;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -8,10 +7,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.worldpay.library.webservices.services.customers.CustomerResponse;
 import com.worldpayment.demoapp.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import static com.worldpayment.demoapp.activities.vaultcustomers.RetrieveCustomer.responseCustomerDetails;
 
@@ -22,9 +23,9 @@ public class CustomerDetailsActivity extends AppCompatActivity implements View.O
     //ADDRESS
     TextView tv_line_one, tv_city, tv_state, tv_zip_code, tv_country, tv_company, tv_phone;
     //USER DEFINED FIELDS
-    TextView tv_udfname, tv_udffield;
+    TextView tv_udfname;
 
-    Button btn_done;
+    Button btn_cancel, btn_edit, btn_delete, btn_payment_method;
     TextView toolbar_title;
 
     @Override
@@ -33,16 +34,7 @@ public class CustomerDetailsActivity extends AppCompatActivity implements View.O
         setContentView(R.layout.activity_customer_details);
         initComponents();
 
-        if (getIntent().getExtras() != null) {
-            String customer_id = getIntent().getExtras().getString("customer_id");
-            if (responseCustomerDetails != null) {
-                settingFields(responseCustomerDetails, customer_id);
-                toolbar_title.setText("Customer Id : " + customer_id);
-            } else {
-                Toast.makeText(this, "Null response", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        }
+        settingFields(responseCustomerDetails);
     }
 
     public void initComponents() {
@@ -72,28 +64,35 @@ public class CustomerDetailsActivity extends AppCompatActivity implements View.O
 
         //USER DEFINED FIELDS
         tv_udfname = (TextView) findViewById(R.id.tv_udfname);
-        tv_udffield = (TextView) findViewById(R.id.tv_udffield);
 
         //Button
-        btn_done = (Button) findViewById(R.id.btn_done);
-        btn_done.setOnClickListener(this);
+        btn_cancel = (Button) findViewById(R.id.btn_cancel);
+        btn_edit = (Button) findViewById(R.id.btn_edit);
+        btn_delete = (Button) findViewById(R.id.btn_delete);
+        btn_payment_method = (Button) findViewById(R.id.btn_payment_method);
+
+        btn_cancel.setOnClickListener(this);
+        btn_edit.setOnClickListener(this);
+        btn_delete.setOnClickListener(this);
+        btn_payment_method.setOnClickListener(this);
 
     }
 
-    public void settingFields(CustomerResponse response, String id) {
+    public void settingFields(CustomerResponse response) {
 
         //Customer OVERVIEW
-        tv_customer_id.setText("" + id);
+        toolbar_title.setText("Customer Id : " + response.getCustomerId());
+        tv_customer_id.setText("" + response.getCustomerId());
         tv_first_name.setText("" + response.getFirstName());
         tv_last_name.setText("" + response.getLastName());
         tv_email.setText("" + response.getEmail());
-        tv_company.setText("" + response.getCompany());
 
+        if (response.getCompany() != null) {
+            tv_company.setText("" + response.getCompany());
+        }
         if (response.getPhone() != null) {
             tv_phone.setText("" + response.getPhone());
         }
-
-
         tv_notes.setText("" + response.getNotes());
         if (response.isSendEmailReceipts() == true)
             tv_send_email_address.setText("YES");
@@ -126,28 +125,47 @@ public class CustomerDetailsActivity extends AppCompatActivity implements View.O
         }
 
         //USER DEFINED FIELDS
-        tv_udfname.setText("" + response.getUserDefinedFields());
-        tv_udffield.setText("" + response.getUserDefinedFields());
-
+        if (response.getUserDefinedFields() != null) {
+            try {
+                JSONObject menu = new JSONObject(response.getUserDefinedFields().toString());
+                if (menu.length() > 0) {
+                    StringBuilder stringBuilder = new StringBuilder();
+                    int count = menu.length();
+                    for (int i = 1; i <= count; i++) {
+                        stringBuilder.append("User Defined Field #" + i + ":\t\t" + menu.getString("UDF" + i) + "\n");
+                    }
+                    tv_udfname.setText(stringBuilder);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
 
-            case R.id.btn_done:
-                Intent credit = new Intent(CustomerDetailsActivity.this, VaultOperations.class);
-                startActivity(credit);
+            case R.id.btn_edit:
                 finish();
+                break;
+
+            case R.id.btn_delete:
+                break;
+
+            case R.id.btn_payment_method:
+                break;
+
+            case R.id.btn_cancel:
+                finish();
+                break;
+            default:
                 break;
         }
     }
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        Intent credit = new Intent(CustomerDetailsActivity.this, VaultOperations.class);
-        startActivity(credit);
-        finish();
+        return;
     }
 }

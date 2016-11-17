@@ -48,7 +48,6 @@ import static com.worldpayment.demoapp.activities.debitcredit.CreditDebitActivit
 public class RefundVoidViewActivity extends WorldBaseActivity implements View.OnClickListener, TransactionDialogFragment.TransactionDialogFragmentListener {
 
     WPFormEditText field_transaction_id, field_transaction_amount;
-    //    private Button btn_refund, btn_void, btn_start_transaction;
     private Button btn_start_transaction;
     TextView amount_textView;
     public static int count = 7;
@@ -65,12 +64,6 @@ public class RefundVoidViewActivity extends WorldBaseActivity implements View.On
     }
 
     public void initComponents() {
-
-//        btn_refund = (Button) findViewById(btn_refund);
-//        btn_refund.setOnClickListener(this);
-//
-//        btn_void = (Button) findViewById(btn_void);
-//        btn_void.setOnClickListener(this);
 
         amount_textView = (TextView) findViewById(R.id.amount_textView);
         field_transaction_id = (WPFormEditText) findViewById(R.id.field_transaction_id);
@@ -130,10 +123,12 @@ public class RefundVoidViewActivity extends WorldBaseActivity implements View.On
 
     @Override
     public void onTransactionComplete(TransactionResult result, PaymentResponse paymentResponse) {
-        WPLogger.d(CreditDebitActivity.TAG,
-                "onTransactionComplete :: result=" + result + ";paymentResponse=" +
-                        paymentResponse);
 
+        if (paymentResponse != null) {
+            WPLogger.d(CreditDebitActivity.TAG,
+                    "onTransactionComplete :: result=" + result + ";paymentResponse=" +
+                            paymentResponse);
+        }
         switch (result) {
             case APPROVED:
                 //   openApprovedDialog();
@@ -171,22 +166,6 @@ public class RefundVoidViewActivity extends WorldBaseActivity implements View.On
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-
-//            case btn_refund:
-//                KeyboardUtility.closeKeyboard(this, v);
-//                count = 0;
-//                field_transaction_amount.setVisibility(View.VISIBLE);
-//                amount_textView.setVisibility(View.VISIBLE);
-//                buttonEnabled(btn_refund, btn_void, count);
-//                break;
-//
-//            case btn_void:
-//                KeyboardUtility.closeKeyboard(this, v);
-//                count = 1;
-//                amount_textView.setVisibility(View.GONE);
-//                field_transaction_amount.setVisibility(View.GONE);
-//                buttonEnabled(btn_void, btn_refund, count);
-//                break;
 
             case R.id.btn_start_transaction:
                 KeyboardUtility.closeKeyboard(this, v);
@@ -260,7 +239,6 @@ public class RefundVoidViewActivity extends WorldBaseActivity implements View.On
                     return;
                 }
 
-                Log.d("RFUND RESPONSE : ", "" + paymentResponse.toJson());
                 if (paymentResponse != null && paymentResponse.getHttpStatusCode() == WPHttpResponse.HttpStatus.OK) {
 
                     Log.d("RFUND RESPONSE : ", "" + paymentResponse.getTransactionResponse().getResponseText());
@@ -294,7 +272,6 @@ public class RefundVoidViewActivity extends WorldBaseActivity implements View.On
                     dismissProgressBar(progressDialog);
                     return;
                 }
-                Log.d("reversalRequest", "" + paymentResponse.toJson());
                 if (paymentResponse != null && paymentResponse.getHttpStatusCode() == WPHttpResponse.HttpStatus.OK) {
                     if (!paymentResponse.getTransactionResponse().getAmount().toString().trim().equals("0.0".trim())) {
                         openApprovedDialog("APPROVED", paymentResponse.getTransactionResponse(), RefundVoidViewActivity.this);
@@ -304,7 +281,6 @@ public class RefundVoidViewActivity extends WorldBaseActivity implements View.On
                 } else {
                     showSuccessDialog(getResources().getString(R.string.error), getResources().getString(R.string.transactionFailed) + "\n" + paymentResponse.getMessage(), RefundVoidViewActivity.this);
                 }
-
                 dismissProgressBar(progressDialog);
             }
         }.execute();

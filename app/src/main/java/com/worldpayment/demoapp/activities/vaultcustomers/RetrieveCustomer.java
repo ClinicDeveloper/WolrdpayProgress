@@ -5,11 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.worldpay.library.views.WPForm;
 import com.worldpay.library.views.WPFormEditText;
@@ -28,8 +26,7 @@ import static com.worldpayment.demoapp.activities.debitcredit.CreditDebitActivit
 
 public class RetrieveCustomer extends WorldBaseActivity implements View.OnClickListener {
 
-    Toolbar toolbar;
-    Button btn_search, btn_update;
+    Button btn_search, btn_cancel;
     private WPFormEditText field_customer_id;
     WPForm validateID;
     RecyclerView recyclerView;
@@ -48,16 +45,15 @@ public class RetrieveCustomer extends WorldBaseActivity implements View.OnClickL
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         field_customer_id = (WPFormEditText) findViewById(R.id.field_customer_id);
         btn_search = (Button) findViewById(R.id.btn_search);
-        btn_update = (Button) findViewById(R.id.btn_update);
+        btn_cancel = (Button) findViewById(R.id.btn_cancel);
 
         btn_search.setOnClickListener(this);
-        btn_update.setOnClickListener(this);
+        btn_cancel.setOnClickListener(this);
 
         validateID = new WPForm();
         field_customer_id = (WPFormEditText) findViewById(R.id.field_customer_id);
         field_customer_id.addValidator(new WPNotEmptyValidator("Customer Id is required!"));
         validateID.addItem(field_customer_id);
-
 
     }
 
@@ -67,12 +63,11 @@ public class RetrieveCustomer extends WorldBaseActivity implements View.OnClickL
         switch (v.getId()) {
             case R.id.btn_search:
                 KeyboardUtility.closeKeyboard(this, v);
-                fetchCustomers("retrieve");
+                fetchCustomers();
                 break;
 
-            case R.id.btn_update:
-                KeyboardUtility.closeKeyboard(this, v);
-                fetchCustomers("update");
+            case R.id.btn_cancel:
+                finish();
                 break;
 
             default:
@@ -81,7 +76,7 @@ public class RetrieveCustomer extends WorldBaseActivity implements View.OnClickL
     }
 
 
-    public void fetchCustomers(final String check) {
+    public void fetchCustomers() {
 
         GetCustomerRequest getCustomerRequest = new GetCustomerRequest();
         if (validateID.validateAll()) {
@@ -108,32 +103,17 @@ public class RetrieveCustomer extends WorldBaseActivity implements View.OnClickL
 
                     if (customerResponse != null) {
                         Log.d("customerResponse", "" + customerResponse.toJson());
-                    } else {
-                        dismissProgressBar(progressDialog);
-                        Toast.makeText(RetrieveCustomer.this, "Null response from SDK", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    if (customerResponse.hasError()) {
-                        dismissProgressBar(progressDialog);
-                        return;
-                    }
-
-                    if (customerResponse != null) {
+                        if (customerResponse.hasError()) {
+                            dismissProgressBar(progressDialog);
+                            showSuccessDialog(getResources().getString(R.string.error), customerResponse.getResponseMessage(), RetrieveCustomer.this);
+                        }
                         responseCustomerDetails = customerResponse;
                         if (responseCustomerDetails != null) {
                             dismissProgressBar(progressDialog);
-                            if (check.equals("retrieve")) {
-                                Intent retrieve = new Intent(RetrieveCustomer.this, CustomerDetailsActivity.class);
-                                retrieve.putExtra("customer_id", field_customer_id.getValue());
-                                startActivity(retrieve);
-                            } else if (check.equals("update")) {
-                                Intent update = new Intent(RetrieveCustomer.this, UpdateCustomer.class);
-                                update.putExtra("customer_id", field_customer_id.getValue());
-                                startActivity(update);
-                            }
+                            Intent retrieve = new Intent(RetrieveCustomer.this, CustomerDetailsActivity.class);
+                            retrieve.putExtra("customer_id", field_customer_id.getValue());
+                            startActivity(retrieve);
                         }
-                    } else {
-                        showSuccessDialog(getResources().getString(R.string.error), customerResponse.getMessage(), RetrieveCustomer.this);
                     }
                     dismissProgressBar(progressDialog);
                 }

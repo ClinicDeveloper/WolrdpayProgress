@@ -27,6 +27,7 @@ import com.worldpayment.demoapp.activities.settlement.ActivitySettlement;
 import com.worldpayment.demoapp.activities.settlement.TransactionListActivity;
 import com.worldpayment.demoapp.activities.vaultcustomers.CreateCustomer;
 import com.worldpayment.demoapp.activities.vaultcustomers.CreatePaymentMethod;
+import com.worldpayment.demoapp.activities.vaultcustomers.RetrieveCustomer;
 import com.worldpayment.demoapp.activities.vaultcustomers.UpdateCustomer;
 import com.worldpayment.demoapp.activities.vaultcustomers.VaultOperations;
 import com.worldpayment.demoapp.utility.KeyboardUtility;
@@ -58,7 +59,8 @@ public class WorldBaseActivity extends AppCompatActivity {
         if (worldBaseActivity instanceof TransactionListActivity ||
                 worldBaseActivity instanceof CreateCustomer ||
                 worldBaseActivity instanceof UpdateCustomer ||
-                worldBaseActivity instanceof CreatePaymentMethod) {
+                worldBaseActivity instanceof CreatePaymentMethod ||
+                worldBaseActivity instanceof RetrieveCustomer) {
             setUpToolbarNoNavigation();
         }
 
@@ -284,6 +286,9 @@ public class WorldBaseActivity extends AppCompatActivity {
         }
         if (worldBaseActivity instanceof CreatePaymentMethod) {
             toolbar_title.setText("Create Payment Account");
+        }
+        if (worldBaseActivity instanceof RetrieveCustomer) {
+            toolbar_title.setText("Retrieve Customer");
         }
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {

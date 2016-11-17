@@ -2,19 +2,28 @@ package com.worldpayment.demoapp.activities.vaultcustomers;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
+import com.worldpay.library.domain.Card;
+import com.worldpay.library.domain.PaymentMethod;
 import com.worldpay.library.views.WPFormEditText;
 import com.worldpay.library.webservices.services.paymentmethods.CreatePaymentMethodRequest;
 import com.worldpay.library.webservices.services.paymentmethods.PaymentMethodResponse;
 import com.worldpay.library.webservices.tasks.PaymentMethodCreateTask;
+import com.worldpayment.demoapp.BuildConfig;
 import com.worldpayment.demoapp.R;
 import com.worldpayment.demoapp.WorldBaseActivity;
+
+import static com.worldpayment.demoapp.BuildConfig.MERCHANT_ID;
+import static com.worldpayment.demoapp.BuildConfig.MERCHANT_KEY;
+import static com.worldpayment.demoapp.activities.debitcredit.CreditDebitActivity.PREF_AUTH_TOKEN;
 
 public class CreatePaymentMethod extends WorldBaseActivity implements View.OnClickListener {
 
@@ -74,13 +83,11 @@ public class CreatePaymentMethod extends WorldBaseActivity implements View.OnCli
         switch (v.getId()) {
 
             case R.id.btn_create:
+                Toast.makeText(this, "SDK in progress", Toast.LENGTH_SHORT).show();
+//                setFields();
                 break;
 
             case R.id.btn_cancel:
-
-                CreatePaymentMethodRequest createPaymentMethodRequest =  new CreatePaymentMethodRequest();
-//                createPaymentMethodRequest.set
-//                creatingPaymentMethod();
                 finish();
 
             default:
@@ -88,6 +95,29 @@ public class CreatePaymentMethod extends WorldBaseActivity implements View.OnCli
         }
     }
 
+    public void setFields() {
+
+        CreatePaymentMethodRequest createPaymentMethodRequest = new CreatePaymentMethodRequest();
+
+        String authToken = PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_AUTH_TOKEN, null);
+        createPaymentMethodRequest.setAuthToken(authToken);
+        createPaymentMethodRequest.setDeveloperId(BuildConfig.DEVELOPER_ID);
+        createPaymentMethodRequest.setApplicationVersion(BuildConfig.VERSION_NAME);
+        createPaymentMethodRequest.setMerchantId(MERCHANT_ID);
+        createPaymentMethodRequest.setMerchantKey(MERCHANT_KEY);
+
+        createPaymentMethodRequest.setCustomerId("5000037");
+        PaymentMethod paymentMethod = new PaymentMethod();
+        paymentMethod.setNotes("Hey It is test");
+        Card card = new Card();
+        card.setNumber("4111111111111111");
+        card.setCvv("123");
+        card.setExpirationMonth(8);
+        card.setExpirationYear(2018);
+        createPaymentMethodRequest.setCard(card);
+        creatingPaymentMethod(createPaymentMethodRequest);
+
+    }
 
     public void creatingPaymentMethod(CreatePaymentMethodRequest createPaymentMethodRequest) {
 
@@ -108,7 +138,7 @@ public class CreatePaymentMethod extends WorldBaseActivity implements View.OnCli
                     return;
                 }
 
-                if(paymentMethodResponse!=null) {
+                if (paymentMethodResponse != null) {
                     Log.d("RFUND RESPONSE : ", "" + paymentMethodResponse.toJson());
                 }
 //                if (paymentMethodResponse != null && paymentMethodResponse.getHttpStatusCode() == WPHttpResponse.HttpStatus.OK) {

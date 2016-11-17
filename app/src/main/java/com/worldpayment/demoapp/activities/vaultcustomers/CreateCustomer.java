@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -172,6 +173,8 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
             address.setState("" + spinner_state.getValue());
             address.setZip("" + zip.getValue());
 
+            createCustomerRequest.setCompany("" + field_company.getValue());
+
             createCustomerRequest.setAddress(address);
 
 //            createCustomerRequest.setUserDefinedFields();
@@ -199,12 +202,13 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
                     dismissProgressBar(progressDialog);
                     return;
                 }
-
+                Log.d("customer Id ", "" + customerResponse.getCustomerId());
                 if (customerResponse != null && customerResponse.getHttpStatusCode() == WPHttpResponse.HttpStatus.OK) {
                     createdDialog(customerResponse.getResult(), customerResponse, CreateCustomer.this);
-                } else {
-                    createdDialog(customerResponse.getResult(), customerResponse, CreateCustomer.this);
                 }
+//                else {
+//                    createdDialog(customerResponse.getResult(), customerResponse, CreateCustomer.this);
+//                }
 
                 dismissProgressBar(progressDialog);
             }
@@ -234,13 +238,10 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
             title.setTextColor(Color.parseColor("#007867"));
             dialog_btn_negative.setText("" + getResources().getString(R.string.details));
             dialog_btn_positive.setText("" + getResources().getString(R.string.done));
-
-
         } else {
             title.setTextColor(Color.parseColor("#f11e15"));
             dialog_btn_negative.setVisibility(View.GONE);
             dialog_btn_positive.setText("OK");
-
         }
         final android.app.AlertDialog alert = alertDialogBuilder.create();
         alert.show();
@@ -251,7 +252,6 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(CreateCustomer.this, CustomerDetailsActivity.class);
-                intent.putExtra("customer_id", "" + "");
                 startActivity(intent);
             }
         });

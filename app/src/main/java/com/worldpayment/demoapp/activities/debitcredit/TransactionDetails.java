@@ -119,8 +119,8 @@ public class TransactionDetails extends AppCompatActivity implements View.OnClic
                 tv_zip_code.setText("" + response.getBillAddress().getZip());
             }
 
-            if (response.getBillAddress().getCity() != null) {
-                tv_company.setText("" + response.getBillAddress().getCity());
+            if (response.getBillAddress().getCompany() != null) {
+                tv_company.setText("" + response.getBillAddress().getCompany());
             }
 
             if (response.getBillAddress().getPhone() != null) {

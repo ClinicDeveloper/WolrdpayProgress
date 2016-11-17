@@ -279,7 +279,7 @@ public class WorldBaseActivity extends AppCompatActivity {
             toolbar_title.setText("Create Customer");
         }
         if (worldBaseActivity instanceof UpdateCustomer) {
-            toolbar_title.setText("Update Customer");
+            toolbar_title.setText("Edit Customer");
         }
         if (worldBaseActivity instanceof TransactionListActivity) {
             toolbar_title.setText("Batch Details");

@@ -5,15 +5,12 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.design.widget.AppBarLayout;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.worldpay.library.domain.Address;
 import com.worldpay.library.domain.Customer;
@@ -48,6 +45,7 @@ public class UpdateCustomer extends WorldBaseActivity implements View.OnClickLis
     private WPForm validateAlls;
     String customer_id;
     private CheckBox check_mail;
+    TextView toolbar_title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,21 +54,8 @@ public class UpdateCustomer extends WorldBaseActivity implements View.OnClickLis
         setActivity(UpdateCustomer.this);
         mappingViews();
 
-        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
-        Toolbar toolbar = (Toolbar) appBarLayout.findViewById(R.id.toolbar);
-        TextView toolbar_title = (TextView) appBarLayout.findViewById(R.id.toolbar_title);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
-
-        if (getIntent().getExtras() != null) {
-            customer_id = getIntent().getExtras().getString("customer_id");
-            if (responseCustomerDetails != null) {
-                settingFields(responseCustomerDetails);
-                toolbar_title.setText("CUSTOMER Id : " + customer_id);
-            } else {
-                Toast.makeText(this, "Null response", Toast.LENGTH_SHORT).show();
-                finish();
-            }
+        if (responseCustomerDetails != null) {
+            settingFields(responseCustomerDetails);
         }
     }
 

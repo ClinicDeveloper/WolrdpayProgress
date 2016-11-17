@@ -1,5 +1,6 @@
 package com.worldpayment.demoapp.activities.vaultcustomers;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -147,6 +148,8 @@ public class CustomerDetailsActivity extends AppCompatActivity implements View.O
         switch (view.getId()) {
 
             case R.id.btn_edit:
+                Intent update = new Intent(this, UpdateCustomer.class);
+                startActivity(update);
                 finish();
                 break;
 

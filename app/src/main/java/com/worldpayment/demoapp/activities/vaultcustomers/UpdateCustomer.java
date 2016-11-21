@@ -238,11 +238,20 @@ public class UpdateCustomer extends WorldBaseActivity implements View.OnClickLis
         }
         field_notes.setText("" + response.getNotes());
 
-        field_street_address.setText("" + response.getAddress().getLine1());
-        field_city.setText("" + response.getAddress().getCity());
-        field_company.setText("" + response.getCompany());
-        zip.setText("" + response.getAddress().getZip());
-
+        if (response.getAddress() != null) {
+            if (response.getAddress().getLine1() != null) {
+                field_street_address.setText("" + response.getAddress().getLine1());
+            }
+            if (response.getAddress().getCity() != null) {
+                field_city.setText("" + response.getAddress().getCity());
+            }
+            if (response.getAddress().getCompany() != null) {
+                field_company.setText("" + response.getCompany());
+            }
+            if (response.getAddress().getZip() != null) {
+                zip.setText("" + response.getAddress().getZip());
+            }
+        }
         if (response.isSendEmailReceipts()) {
             check_mail.setChecked(true);
         } else {

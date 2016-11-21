@@ -74,7 +74,8 @@
                 style="@style/EditTextField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number" />
+                android:inputType="number"
+                android:maxLength="10" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -113,7 +114,8 @@
                 android:id="@+id/field_notes"
                 style="@style/EditTextField"
                 android:layout_width="match_parent"
-                android:layout_height="100dp" />
+                android:layout_height="100dp"
+                android:inputType="text" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -126,7 +128,8 @@
                 android:id="@+id/field_street_address"
                 style="@style/EditTextField"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="text" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -139,7 +142,8 @@
                 android:id="@+id/field_city"
                 style="@style/EditTextField"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="text" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -191,6 +195,7 @@
                         android:background="@drawable/edittext_rounded"
                         android:imeOptions="actionNext"
                         android:inputType="number"
+                        android:maxLength="5"
                         android:padding="10dp" />
 
                 </LinearLayout>
@@ -220,7 +225,8 @@
                 android:id="@+id/field_user_defined1"
                 style="@style/EditTextField"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="text" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -233,7 +239,8 @@
                 android:id="@+id/field_user_defined2"
                 style="@style/EditTextField"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="text" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -246,7 +253,8 @@
                 android:id="@+id/field_user_defined3"
                 style="@style/EditTextField"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="text" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -259,7 +267,8 @@
                 android:id="@+id/field_user_defined4"
                 style="@style/EditTextField"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="text" />
 
         </LinearLayout>
     </ScrollView>

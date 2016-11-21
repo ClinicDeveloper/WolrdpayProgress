@@ -30,6 +30,7 @@ import com.worldpayment.demoapp.R;
 import com.worldpayment.demoapp.WorldBaseActivity;
 import com.worldpayment.demoapp.utility.KeyboardUtility;
 
+import java.util.HashMap;
 import java.util.Locale;
 
 import static com.worldpayment.demoapp.BuildConfig.MERCHANT_ID;
@@ -147,7 +148,7 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
 
         if (validateAlls.validateAll()) {
 
-            //  createCustomerRequest.set
+            createCustomerRequest.setCustomerID(field_customer_id.getValue());
             createCustomerRequest.setFirstName(field_first_name.getValue());
             createCustomerRequest.setLastName(field_last_name.getValue());
             createCustomerRequest.setEmail(field_email_address.getValue());
@@ -172,12 +173,30 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
             address.setCity("" + field_city.getValue());
             address.setState("" + spinner_state.getValue());
             address.setZip("" + zip.getValue());
+            address.setPhone("" + field_phone_number.getValue());
+            address.setCompany("" + field_company.getValue());
 
             createCustomerRequest.setCompany("" + field_company.getValue());
 
             createCustomerRequest.setAddress(address);
 
-//            createCustomerRequest.setUserDefinedFields();
+            HashMap jsonObject = new HashMap();
+
+            if (field_user_defined1.getValue() != null) {
+                jsonObject.put("UDF1", field_user_defined1.getValue());
+            }
+            if (field_user_defined2.getValue() != null) {
+                jsonObject.put("UDF2", field_user_defined2.getValue());
+            }
+            if (field_user_defined3.getValue() != null) {
+                jsonObject.put("UDF3", field_user_defined3.getValue());
+            }
+            if (field_user_defined4.getValue() != null) {
+                jsonObject.put("UDF4", field_user_defined4.getValue());
+            }
+            if (jsonObject != null) {
+                createCustomerRequest.setUserDefinedFields(jsonObject);
+            }
             createCustomer(createCustomerRequest);
 
 

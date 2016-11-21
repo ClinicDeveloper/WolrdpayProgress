@@ -37,7 +37,7 @@ import static com.worldpayment.demoapp.activities.vaultcustomers.RetrieveCustome
 public class UpdateCustomer extends WorldBaseActivity implements View.OnClickListener {
 
     private Button btn_create, btn_cancel;
-    WPFormEditText field_first_name, field_last_name, field_phone_number, field_email_address, field_notes;
+    WPFormEditText field_customer_id, field_first_name, field_last_name, field_phone_number, field_email_address, field_notes;
     WPFormEditText field_street_address, field_city, zip, field_company;
     WPFormEditText field_user_defined1, field_user_defined2, field_user_defined3, field_user_defined4;
     WPSimpleFormSpinner spinner_state;
@@ -59,6 +59,7 @@ public class UpdateCustomer extends WorldBaseActivity implements View.OnClickLis
 
     public void mappingViews() {
 
+
         btn_create = (Button) findViewById(R.id.btn_create);
         btn_create.setText("Update");
         Drawable img = getResources().getDrawable(R.mipmap.ic_update);
@@ -73,6 +74,7 @@ public class UpdateCustomer extends WorldBaseActivity implements View.OnClickLis
         check_mail = (CheckBox) findViewById(R.id.check_mail);
         validateAlls = new WPForm();
 
+        field_customer_id = (WPFormEditText) findViewById(R.id.field_customer_id);
         field_first_name = (WPFormEditText) findViewById(R.id.field_first_name);
         field_first_name.addValidator(new WPNotEmptyValidator("First Name is required!"));
         validateAlls.addItem(field_first_name);
@@ -225,6 +227,7 @@ public class UpdateCustomer extends WorldBaseActivity implements View.OnClickLis
     public void settingFields(CustomerResponse response) {
 
         //Customer OVERVIEW
+        field_customer_id.setText("" + response.getCustomerId());
         field_first_name.setText("" + response.getFirstName());
         field_last_name.setText("" + response.getLastName());
         field_email_address.setText("" + response.getEmail());

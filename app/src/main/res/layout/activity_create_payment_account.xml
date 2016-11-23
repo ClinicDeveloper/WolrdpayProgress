@@ -26,7 +26,8 @@
             android:id="@+id/customer_id"
             style="@style/EditTextField"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="number" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -39,7 +40,8 @@
             android:id="@+id/payment_id"
             style="@style/EditTextField"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="number" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -132,7 +134,8 @@
                             android:id="@+id/card_number"
                             style="@style/EditTextField"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:inputType="number" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -152,7 +155,8 @@
                             android:id="@+id/card_cvv"
                             style="@style/EditTextField"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:inputType="number" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -166,7 +170,7 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="50"
+                        android:layout_weight="60"
                         android:orientation="vertical">
 
                         <TextView
@@ -190,10 +194,11 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
-                                android:layout_weight="45"
+                                android:layout_weight="50"
                                 android:background="@drawable/edittext_rounded"
                                 android:gravity="center"
                                 android:hint="mm"
+                                android:inputType="number"
                                 android:padding="@dimen/text_size10" />
 
                             <TextView
@@ -208,10 +213,11 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="5dp"
-                                android:layout_weight="55"
+                                android:layout_weight="50"
                                 android:background="@drawable/edittext_rounded"
                                 android:gravity="center"
                                 android:hint="yyyy"
+                                android:inputType="number"
                                 android:padding="10dp" />
                         </LinearLayout>
                     </LinearLayout>
@@ -220,7 +226,7 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="50"
+                        android:layout_weight="40"
                         android:orientation="vertical">
 
                         <TextView
@@ -234,7 +240,8 @@
                             android:id="@+id/card_pinBlock"
                             style="@style/EditTextField"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:inputType="number" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -250,7 +257,8 @@
                     android:id="@+id/card_first_name"
                     style="@style/EditTextField"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -263,7 +271,8 @@
                     android:id="@+id/card_last_name"
                     style="@style/EditTextField"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -276,7 +285,8 @@
                     android:id="@+id/card_phone_number"
                     style="@style/EditTextField"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:inputType="number" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -289,7 +299,8 @@
                     android:id="@+id/card_email_address"
                     style="@style/EditTextField"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress" />
             </LinearLayout>
 
 

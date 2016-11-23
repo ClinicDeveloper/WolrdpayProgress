@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 
@@ -17,8 +16,6 @@ import com.worldpay.library.views.WPForm;
 import com.worldpay.library.views.WPFormEditText;
 import com.worldpay.library.views.WPNotEmptyValidator;
 import com.worldpay.library.views.WPPostalCodeValidator;
-import com.worldpay.library.views.WPSimpleFormSpinner;
-import com.worldpay.library.views.WPStateCodeValidator;
 import com.worldpay.library.webservices.services.customers.CustomerResponse;
 import com.worldpay.library.webservices.services.customers.UpdateCustomerRequest;
 import com.worldpay.library.webservices.tasks.CustomerUpdateTask;
@@ -40,7 +37,7 @@ public class UpdateCustomer extends WorldBaseActivity implements View.OnClickLis
     WPFormEditText field_customer_id, field_first_name, field_last_name, field_phone_number, field_email_address, field_notes;
     WPFormEditText field_street_address, field_city, zip, field_company;
     WPFormEditText field_user_defined1, field_user_defined2, field_user_defined3, field_user_defined4;
-    WPSimpleFormSpinner spinner_state;
+    WPFormEditText spinner_state;
     private WPForm validateAlls;
     String customer_id;
     private CheckBox check_mail;
@@ -110,11 +107,15 @@ public class UpdateCustomer extends WorldBaseActivity implements View.OnClickLis
         field_user_defined3 = (WPFormEditText) findViewById(R.id.field_user_defined3);
         field_user_defined4 = (WPFormEditText) findViewById(R.id.field_user_defined4);
 
-        spinner_state = (WPSimpleFormSpinner) findViewById(R.id.spinner_state);
-        spinner_state.addValidator(new WPStateCodeValidator("State is invalid!", Locale.US));
-        spinner_state.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
-                getResources().getStringArray(com.worldpay.library.R.array.states)));
+        spinner_state = (WPFormEditText) findViewById(R.id.spinner_state);
+        spinner_state.addValidator(new WPNotEmptyValidator("City is required!"));
         validateAlls.addItem(spinner_state);
+
+//        spinner_state = (WPFormEditText) findViewById(R.id.spinner_state);
+//        spinner_state.addValidator(new WPStateCodeValidator("State is invalid!", Locale.US));
+//        spinner_state.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
+//                getResources().getStringArray(com.worldpay.library.R.array.states)));
+//        validateAlls.addItem(spinner_state);
 
 
     }
@@ -227,7 +228,7 @@ public class UpdateCustomer extends WorldBaseActivity implements View.OnClickLis
     public void settingFields(CustomerResponse response) {
 
         //Customer OVERVIEW
-        field_customer_id.setText("" + response.getCustomerId());
+        // field_customer_id.setText("" + response.getCustomerId());
         field_first_name.setText("" + response.getFirstName());
         field_last_name.setText("" + response.getLastName());
         field_email_address.setText("" + response.getEmail());
@@ -245,9 +246,9 @@ public class UpdateCustomer extends WorldBaseActivity implements View.OnClickLis
             if (response.getAddress().getCity() != null) {
                 field_city.setText("" + response.getAddress().getCity());
             }
-            if (response.getAddress().getCompany() != null) {
-                field_company.setText("" + response.getCompany());
-            }
+//            if (response.getAddress().getCompany() != null) {
+//                field_company.setText("" + response.getCompany());
+//            }
             if (response.getAddress().getZip() != null) {
                 zip.setText("" + response.getAddress().getZip());
             }

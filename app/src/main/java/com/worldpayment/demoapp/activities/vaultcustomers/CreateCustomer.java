@@ -6,10 +6,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
@@ -19,8 +17,6 @@ import com.worldpay.library.views.WPForm;
 import com.worldpay.library.views.WPFormEditText;
 import com.worldpay.library.views.WPNotEmptyValidator;
 import com.worldpay.library.views.WPPostalCodeValidator;
-import com.worldpay.library.views.WPSimpleFormSpinner;
-import com.worldpay.library.views.WPStateCodeValidator;
 import com.worldpay.library.webservices.network.WPHttpResponse;
 import com.worldpay.library.webservices.services.customers.CreateCustomerRequest;
 import com.worldpay.library.webservices.services.customers.CustomerResponse;
@@ -43,7 +39,7 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
     WPFormEditText field_customer_id, field_first_name, field_last_name, field_phone_number, field_email_address, field_notes;
     WPFormEditText field_street_address, field_city, zip, field_company;
     WPFormEditText field_user_defined1, field_user_defined2, field_user_defined3, field_user_defined4;
-    WPSimpleFormSpinner spinner_state;
+    WPFormEditText spinner_state;
     private WPForm validateAlls;
     private CheckBox check_mail;
 
@@ -112,11 +108,14 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
         field_user_defined3 = (WPFormEditText) findViewById(R.id.field_user_defined3);
         field_user_defined4 = (WPFormEditText) findViewById(R.id.field_user_defined4);
 
-        spinner_state = (WPSimpleFormSpinner) findViewById(R.id.spinner_state);
-        spinner_state.addValidator(new WPStateCodeValidator("State is invalid!", Locale.US));
-        spinner_state.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
-                getResources().getStringArray(com.worldpay.library.R.array.states)));
+        spinner_state = (WPFormEditText) findViewById(R.id.spinner_state);
+        spinner_state.addValidator(new WPNotEmptyValidator("City is required!"));
         validateAlls.addItem(spinner_state);
+//
+//        spinner_state.addValidator(new WPStateCodeValidator("State is invalid!", Locale.US));
+//        spinner_state.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
+//                getResources().getStringArray(com.worldpay.library.R.array.states)));
+//        validateAlls.addItem(spinner_state);
 
 
     }
@@ -148,7 +147,7 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
 
         if (validateAlls.validateAll()) {
 
-            createCustomerRequest.setCustomerID(field_customer_id.getValue());
+          //  createCustomerRequest.setCustomerID(field_customer_id.getValue());
             createCustomerRequest.setFirstName(field_first_name.getValue());
             createCustomerRequest.setLastName(field_last_name.getValue());
             createCustomerRequest.setEmail(field_email_address.getValue());
@@ -174,7 +173,7 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
             address.setState("" + spinner_state.getValue());
             address.setZip("" + zip.getValue());
             address.setPhone("" + field_phone_number.getValue());
-            address.setCompany("" + field_company.getValue());
+          //  address.setCompany("" + field_company.getValue());
 
             createCustomerRequest.setCompany("" + field_company.getValue());
 
@@ -221,7 +220,7 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
                     dismissProgressBar(progressDialog);
                     return;
                 }
-                Log.d("customer Id ", "" + customerResponse.getCustomerId());
+
                 if (customerResponse != null && customerResponse.getHttpStatusCode() == WPHttpResponse.HttpStatus.OK) {
                     createdDialog(customerResponse.getResult(), customerResponse, CreateCustomer.this);
                 }

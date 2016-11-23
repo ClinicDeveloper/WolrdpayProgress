@@ -114,7 +114,7 @@
                 android:id="@+id/field_notes"
                 style="@style/EditTextField"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="wrap_content"
                 android:inputType="text" />
 
             <TextView
@@ -162,23 +162,26 @@
                     <com.worldpay.library.views.WPTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:hint="State"
                         android:imeOptions="actionNext"
                         android:inputType="textPersonName" />
 
-                    <com.worldpay.library.views.WPSimpleFormSpinner
+                    <com.worldpay.library.views.WPFormEditText
                         android:id="@+id/spinner_state"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
-                        android:background="@drawable/edittext_rounded" />
+                        android:background="@drawable/edittext_rounded"
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:maxLength="5"
+                        android:padding="10dp" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/text_size10"
                     android:layout_weight="1"
                     android:orientation="vertical">
 

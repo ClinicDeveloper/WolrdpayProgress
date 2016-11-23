@@ -37,6 +37,8 @@
 
     <string name="success">SUCCESS</string>
     <string name="error">ERROR!</string>
+    <string name="nullResponse">Null Response! Service Error</string>
+
     <string name="approvedVault">Transaction approved and Customer add to Vault</string>
     <string name="approvedNoVault">Transaction approved</string>
     <string name="transactionFailed">Transaction failed!</string>

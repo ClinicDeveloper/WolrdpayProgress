@@ -15,6 +15,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.worldpay.library.enums.ResponseCode;
 import com.worldpay.library.enums.ReversalType;
 import com.worldpay.library.enums.TransactionResult;
 import com.worldpay.library.enums.VoidType;
@@ -23,7 +24,6 @@ import com.worldpay.library.views.WPCurrencyTextWatcher;
 import com.worldpay.library.views.WPForm;
 import com.worldpay.library.views.WPFormEditText;
 import com.worldpay.library.views.WPNotEmptyValidator;
-import com.worldpay.library.webservices.network.WPHttpResponse;
 import com.worldpay.library.webservices.services.payments.PaymentResponse;
 import com.worldpay.library.webservices.services.payments.ReversalRequest;
 import com.worldpay.library.webservices.tasks.PaymentRefundTask;
@@ -239,17 +239,19 @@ public class RefundVoidViewActivity extends WorldBaseActivity implements View.On
                     return;
                 }
 
-                if (paymentResponse != null && paymentResponse.getHttpStatusCode() == WPHttpResponse.HttpStatus.OK) {
-
-                    Log.d("RFUND RESPONSE : ", "" + paymentResponse.getTransactionResponse().getResponseText());
-                    if (!paymentResponse.getTransactionResponse().getAmount().toString().trim().equals("0.0".trim())) {
+                if (paymentResponse != null) {
+                    if (paymentResponse.getResponseCode() == ResponseCode.APPROVED) {
                         openApprovedDialog("APPROVED", paymentResponse.getTransactionResponse(), RefundVoidViewActivity.this);
-                    } else
+                    } else if (paymentResponse.getResponseCode() == ResponseCode.ERROR) {
                         showSuccessDialog(getResources().getString(R.string.error), "" + paymentResponse.getTransactionResponse().getResponseText(), RefundVoidViewActivity.this);
+                    } else if (paymentResponse.getResponseCode() == ResponseCode.DECLINED) {
+                        showSuccessDialog(getResources().getString(R.string.error), getResources().getString(R.string.transactionFailed) + "\n" + paymentResponse.getMessage(), RefundVoidViewActivity.this);
+                    }
                 } else {
                     showSuccessDialog(getResources().getString(R.string.error), getResources().getString(R.string.transactionFailed) + "\n" + paymentResponse.getMessage(), RefundVoidViewActivity.this);
                 }
                 dismissProgressBar(progressDialog);
+
             }
         }.execute();
     }
@@ -272,12 +274,12 @@ public class RefundVoidViewActivity extends WorldBaseActivity implements View.On
                     dismissProgressBar(progressDialog);
                     return;
                 }
-                if (paymentResponse != null && paymentResponse.getHttpStatusCode() == WPHttpResponse.HttpStatus.OK) {
-                    if (!paymentResponse.getTransactionResponse().getAmount().toString().trim().equals("0.0".trim())) {
+                if (paymentResponse != null) {
+                    if (paymentResponse.getResponseCode() == ResponseCode.APPROVED) {
                         openApprovedDialog("APPROVED", paymentResponse.getTransactionResponse(), RefundVoidViewActivity.this);
-                    } else
+                    } else if (paymentResponse.getResponseCode() == ResponseCode.ERROR) {
                         showSuccessDialog(getResources().getString(R.string.error), "" + paymentResponse.getTransactionResponse().getResponseText(), RefundVoidViewActivity.this);
-
+                    }
                 } else {
                     showSuccessDialog(getResources().getString(R.string.error), getResources().getString(R.string.transactionFailed) + "\n" + paymentResponse.getMessage(), RefundVoidViewActivity.this);
                 }

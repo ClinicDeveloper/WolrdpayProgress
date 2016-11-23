@@ -4,11 +4,11 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.worldpay.library.enums.ResponseCode;
 import com.worldpay.library.webservices.services.batches.BatchResponse;
 import com.worldpay.library.webservices.services.batches.CloseCurrentBatchRequest;
 import com.worldpay.library.webservices.tasks.BatchCloseCurrentTask;
@@ -95,15 +95,16 @@ public class ActivitySettlement extends WorldBaseActivity implements View.OnClic
 
             @Override
             protected void onPostExecute(BatchResponse batchResponse) {
-                if (batchResponse.hasError()) {
-                    dismissProgressBar(progressDialog);
-                    return;
-                }
-                Log.d("batchResponse", "" + batchResponse.getId());
+
                 if (batchResponse != null) {
-                    showSuccessDialog(getResources().getString(R.string.success), getResources().getString(R.string.batchClosed), ActivitySettlement.this);
+                    if (batchResponse.getResponseCode() == ResponseCode.APPROVED) {
+                        showSuccessDialog(getResources().getString(R.string.success), getResources().getString(R.string.batchClosed), ActivitySettlement.this);
+                    } else {
+                        showSuccessDialog(getResources().getString(R.string.error), batchResponse.getResponseMessage(), ActivitySettlement.this);
+                    }
                 } else {
-                    showSuccessDialog(getResources().getString(R.string.error), batchResponse.getMessage(), ActivitySettlement.this);
+                    showSuccessDialog(getResources().getString(R.string.error), "Null response! Service Error!", ActivitySettlement.this);
+
                 }
 
                 dismissProgressBar(progressDialog);

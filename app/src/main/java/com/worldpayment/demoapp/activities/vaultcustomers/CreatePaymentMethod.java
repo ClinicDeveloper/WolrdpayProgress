@@ -16,7 +16,7 @@ import android.widget.Spinner;
 import com.worldpay.library.domain.Address;
 import com.worldpay.library.domain.Card;
 import com.worldpay.library.domain.Check;
-import com.worldpay.library.domain.PaymentMethod;
+import com.worldpay.library.enums.ResponseCode;
 import com.worldpay.library.views.WPCreditCardHelper;
 import com.worldpay.library.views.WPForm;
 import com.worldpay.library.views.WPFormEditText;
@@ -29,6 +29,7 @@ import com.worldpay.library.webservices.tasks.PaymentMethodCreateTask;
 import com.worldpayment.demoapp.BuildConfig;
 import com.worldpayment.demoapp.R;
 import com.worldpayment.demoapp.WorldBaseActivity;
+import com.worldpayment.demoapp.utility.KeyboardUtility;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -305,14 +306,7 @@ public class CreatePaymentMethod extends WorldBaseActivity implements View.OnCli
 
             case R.id.btn_create:
 
-
-               /* if (radioButton.getText().equals("Card")) {
-                    initCardComponents(v);
-                } else if (radioButton.getText().equals("Check")) {
-                    initCheckComponents(v);
-                }
-*/
-
+                KeyboardUtility.closeKeyboard(this, v);
                 if (cardValidation.validateAll() || checkValidation.validateAll()) {
 
                     CreatePaymentMethodRequest createPaymentMethodRequest = new CreatePaymentMethodRequest();
@@ -325,8 +319,9 @@ public class CreatePaymentMethod extends WorldBaseActivity implements View.OnCli
                     createPaymentMethodRequest.setMerchantKey(MERCHANT_KEY);
 
                     createPaymentMethodRequest.setCustomerId("" + customer_id.getValue());
-                    PaymentMethod paymentMethod = new PaymentMethod();
+
                     if (radio == 0) {
+
                         Card card = new Card();
                         card.setNumber("" + card_number.getValue());
                         card.setCvv("" + card_cvv.getValue());
@@ -334,11 +329,22 @@ public class CreatePaymentMethod extends WorldBaseActivity implements View.OnCli
                         card.setLastName("" + card_last_name.getValue());
                         card.setEmail("" + card_email_address.getValue());
                         card.setExpirationMonth(Integer.valueOf(card_expiry_month.getValue()));
-                        card.setExpirationMonth(Integer.valueOf(card_expiry_year.getValue()));
+                        card.setExpirationYear(Integer.valueOf(card_expiry_year.getValue()));
                         card.setPinBlock("" + pinBlock.getValue());
                         Address address = new Address();
                         address.setPhone("" + card_phone_number.getValue());
+                        address.setLine1("Line 1 Test");
+                        address.setCity("Austin");
+                        address.setState("NY");
+                        address.setZip("56453");
+                        address.setCountry("US");
                         card.setAddress(address);
+
+//                        PaymentMethod paymentMethod = new PaymentMethod();
+//                        paymentMethod.setNotes("Hey Payment Notes");
+//                        paymentMethod.setPhone("8625905450");
+//                        paymentMethod.setCard(card);
+
 
                    /* card.setCvv("" + 123);
                     card.setExpirationMonth(8);
@@ -366,19 +372,14 @@ public class CreatePaymentMethod extends WorldBaseActivity implements View.OnCli
                         //      check.setEmail("" + check_email_address.getValue());
                         check.setRoutingNumber("" + routing_number.getValue());
                         createPaymentMethodRequest.setCheck(check);
-
                     }
                     creatingPaymentMethod(createPaymentMethodRequest);
-
                 }
 
                 break;
 
             case R.id.btn_cancel:
-
-                CreatePaymentMethodRequest createPaymentMethodRequest = new CreatePaymentMethodRequest();
-//                createPaymentMethodRequest.set
-//                creatingPaymentMethod();
+                KeyboardUtility.closeKeyboard(this, v);
                 finish();
 
             default:
@@ -401,27 +402,19 @@ public class CreatePaymentMethod extends WorldBaseActivity implements View.OnCli
 
             @Override
             protected void onPostExecute(PaymentMethodResponse paymentMethodResponse) {
-                if (paymentMethodResponse.hasError()) {
-                    dismissProgressBar(progressDialog);
-                    return;
-                }
 
                 if (paymentMethodResponse != null) {
-                    Log.d("RFUND RESPONSE : ", "" + paymentMethodResponse.toJson());
+                    Log.d("Payment RESPONSE : ", "" + paymentMethodResponse.toJson());
+                    if (paymentMethodResponse.getResponseCode() == ResponseCode.APPROVED) {
+                        showSuccessDialog("APPROVED", paymentMethodResponse.getResponseMessage(), CreatePaymentMethod.this);
+                    } else {
+                        showSuccessDialog(getResources().getString(R.string.error), paymentMethodResponse.getResponseMessage(), CreatePaymentMethod.this);
+                    }
+                } else {
+                    showSuccessDialog(getResources().getString(R.string.error), getResources().getString(R.string.nullResponse), CreatePaymentMethod.this);
                 }
-//                if (paymentMethodResponse != null && paymentMethodResponse.getHttpStatusCode() == WPHttpResponse.HttpStatus.OK) {
-//
-//                    if (!paymentMethodResponse.getTransactionResponse().getAmount().toString().trim().equals("0.0".trim())) {
-//                        openApprovedDialog("APPROVED", paymentMethodResponse.getTransactionResponse(), RefundVoidViewActivity.this);
-//                    } else
-//                        showSuccessDialog(getResources().getString(R.string.error), "" + paymentMethodResponse.getTransactionResponse().getResponseText(), RefundVoidViewActivity.this);
-//                } else {
-//                    showSuccessDialog(getResources().getString(R.string.error), getResources().getString(R.string.transactionFailed) + "\n" + paymentResponse.getMessage(), RefundVoidViewActivity.this);
-//                }
                 dismissProgressBar(progressDialog);
             }
         }.execute();
     }
-
-
 }

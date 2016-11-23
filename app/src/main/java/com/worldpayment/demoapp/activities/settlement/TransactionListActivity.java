@@ -9,7 +9,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
-import com.worldpay.library.webservices.network.WPHttpResponse;
+import com.worldpay.library.enums.ResponseCode;
 import com.worldpay.library.webservices.services.batches.BatchResponse;
 import com.worldpay.library.webservices.services.batches.GetCurrentBatchRequest;
 import com.worldpay.library.webservices.services.payments.TransactionResponse;
@@ -85,27 +85,26 @@ public class TransactionListActivity extends WorldBaseActivity {
 
             @Override
             protected void onPostExecute(BatchResponse batchResponse) {
-                if (batchResponse.hasError()) {
-                    return;
-                }
-                if (batchResponse != null && batchResponse.getHttpStatusCode() == WPHttpResponse.HttpStatus.OK) {
-                    toolbar_title.setText("Batch Id : " + batchResponse.getId());
-                    transactionResponses = batchResponse.getTransactions();
-                    if (transactionResponses != null) {
-                        SettlementAdapter adapter = new SettlementAdapter(TransactionListActivity.this, transactionResponses);
-                        adapter.notifyDataSetChanged();
-                        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(TransactionListActivity.this, 1);
 
-                        recyclerView.setLayoutManager(mLayoutManager);
-                        recyclerView.setHasFixedSize(true);
-                        recyclerView.setItemAnimator(new DefaultItemAnimator());
-                        recyclerView.setAdapter(adapter);
+                if (batchResponse != null) {
+                    if (batchResponse.getResponseCode() == ResponseCode.APPROVED) {
+                        toolbar_title.setText("Batch Id : " + batchResponse.getId());
+                        transactionResponses = batchResponse.getTransactions();
+                        if (transactionResponses != null) {
+                            SettlementAdapter adapter = new SettlementAdapter(TransactionListActivity.this, transactionResponses);
+                            adapter.notifyDataSetChanged();
+                            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(TransactionListActivity.this, 1);
 
+                            recyclerView.setLayoutManager(mLayoutManager);
+                            recyclerView.setHasFixedSize(true);
+                            recyclerView.setItemAnimator(new DefaultItemAnimator());
+                            recyclerView.setAdapter(adapter);
+                        }
                     } else {
-                        showSuccessDialog(getResources().getString(R.string.success), getResources().getString(R.string.noTransaction), TransactionListActivity.this);
+                        showSuccessDialog(getResources().getString(R.string.error), batchResponse.getResponseMessage(), TransactionListActivity.this);
                     }
                 } else {
-                    showSuccessDialog(getResources().getString(R.string.error), batchResponse.getMessage(), TransactionListActivity.this);
+                    showSuccessDialog(getResources().getString(R.string.error), getResources().getString(R.string.noTransaction), TransactionListActivity.this);
                 }
                 dismissProgressBar(progressDialog);
             }
@@ -130,29 +129,27 @@ public class TransactionListActivity extends WorldBaseActivity {
 
             @Override
             protected void onPostExecute(GetTransactionsBatchResponse getTransactionsBatchResponse) {
-                if (getTransactionsBatchResponse.hasError()) {
-                    dismissProgressBar(progressDialog);
-                    return;
-                }
 
-                if (getTransactionsBatchResponse != null && getTransactionsBatchResponse.getHttpStatusCode() == WPHttpResponse.HttpStatus.OK) {
-                    transactionResponses = getTransactionsBatchResponse.getTransactions();
-                    if (transactionResponses != null) {
-                        toolbar_title.setText("Batch Id : " + batchId);
-                        SettlementAdapter adapter = new SettlementAdapter(TransactionListActivity.this, transactionResponses);
-                        adapter.notifyDataSetChanged();
-                        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(TransactionListActivity.this, 1);
+                if (getTransactionsBatchResponse != null) {
+                    if (getTransactionsBatchResponse.getResponseCode() == ResponseCode.APPROVED) {
+                        transactionResponses = getTransactionsBatchResponse.getTransactions();
+                        if (transactionResponses != null || transactionResponses.equals("[]")) {
+                            toolbar_title.setText("Batch Id : " + batchId);
+                            SettlementAdapter adapter = new SettlementAdapter(TransactionListActivity.this, transactionResponses);
+                            adapter.notifyDataSetChanged();
+                            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(TransactionListActivity.this, 1);
 
-                        recyclerView.setLayoutManager(mLayoutManager);
-                        recyclerView.setHasFixedSize(true);
-                        recyclerView.setItemAnimator(new DefaultItemAnimator());
-                        recyclerView.setAdapter(adapter);
+                            recyclerView.setLayoutManager(mLayoutManager);
+                            recyclerView.setHasFixedSize(true);
+                            recyclerView.setItemAnimator(new DefaultItemAnimator());
+                            recyclerView.setAdapter(adapter);
 
+                        }
                     } else {
-                        showSuccessDialog(getResources().getString(R.string.success), getResources().getString(R.string.noTransaction), TransactionListActivity.this);
+                        showSuccessDialog(getResources().getString(R.string.error), getTransactionsBatchResponse.getResponseMessage(), TransactionListActivity.this);
                     }
                 } else {
-                    showSuccessDialog(getResources().getString(R.string.error), getTransactionsBatchResponse.getMessage(), TransactionListActivity.this);
+                    showSuccessDialog(getResources().getString(R.string.error), getResources().getString(R.string.noTransaction), TransactionListActivity.this);
                 }
                 dismissProgressBar(progressDialog);
             }

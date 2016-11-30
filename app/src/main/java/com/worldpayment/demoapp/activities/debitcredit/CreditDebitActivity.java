@@ -314,10 +314,10 @@ public class CreditDebitActivity extends WorldBaseActivity
                 }
                 break;
             case AMOUNT_REJECTED:
-                showSuccessDialog(getResources().getString(R.string.error), getResources().getString(R.string.transactionFailed) + "\n" + result, CreditDebitActivity.this);
+                showDialog(getResources().getString(R.string.error), getResources().getString(R.string.transactionFailed) + "\n" + result, CreditDebitActivity.this);
                 break;
             case CANCELED:
-                showSuccessDialog(getResources().getString(R.string.error), getResources().getString(R.string.transactionFailed) + "\n" + result, CreditDebitActivity.this);
+                showDialog(getResources().getString(R.string.error), getResources().getString(R.string.transactionFailed) + "\n" + result, CreditDebitActivity.this);
                 break;
             case NOT_EMV:
                 break;
@@ -326,10 +326,10 @@ public class CreditDebitActivity extends WorldBaseActivity
             case CARD_NOT_SUPPORTED:
                 break;
             case READER_ERROR:
-                showSuccessDialog(getResources().getString(R.string.error), getResources().getString(R.string.transactionFailed) + "\n" + result, CreditDebitActivity.this);
+                showDialog(getResources().getString(R.string.error), getResources().getString(R.string.transactionFailed) + "\n" + result, CreditDebitActivity.this);
                 break;
             case AUTHENTICATION_FAILURE:
-                showSuccessDialog(getResources().getString(R.string.error), getResources().getString(R.string.transactionFailed) + "\n" + result, CreditDebitActivity.this);
+                showDialog(getResources().getString(R.string.error), getResources().getString(R.string.transactionFailed) + "\n" + result, CreditDebitActivity.this);
                 break;
             case UNKNOWN_ERROR:
                 break;
@@ -670,6 +670,7 @@ public class CreditDebitActivity extends WorldBaseActivity
 
                 transactionDialogFragment.setTransactionData(transactionData);
                 transactionDialogFragment.setApplicationVersion(BuildConfig.VERSION_NAME);
+                Log.d("transactionType", "" + transactionType);
                 transactionDialogFragment.setTransactionType(transactionType);
                 transactionDialogFragment.setSwiper(swiper);
 

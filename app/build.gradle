@@ -10,7 +10,7 @@ android {
         minSdkVersion 18
         targetSdkVersion 24
         versionCode 1
-        versionName "1.0"
+        versionName "1.1"
 
         buildConfigField 'String', 'DEVELOPER_ID', '"12345678"'
         buildConfigField 'String', 'MERCHANT_ID', '"8005812"'
@@ -45,7 +45,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-    compile(name: 'miura-debug', ext: 'aar')
+    compile(name: 'miura-debug._yaseen', ext: 'aar')
 
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:cardview-v7:24.2.0'

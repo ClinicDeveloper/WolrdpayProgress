@@ -243,12 +243,12 @@ public class RefundVoidViewActivity extends WorldBaseActivity implements View.On
                     if (paymentResponse.getResponseCode() == ResponseCode.APPROVED) {
                         openApprovedDialog("APPROVED", paymentResponse.getTransactionResponse(), RefundVoidViewActivity.this);
                     } else if (paymentResponse.getResponseCode() == ResponseCode.ERROR) {
-                        showSuccessDialog(getResources().getString(R.string.error), "" + paymentResponse.getTransactionResponse().getResponseText(), RefundVoidViewActivity.this);
+                        showDialog(getResources().getString(R.string.error), "" + paymentResponse.getResponseMessage(), RefundVoidViewActivity.this);
                     } else if (paymentResponse.getResponseCode() == ResponseCode.DECLINED) {
-                        showSuccessDialog(getResources().getString(R.string.error), getResources().getString(R.string.transactionFailed) + "\n" + paymentResponse.getMessage(), RefundVoidViewActivity.this);
+                        showDialog(getResources().getString(R.string.error), "" + paymentResponse.getResponseMessage(), RefundVoidViewActivity.this);
                     }
                 } else {
-                    showSuccessDialog(getResources().getString(R.string.error), getResources().getString(R.string.transactionFailed) + "\n" + paymentResponse.getMessage(), RefundVoidViewActivity.this);
+                    showDialog(getResources().getString(R.string.error), getResources().getString(R.string.transactionFailed) + "\n" + "Service Error!", RefundVoidViewActivity.this);
                 }
                 dismissProgressBar(progressDialog);
 
@@ -278,10 +278,10 @@ public class RefundVoidViewActivity extends WorldBaseActivity implements View.On
                     if (paymentResponse.getResponseCode() == ResponseCode.APPROVED) {
                         openApprovedDialog("APPROVED", paymentResponse.getTransactionResponse(), RefundVoidViewActivity.this);
                     } else if (paymentResponse.getResponseCode() == ResponseCode.ERROR) {
-                        showSuccessDialog(getResources().getString(R.string.error), "" + paymentResponse.getTransactionResponse().getResponseText(), RefundVoidViewActivity.this);
+                        showDialog(getResources().getString(R.string.error), "" + paymentResponse.getResponseMessage(), RefundVoidViewActivity.this);
                     }
                 } else {
-                    showSuccessDialog(getResources().getString(R.string.error), getResources().getString(R.string.transactionFailed) + "\n" + paymentResponse.getMessage(), RefundVoidViewActivity.this);
+                    showDialog(getResources().getString(R.string.error), getResources().getString(R.string.transactionFailed) + " Service Error!", RefundVoidViewActivity.this);
                 }
                 dismissProgressBar(progressDialog);
             }

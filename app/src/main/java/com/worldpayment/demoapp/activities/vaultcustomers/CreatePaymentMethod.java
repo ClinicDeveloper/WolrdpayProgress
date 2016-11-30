@@ -406,12 +406,12 @@ public class CreatePaymentMethod extends WorldBaseActivity implements View.OnCli
                 if (paymentMethodResponse != null) {
                     Log.d("Payment RESPONSE : ", "" + paymentMethodResponse.toJson());
                     if (paymentMethodResponse.getResponseCode() == ResponseCode.APPROVED) {
-                        showSuccessDialog("APPROVED", paymentMethodResponse.getResponseMessage(), CreatePaymentMethod.this);
+                        showDialog("APPROVED", paymentMethodResponse.getResponseMessage(), CreatePaymentMethod.this);
                     } else {
-                        showSuccessDialog(getResources().getString(R.string.error), paymentMethodResponse.getResponseMessage(), CreatePaymentMethod.this);
+                        showDialog(getResources().getString(R.string.error), paymentMethodResponse.getResponseMessage(), CreatePaymentMethod.this);
                     }
                 } else {
-                    showSuccessDialog(getResources().getString(R.string.error), getResources().getString(R.string.nullResponse), CreatePaymentMethod.this);
+                    showDialog(getResources().getString(R.string.error), getResources().getString(R.string.nullResponse), CreatePaymentMethod.this);
                 }
                 dismissProgressBar(progressDialog);
             }

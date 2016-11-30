@@ -105,7 +105,7 @@ public class RetrieveCustomer extends WorldBaseActivity implements View.OnClickL
                         Log.d("customerResponse", "" + customerResponse.toJson());
                         if (customerResponse.hasError()) {
                             dismissProgressBar(progressDialog);
-                            showSuccessDialog(getResources().getString(R.string.error), customerResponse.getResponseMessage(), RetrieveCustomer.this);
+                            showDialog(getResources().getString(R.string.error), customerResponse.getResponseMessage(), RetrieveCustomer.this);
                         }
                         responseCustomerDetails = customerResponse;
                         if (responseCustomerDetails != null) {

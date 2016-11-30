@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,12 +38,10 @@ public class SettlementAdapter extends RecyclerView.Adapter<SettlementAdapter.Re
     @Override
     public void onBindViewHolder(RecyclerViewHolders holder, final int position) {
 
-        Log.d("itemList", "" + itemList.size());
         holder.field_transaction_id.setText(itemList.get(position).getId());
 
         holder.field_transaction_id.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //   Toast.makeText(context, "" + itemList.get(position).getId(), Toast.LENGTH_SHORT).show();
                 responseTransactionDetails = itemList.get(position);
                 Intent transactionDetails = new Intent(context, TransactionDetails.class);
                 context.startActivity(transactionDetails);

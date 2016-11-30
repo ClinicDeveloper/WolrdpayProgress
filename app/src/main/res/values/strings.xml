@@ -47,7 +47,8 @@
     <string name="greaterThanZero">"Amount should be greater than zero!"</string>
     <string name="signedSuccess">Signature is saved successfully.</string>
     <string name="noTransaction">No transaction at the moment!</string>
-    <string name="batchClosed">Current Batch is closed</string>
+    <string name="batchClosed">was successfully closed</string>
+    <string name="noTransactionCurrent">No transactions in Current batch</string>
     <string name="customerCreated">Customer created</string>
     <string name="close">Close</string>
     <string name="retry">Retry</string>

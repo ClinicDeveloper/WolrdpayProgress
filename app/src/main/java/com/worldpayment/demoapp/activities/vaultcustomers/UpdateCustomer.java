@@ -208,7 +208,7 @@ public class UpdateCustomer extends WorldBaseActivity implements View.OnClickLis
 
                 if (customerResponse != null) {
                     dismissProgressBar(progressDialog);
-                    //    showSuccessDialog(getResources().getString(R.string.success), customerResponse.toJson(), UpdateCustomer.this);
+                    //    showDialog(getResources().getString(R.string.success), customerResponse.toJson(), UpdateCustomer.this);
                     responseCustomerDetails = customerResponse;
                     if (responseCustomerDetails != null) {
                         dismissProgressBar(progressDialog);
@@ -218,7 +218,7 @@ public class UpdateCustomer extends WorldBaseActivity implements View.OnClickLis
                     }
                 } else {
                     dismissProgressBar(progressDialog);
-                    showSuccessDialog(getResources().getString(R.string.error), customerResponse.getMessage(), UpdateCustomer.this);
+                    showDialog(getResources().getString(R.string.error), customerResponse.getMessage(), UpdateCustomer.this);
                 }
                 dismissProgressBar(progressDialog);
             }

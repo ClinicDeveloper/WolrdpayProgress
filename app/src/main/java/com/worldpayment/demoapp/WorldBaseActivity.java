@@ -207,17 +207,17 @@ public class WorldBaseActivity extends AppCompatActivity {
         masterProgress.dismiss();
     }
 
-    public static void showSuccessDialog(final String titleStr, final String messageStr, final Context context) {
+    public static void showDialog(final String titleStr, final String messageStr, final Context context) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-        final View dialogSignature = layoutInflater.inflate(R.layout.master_popup, null);
+        final View dialogView = layoutInflater.inflate(R.layout.master_popup, null);
 
         final android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(
                 context);
 
 
-        alertDialogBuilder.setView(dialogSignature);
-        TextView title = (TextView) dialogSignature.findViewById(R.id.title);
-        TextView message = (TextView) dialogSignature.findViewById(R.id.message);
+        alertDialogBuilder.setView(dialogView);
+        TextView title = (TextView) dialogView.findViewById(R.id.title);
+        TextView message = (TextView) dialogView.findViewById(R.id.message);
 
         if (titleStr.toString().trim().equals("ERROR!")) {
             title.setTextColor(Color.parseColor("#f11e15"));
@@ -227,9 +227,9 @@ public class WorldBaseActivity extends AppCompatActivity {
         title.setText(titleStr);
         message.setText(messageStr);
 
-        Button dialog_btn_negative = (Button) dialogSignature.findViewById(R.id.dialog_btn_negative);
+        Button dialog_btn_negative = (Button) dialogView.findViewById(R.id.dialog_btn_negative);
         dialog_btn_negative.setVisibility(View.GONE);
-        Button dialog_btn_positive = (Button) dialogSignature.findViewById(R.id.dialog_btn_positive);
+        Button dialog_btn_positive = (Button) dialogView.findViewById(R.id.dialog_btn_positive);
 
         final android.app.AlertDialog alert = alertDialogBuilder.create();
         alert.show();

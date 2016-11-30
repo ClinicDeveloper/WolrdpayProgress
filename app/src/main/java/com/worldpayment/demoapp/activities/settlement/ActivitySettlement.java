@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -51,7 +52,7 @@ public class ActivitySettlement extends WorldBaseActivity implements View.OnClic
         switch (view.getId()) {
             case R.id.btn_get_batch:
                 if (!field_transaction_id.getText().equals(" ") && field_transaction_id.getText().length() > 5) {
-//3674699
+
                     KeyboardUtility.closeKeyboard(this, view);
                     Intent intent = new Intent(ActivitySettlement.this, TransactionListActivity.class);
                     intent.putExtra("batchId", field_transaction_id.getText().toString());
@@ -66,6 +67,7 @@ public class ActivitySettlement extends WorldBaseActivity implements View.OnClic
 
             case R.id.btn_close_current_batch:
 
+                KeyboardUtility.closeKeyboard(this, view);
                 String authToken = PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_AUTH_TOKEN, null);
                 CloseCurrentBatchRequest closeCurrentBatchRequest = new CloseCurrentBatchRequest();
                 closeCurrentBatchRequest.setMerchantId(MERCHANT_ID);
@@ -95,16 +97,19 @@ public class ActivitySettlement extends WorldBaseActivity implements View.OnClic
 
             @Override
             protected void onPostExecute(BatchResponse batchResponse) {
-
+                Log.d("My batchResponse", "" + batchResponse);
                 if (batchResponse != null) {
                     if (batchResponse.getResponseCode() == ResponseCode.APPROVED) {
-                        showSuccessDialog(getResources().getString(R.string.success), getResources().getString(R.string.batchClosed), ActivitySettlement.this);
+                        if (batchResponse.getTransactions().isEmpty()) {
+                            showDialog(getResources().getString(R.string.error), getResources().getString(R.string.noTransactionCurrent), ActivitySettlement.this);
+                        } else {
+                            showDialog(getResources().getString(R.string.success), "Batch " + batchResponse.getId() + " " + getResources().getString(R.string.batchClosed), ActivitySettlement.this);
+                        }
                     } else {
-                        showSuccessDialog(getResources().getString(R.string.error), batchResponse.getResponseMessage(), ActivitySettlement.this);
+                        showDialog(getResources().getString(R.string.error), batchResponse.getResponseMessage(), ActivitySettlement.this);
                     }
                 } else {
-                    showSuccessDialog(getResources().getString(R.string.error), "Null response! Service Error!", ActivitySettlement.this);
-
+                    showDialog(getResources().getString(R.string.error), "Null response! Service Error!", ActivitySettlement.this);
                 }
 
                 dismissProgressBar(progressDialog);

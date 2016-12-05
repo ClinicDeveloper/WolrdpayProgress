@@ -54,7 +54,6 @@ import com.worldpayment.demoapp.BuildConfig;
 import com.worldpayment.demoapp.Navigation;
 import com.worldpayment.demoapp.R;
 import com.worldpayment.demoapp.WorldBaseActivity;
-import com.worldpayment.demoapp.activities.refundvoid.RefundVoidViewActivity;
 import com.worldpayment.demoapp.utility.KeyboardUtility;
 
 import java.io.File;
@@ -232,6 +231,8 @@ public class CreditDebitActivity extends WorldBaseActivity
         switch (view.getId()) {
 
             case R.id.btn_start_transaction:
+                Log.d("authToken", "Hello " + authToken);
+
                 KeyboardUtility.closeKeyboard(this, view);
                 if (count == 0) {
                     manualTransaction();
@@ -244,8 +245,8 @@ public class CreditDebitActivity extends WorldBaseActivity
                 KeyboardUtility.closeKeyboard(this, view);
                 count = 0;
                 vault_layout.setVisibility(View.GONE);
-                RefundVoidViewActivity.buttonEnabled(btn_no_card, btn_card, count);
-                RefundVoidViewActivity.buttonEnabled(btn_no_card, btn_vault_pay, count);
+                buttonEnabled(btn_no_card, btn_card);
+                buttonEnabled(btn_no_card, btn_vault_pay);
 
                 break;
 
@@ -253,8 +254,8 @@ public class CreditDebitActivity extends WorldBaseActivity
                 KeyboardUtility.closeKeyboard(this, view);
                 count = 1;
                 vault_layout.setVisibility(View.GONE);
-                RefundVoidViewActivity.buttonEnabled(btn_card, btn_no_card, count);
-                RefundVoidViewActivity.buttonEnabled(btn_card, btn_vault_pay, count);
+                buttonEnabled(btn_card, btn_no_card);
+                buttonEnabled(btn_card, btn_vault_pay);
 
                 break;
 
@@ -262,8 +263,8 @@ public class CreditDebitActivity extends WorldBaseActivity
                 KeyboardUtility.closeKeyboard(this, view);
                 count = 2;
                 vault_layout.setVisibility(View.VISIBLE);
-                RefundVoidViewActivity.buttonEnabled(btn_vault_pay, btn_no_card, count);
-                RefundVoidViewActivity.buttonEnabled(btn_vault_pay, btn_card, count);
+                buttonEnabled(btn_vault_pay, btn_no_card);
+                buttonEnabled(btn_vault_pay, btn_card);
                 break;
 
             case R.id.checkVaultLayout:
@@ -308,9 +309,9 @@ public class CreditDebitActivity extends WorldBaseActivity
             case APPROVED:
                 if (paymentResponse != null && paymentResponse.getTransactionResponse() != null) {
                     if (addToVaultCheckBox.isChecked())
-                        openApprovedDialog(result.toString(), paymentResponse.getTransactionResponse(), this);
+                        openApprovedDialog(result.toString(), paymentResponse, this);
                     else
-                        openApprovedDialog(result.toString(), paymentResponse.getTransactionResponse(), this);
+                        openApprovedDialog(result.toString(), paymentResponse, this);
                 }
                 break;
             case AMOUNT_REJECTED:
@@ -346,9 +347,9 @@ public class CreditDebitActivity extends WorldBaseActivity
             case DECLINED:
                 if (paymentResponse != null && paymentResponse.getTransactionResponse() != null) {
                     if (addToVaultCheckBox.isChecked())
-                        openApprovedDialog(result.toString(), paymentResponse.getTransactionResponse(), this);
+                        openApprovedDialog(result.toString(), paymentResponse, this);
                     else
-                        openApprovedDialog(result.toString(), paymentResponse.getTransactionResponse(), this);
+                        openApprovedDialog(result.toString(), paymentResponse, this);
                 }
                 break;
             default:
@@ -369,7 +370,7 @@ public class CreditDebitActivity extends WorldBaseActivity
 
 
     //APPROVED POP UP
-    public static void openApprovedDialog(String messageStr, final TransactionResponse response, final Context context) {
+    public static void openApprovedDialog(String messageStr, final PaymentResponse response, final Context context) {
 
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         final View dialogSignature = layoutInflater.inflate(R.layout.approved_layout, null);
@@ -391,16 +392,16 @@ public class CreditDebitActivity extends WorldBaseActivity
         title.setText("" + messageStr);
         if (messageStr.equals("APPROVED")) {
             title.setTextColor(Color.parseColor("#007867"));
-            transaction_id.setText("" + response.getId());
-            message.setText("" + response.getResponseText());
+            transaction_id.setText("" + response.getTransactionResponse().getId());
+            message.setText("" + response.getResponseMessage());
         } else if (messageStr.equals("DECLINED")) {
             title.setTextColor(Color.parseColor("#f11e15"));
             transaction_layout.setVisibility(View.GONE);
-            message.setText("" + response.getResponseText());
+            message.setText("" + response.getResponseMessage());
             dialog_btn_negative.setVisibility(View.GONE);
             dialog_btn_positive.setText("OK");
         }
-        responseTransactionDetails = response;
+        responseTransactionDetails = response.getTransactionResponse();
 
         final android.app.AlertDialog alert = alertDialogBuilder.create();
         alert.show();

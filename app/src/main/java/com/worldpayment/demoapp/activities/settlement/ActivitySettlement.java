@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -97,7 +96,6 @@ public class ActivitySettlement extends WorldBaseActivity implements View.OnClic
 
             @Override
             protected void onPostExecute(BatchResponse batchResponse) {
-                Log.d("My batchResponse", "" + batchResponse);
                 if (batchResponse != null) {
                     if (batchResponse.getResponseCode() == ResponseCode.APPROVED) {
                         if (batchResponse.getTransactions().isEmpty()) {

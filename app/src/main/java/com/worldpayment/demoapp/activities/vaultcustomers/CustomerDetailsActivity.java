@@ -82,8 +82,10 @@ public class CustomerDetailsActivity extends AppCompatActivity implements View.O
     public void settingFields(CustomerResponse response) {
 
         //Customer OVERVIEW
+        toolbar_title.setText("Customer Details");
+
 //        toolbar_title.setText("Customer Id : " + response.getCustomerId());
-//        tv_customer_id.setText("" + response.getCustomerId());
+   //    tv_customer_id.setText("" + response.getI());
         tv_first_name.setText("" + response.getFirstName());
         tv_last_name.setText("" + response.getLastName());
         tv_email.setText("" + response.getEmail());

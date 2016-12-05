@@ -3,18 +3,22 @@ package com.worldpayment.demoapp.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.worldpayment.demoapp.R;
 import com.worldpayment.demoapp.activities.debitcredit.CreditDebitActivity;
 import com.worldpayment.demoapp.activities.refundvoid.RefundVoidViewActivity;
 import com.worldpayment.demoapp.activities.settlement.ActivitySettlement;
 import com.worldpayment.demoapp.activities.vaultcustomers.VaultOperations;
+
+import static com.worldpayment.demoapp.activities.debitcredit.CreditDebitActivity.PREF_AUTH_TOKEN;
 
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
@@ -32,6 +36,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         getActivity().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
+        String authToken = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString(PREF_AUTH_TOKEN, null);
+        Toast.makeText(getActivity(), "" + authToken, Toast.LENGTH_SHORT).show();
         return root;
     }
 //115583672

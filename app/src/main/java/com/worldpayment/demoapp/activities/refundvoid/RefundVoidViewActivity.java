@@ -241,7 +241,7 @@ public class RefundVoidViewActivity extends WorldBaseActivity implements View.On
 
                 if (paymentResponse != null) {
                     if (paymentResponse.getResponseCode() == ResponseCode.APPROVED) {
-                        openApprovedDialog("APPROVED", paymentResponse.getTransactionResponse(), RefundVoidViewActivity.this);
+                        openApprovedDialog("APPROVED", paymentResponse, RefundVoidViewActivity.this);
                     } else if (paymentResponse.getResponseCode() == ResponseCode.ERROR) {
                         showDialog(getResources().getString(R.string.error), "" + paymentResponse.getResponseMessage(), RefundVoidViewActivity.this);
                     } else if (paymentResponse.getResponseCode() == ResponseCode.DECLINED) {
@@ -276,7 +276,7 @@ public class RefundVoidViewActivity extends WorldBaseActivity implements View.On
                 }
                 if (paymentResponse != null) {
                     if (paymentResponse.getResponseCode() == ResponseCode.APPROVED) {
-                        openApprovedDialog("APPROVED", paymentResponse.getTransactionResponse(), RefundVoidViewActivity.this);
+                        openApprovedDialog("APPROVED", paymentResponse, RefundVoidViewActivity.this);
                     } else if (paymentResponse.getResponseCode() == ResponseCode.ERROR) {
                         showDialog(getResources().getString(R.string.error), "" + paymentResponse.getResponseMessage(), RefundVoidViewActivity.this);
                     }

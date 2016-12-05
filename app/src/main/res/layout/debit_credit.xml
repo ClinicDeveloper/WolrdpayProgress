@@ -10,13 +10,14 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <include layout="@layout/toolbar" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/btn_start_transaction"
+            android:layout_margin="@dimen/text_size10"
             android:orientation="vertical">
 
-            <include layout="@layout/toolbar" />
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -28,8 +29,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="@dimen/activity_margin">
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:id="@+id/button_LL"
@@ -46,6 +46,8 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_weight="30"
+                            android:drawableLeft="@mipmap/ic_done"
+                            android:padding="@dimen/text_size5"
                             android:text="@string/card" />
 
                         <Button
@@ -56,6 +58,8 @@
                             android:layout_gravity="center"
                             android:layout_marginLeft="@dimen/text_size5"
                             android:layout_weight="30"
+                            android:drawableLeft="@mipmap/ic_cancel"
+                            android:padding="@dimen/text_size5"
                             android:text="@string/no_card" />
 
                         <Button
@@ -66,6 +70,8 @@
                             android:layout_gravity="center"
                             android:layout_marginLeft="@dimen/text_size5"
                             android:layout_weight="40"
+                            android:drawableLeft="@mipmap/ic_cancel"
+                            android:padding="@dimen/text_size5"
                             android:text="@string/vault_payment"
                             android:textSize="@dimen/text_size14" />
                     </LinearLayout>
@@ -87,7 +93,6 @@
                             android:id="@+id/field_customer_id"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="15dp"
                             android:background="@drawable/edittext_rounded"
                             android:gravity="end"
                             android:hint="Customer Id"
@@ -105,7 +110,6 @@
                             android:id="@+id/field_payment_id"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="15dp"
                             android:background="@drawable/edittext_rounded"
                             android:gravity="end"
                             android:hint="Payment Id"
@@ -124,7 +128,6 @@
                         android:id="@+id/dialog_field_transaction_amount"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="15dp"
                         android:background="@drawable/edittext_rounded"
                         android:gravity="end"
                         android:hint="$"
@@ -142,7 +145,6 @@
                         android:id="@+id/gratitude_amount"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="15dp"
                         android:background="@drawable/edittext_rounded"
                         android:gravity="end"
                         android:hint="$"
@@ -161,7 +163,6 @@
                         android:id="@+id/wp_tx_dialog_field_cash_back_amount"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="15dp"
                         android:background="@drawable/edittext_rounded"
                         android:gravity="right"
                         android:hint="Cash Back Amount"
@@ -224,7 +225,6 @@
                         android:id="@+id/extended_info_LL"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="15dp"
                         android:orientation="vertical"
                         android:visibility="gone">
 
@@ -278,7 +278,6 @@
                         android:id="@+id/checkVaultLayout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="15dp"
                         android:layout_marginTop="15dp"
                         android:orientation="horizontal"
                         android:visibility="gone">
@@ -305,7 +304,6 @@
                         style="@style/buttonStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="15dp"
                         android:layout_marginTop="15dp"
                         android:text="@string/start_transaction" />
                 </LinearLayout>

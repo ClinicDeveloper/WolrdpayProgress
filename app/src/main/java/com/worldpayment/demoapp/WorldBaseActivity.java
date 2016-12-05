@@ -242,27 +242,15 @@ public class WorldBaseActivity extends AppCompatActivity {
         });
     }
 
-    public static void buttonEnabled(Button btn1, Button btn2, int flag) {
-        if (flag == 0) {
-            btn1.setTextColor(Color.WHITE);
-            btn1.setBackgroundResource(R.drawable.button_shap);
+    public static void buttonEnabled(Button btn1, Button btn2) {
+        btn1.setTextColor(Color.WHITE);
+        btn1.setBackgroundResource(R.drawable.button_shap);
+        btn1.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_done, 0, 0, 0);
 
-            btn2.setTextColor(Color.WHITE);
-            btn2.setBackgroundResource(R.drawable.button_disable);
-        } else if (flag == 1) {
-            btn1.setTextColor(Color.WHITE);
-            btn1.setBackgroundResource(R.drawable.button_shap);
+        btn2.setTextColor(Color.WHITE);
+        btn2.setBackgroundResource(R.drawable.button_disable);
+        btn2.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_cancel, 0, 0, 0);
 
-            btn2.setTextColor(Color.WHITE);
-            btn2.setBackgroundResource(R.drawable.button_disable);
-        }
-        if (flag == 2) {
-            btn1.setTextColor(Color.WHITE);
-            btn1.setBackgroundResource(R.drawable.button_shap);
-
-            btn2.setTextColor(Color.WHITE);
-            btn2.setBackgroundResource(R.drawable.button_disable);
-        }
     }
 
     public void setUpToolbarNoNavigation() {

@@ -16,6 +16,7 @@ import android.widget.Spinner;
 import com.worldpay.library.domain.Address;
 import com.worldpay.library.domain.Card;
 import com.worldpay.library.domain.Check;
+import com.worldpay.library.enums.CardSourceType;
 import com.worldpay.library.enums.ResponseCode;
 import com.worldpay.library.views.WPCreditCardHelper;
 import com.worldpay.library.views.WPForm;
@@ -309,71 +310,72 @@ public class CreatePaymentMethod extends WorldBaseActivity implements View.OnCli
                 KeyboardUtility.closeKeyboard(this, v);
                 if (cardValidation.validateAll() || checkValidation.validateAll()) {
 
-                    CreatePaymentMethodRequest createPaymentMethodRequest = new CreatePaymentMethodRequest();
-
-                    String authToken = PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_AUTH_TOKEN, null);
-                    createPaymentMethodRequest.setAuthToken(authToken);
-                    createPaymentMethodRequest.setDeveloperId(BuildConfig.DEVELOPER_ID);
-                    createPaymentMethodRequest.setApplicationVersion(BuildConfig.VERSION_NAME);
-                    createPaymentMethodRequest.setMerchantId(MERCHANT_ID);
-                    createPaymentMethodRequest.setMerchantKey(MERCHANT_KEY);
-
-                    createPaymentMethodRequest.setCustomerId("" + customer_id.getValue());
 
                     if (radio == 0) {
 
+                        CreatePaymentMethodRequest createPaymentMethodRequest = new CreatePaymentMethodRequest();
+
+                        String authToken = PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_AUTH_TOKEN, null);
+                        createPaymentMethodRequest.setAuthToken(authToken);
+                        createPaymentMethodRequest.setDeveloperId(BuildConfig.DEVELOPER_ID);
+                        createPaymentMethodRequest.setApplicationVersion(BuildConfig.VERSION_NAME);
+                        createPaymentMethodRequest.setMerchantId(MERCHANT_ID);
+                        createPaymentMethodRequest.setMerchantKey(MERCHANT_KEY);
+
+                        createPaymentMethodRequest.setCustomerId("" + customer_id.getValue());
+
                         Card card = new Card();
+                        card.setFallbackIndicator(false);
+                        card.setIccCardSwiped(false);
+                        card.setSwiper(null);
+                        card.setDebit(false);
+
                         card.setNumber("" + card_number.getValue());
                         card.setCvv("" + card_cvv.getValue());
                         card.setFirstName("" + card_first_name.getValue());
                         card.setLastName("" + card_last_name.getValue());
                         card.setEmail("" + card_email_address.getValue());
-                        card.setExpirationMonth(Integer.valueOf(card_expiry_month.getValue()));
-                        card.setExpirationYear(Integer.valueOf(card_expiry_year.getValue()));
+                        card.setExpirationMonth(Integer.parseInt(card_expiry_month.getValue()));
+                        card.setExpirationYear(Integer.parseInt(card_expiry_year.getValue()));
                         card.setPinBlock("" + pinBlock.getValue());
+
+                        card.setSourceType(CardSourceType.CREDIT_MANUAL);
+
                         Address address = new Address();
                         address.setPhone("" + card_phone_number.getValue());
-                        address.setLine1("Line 1 Test");
-                        address.setCity("Austin");
-                        address.setState("NY");
-                        address.setZip("56453");
-                        address.setCountry("US");
+//                        address.setLine1("Line 1 Test");
+//                        address.setCity("Austin");
+//                        address.setState("NY");
+//                        address.setZip("56453");
+//                        address.setCountry("US");
                         card.setAddress(address);
 
-//                        PaymentMethod paymentMethod = new PaymentMethod();
-//                        paymentMethod.setNotes("Hey Payment Notes");
-//                        paymentMethod.setPhone("8625905450");
-//                        paymentMethod.setCard(card);
-
-
-                   /* card.setCvv("" + 123);
-                    card.setExpirationMonth(8);
-                    card.setExpirationYear(2018);
-                    card.setFirstName("XYZ");
-                    card.setLastName("ABC");
-
-                    Address address = new Address();
-                    address.setLine1("asd");
-                    address.setCity("Pune");
-                    address.setCountry("India");
-                    address.setState("MAHA");
-                    address.setZip("" + 12345);
-                    address.setPhone("" + 1234567890);
-
-                    card.setAddress(address);
-                    card.setEmail("a@gmail.com");*/
                         createPaymentMethodRequest.setCard(card);
+                        creatingPaymentMethod(createPaymentMethodRequest);
+
                     } else if (radio == 1) {
+                        CreatePaymentMethodRequest createPaymentMethodRequest = new CreatePaymentMethodRequest();
+
+                        String authToken = PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_AUTH_TOKEN, null);
+                        createPaymentMethodRequest.setAuthToken(authToken);
+                        createPaymentMethodRequest.setDeveloperId(BuildConfig.DEVELOPER_ID);
+                        createPaymentMethodRequest.setApplicationVersion(BuildConfig.VERSION_NAME);
+                        createPaymentMethodRequest.setMerchantId(MERCHANT_ID);
+                        createPaymentMethodRequest.setMerchantKey(MERCHANT_KEY);
+
+                        createPaymentMethodRequest.setCustomerId("" + customer_id.getValue());
+
                         Check check = new Check();
                         check.setCheckNumber("" + check_number.getValue());
                         check.setAccountNumber("" + account_number.getValue());
                         check.setFirstName("" + check_first_name.getValue());
                         check.setLastName("" + check_last_name.getValue());
-                        //      check.setEmail("" + check_email_address.getValue());
+                       // check.setEmail("" + check_email_address.getValue());
                         check.setRoutingNumber("" + routing_number.getValue());
                         createPaymentMethodRequest.setCheck(check);
+
+                        creatingPaymentMethod(createPaymentMethodRequest);
                     }
-                    creatingPaymentMethod(createPaymentMethodRequest);
                 }
 
                 break;
@@ -406,7 +408,7 @@ public class CreatePaymentMethod extends WorldBaseActivity implements View.OnCli
                 if (paymentMethodResponse != null) {
                     Log.d("Payment RESPONSE : ", "" + paymentMethodResponse.toJson());
                     if (paymentMethodResponse.getResponseCode() == ResponseCode.APPROVED) {
-                        showDialog("APPROVED", paymentMethodResponse.getResponseMessage(), CreatePaymentMethod.this);
+                        showDialog(getResources().getString(R.string.success), paymentMethodResponse.getResponseMessage(), CreatePaymentMethod.this);
                     } else {
                         showDialog(getResources().getString(R.string.error), paymentMethodResponse.getResponseMessage(), CreatePaymentMethod.this);
                     }

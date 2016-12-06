@@ -8,86 +8,80 @@
     <include layout="@layout/toolbar" />
 
     <!--Common Part-->
-    <LinearLayout
-        android:id="@+id/common_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/appBarLayout"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
-            android:text="@string/customer_id" />
-
-        <com.worldpay.library.views.WPFormEditText
-            android:id="@+id/customer_id"
-            style="@style/EditTextField"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:text="@string/payment_id" />
-
-        <com.worldpay.library.views.WPFormEditText
-            android:id="@+id/payment_id"
-            style="@style/EditTextField"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:text="@string/payment_method" />
-
-        <RadioGroup
-            android:id="@+id/radioPaymentType"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/radioCard"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="@string/card" />
-
-            <RadioButton
-                android:id="@+id/radioCheck"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="@string/check" />
-
-        </RadioGroup>
-
-    </LinearLayout>
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/common_layout"
+        android:layout_below="@+id/appBarLayout"
         android:fillViewport="true"
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/common_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/appBarLayout"
             android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:text="@string/customer_id" />
+
+            <com.worldpay.library.views.WPFormEditText
+                android:id="@+id/customer_id"
+                style="@style/EditTextField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/payment_id" />
+
+            <com.worldpay.library.views.WPFormEditText
+                android:id="@+id/payment_id"
+                style="@style/EditTextField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/payment_method" />
+
+            <RadioGroup
+                android:id="@+id/radioPaymentType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radioCard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/card" />
+
+                <RadioButton
+                    android:id="@+id/radioCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/check" />
+
+            </RadioGroup>
+
+
             <!--Card Fields-->
             <LinearLayout
                 android:id="@+id/card_layout"
@@ -135,7 +129,8 @@
                             style="@style/EditTextField"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="number" />
+                            android:inputType="number"
+                            android:maxLength="16" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -156,7 +151,8 @@
                             style="@style/EditTextField"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="number" />
+                            android:inputType="number"
+                            android:maxLength="4" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -199,6 +195,7 @@
                                 android:gravity="center"
                                 android:hint="mm"
                                 android:inputType="number"
+                                android:maxLength="2"
                                 android:padding="@dimen/text_size10" />
 
                             <TextView
@@ -218,6 +215,7 @@
                                 android:gravity="center"
                                 android:hint="yyyy"
                                 android:inputType="number"
+                                android:maxLength="4"
                                 android:padding="10dp" />
                         </LinearLayout>
                     </LinearLayout>
@@ -244,7 +242,6 @@
                             android:inputType="number" />
                     </LinearLayout>
                 </LinearLayout>
-
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -286,7 +283,8 @@
                     style="@style/EditTextField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:maxLength="10" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -336,7 +334,8 @@
                     android:id="@+id/check_routing_number"
                     style="@style/EditTextField"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:inputType="number" />
 
 
                 <TextView
@@ -350,7 +349,9 @@
                     android:id="@+id/check_account_number"
                     style="@style/EditTextField"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:maxLength="16" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -363,7 +364,8 @@
                     android:id="@+id/check_number"
                     style="@style/EditTextField"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:inputType="number" />
 
                 <TextView
                     android:layout_width="wrap_content"

@@ -131,6 +131,7 @@ public class UpdateCustomer extends WorldBaseActivity implements View.OnClickLis
                 break;
 
             case R.id.btn_cancel:
+                finish();
                 break;
 
             default:

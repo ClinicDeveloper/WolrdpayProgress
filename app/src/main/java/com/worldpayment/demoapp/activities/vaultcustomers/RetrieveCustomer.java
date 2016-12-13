@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.worldpay.library.enums.ResponseCode;
 import com.worldpay.library.views.WPForm;
 import com.worldpay.library.views.WPFormEditText;
 import com.worldpay.library.views.WPNotEmptyValidator;
@@ -105,14 +106,17 @@ public class RetrieveCustomer extends WorldBaseActivity implements View.OnClickL
                         Log.d("customerResponse", "" + customerResponse.toJson());
                         if (customerResponse.hasError()) {
                             dismissProgressBar(progressDialog);
-                            showDialog(getResources().getString(R.string.error), customerResponse.getResponseMessage(), RetrieveCustomer.this);
+                            showDialog(getResources().getString(R.string.error), customerResponse.getMessage(), RetrieveCustomer.this);
                         }
-                        responseCustomerDetails = customerResponse;
-                        if (responseCustomerDetails != null) {
+                        if (customerResponse.getResponseCode() == ResponseCode.APPROVED) {
+                            responseCustomerDetails = customerResponse;
                             dismissProgressBar(progressDialog);
                             Intent retrieve = new Intent(RetrieveCustomer.this, CustomerDetailsActivity.class);
                             retrieve.putExtra("customer_id", field_customer_id.getValue());
                             startActivity(retrieve);
+                        } else {
+                            dismissProgressBar(progressDialog);
+                            showDialog(getResources().getString(R.string.error), customerResponse.getResponseMessage(), RetrieveCustomer.this);
                         }
                     }
                     dismissProgressBar(progressDialog);

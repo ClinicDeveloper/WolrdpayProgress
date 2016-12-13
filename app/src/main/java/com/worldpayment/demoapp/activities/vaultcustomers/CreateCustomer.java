@@ -16,8 +16,6 @@ import com.worldpay.library.domain.Address;
 import com.worldpay.library.views.WPForm;
 import com.worldpay.library.views.WPFormEditText;
 import com.worldpay.library.views.WPNotEmptyValidator;
-import com.worldpay.library.views.WPPostalCodeValidator;
-import com.worldpay.library.webservices.network.WPHttpResponse;
 import com.worldpay.library.webservices.services.customers.CreateCustomerRequest;
 import com.worldpay.library.webservices.services.customers.CustomerResponse;
 import com.worldpay.library.webservices.tasks.CustomerCreateTask;
@@ -27,7 +25,6 @@ import com.worldpayment.demoapp.WorldBaseActivity;
 import com.worldpayment.demoapp.utility.KeyboardUtility;
 
 import java.util.HashMap;
-import java.util.Locale;
 
 import static com.worldpayment.demoapp.BuildConfig.MERCHANT_ID;
 import static com.worldpayment.demoapp.BuildConfig.MERCHANT_KEY;
@@ -65,11 +62,11 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
 
         field_first_name = (WPFormEditText) findViewById(R.id.field_first_name);
         field_first_name.addValidator(new WPNotEmptyValidator("First Name is required!"));
-        validateAlls.addItem(field_first_name);
+//        validateAlls.addItem(field_first_name);
 
         field_last_name = (WPFormEditText) findViewById(R.id.field_last_name);
         field_last_name.addValidator(new WPNotEmptyValidator("Last Name is required!"));
-        validateAlls.addItem(field_last_name);
+//        validateAlls.addItem(field_last_name);
 
         field_phone_number = (WPFormEditText) findViewById(R.id.field_phone_number);
         field_phone_number.addValidator(new WPNotEmptyValidator("Phone Number is required!"));
@@ -96,11 +93,11 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
 
         field_company = (WPFormEditText) findViewById(R.id.field_company);
         field_company.addValidator(new WPNotEmptyValidator("Company is required!"));
-//        validateAlls.addItem(field_company);
+        //   validateAlls.addItem(field_company);
 
 
         zip = (WPFormEditText) findViewById(R.id.zip);
-        zip.addValidator(new WPPostalCodeValidator("Zip Code is invalid!", Locale.US));
+        zip.addValidator(new WPNotEmptyValidator("Zip Code is invalid!"));
         validateAlls.addItem(zip);
 
         field_user_defined1 = (WPFormEditText) findViewById(R.id.field_user_defined1);
@@ -109,7 +106,7 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
         field_user_defined4 = (WPFormEditText) findViewById(R.id.field_user_defined4);
 
         spinner_state = (WPFormEditText) findViewById(R.id.spinner_state);
-        spinner_state.addValidator(new WPNotEmptyValidator("City is required!"));
+        spinner_state.addValidator(new WPNotEmptyValidator("State is required!"));
         validateAlls.addItem(spinner_state);
 //
 //        spinner_state.addValidator(new WPStateCodeValidator("State is invalid!", Locale.US));
@@ -147,12 +144,13 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
 
         if (validateAlls.validateAll()) {
 
-          //  createCustomerRequest.setCustomerID(field_customer_id.getValue());
+            //  createCustomerRequest.setCustomerID(field_customer_id.getValue());
             createCustomerRequest.setFirstName(field_first_name.getValue());
             createCustomerRequest.setLastName(field_last_name.getValue());
             createCustomerRequest.setEmail(field_email_address.getValue());
             createCustomerRequest.setPhone(field_phone_number.getValue());
             createCustomerRequest.setNotes(field_notes.getValue());
+            createCustomerRequest.setCompany("" + field_company.getValue());
 
             if (check_mail.isChecked()) {
                 createCustomerRequest.setSendEmailReceipts(true);
@@ -173,9 +171,8 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
             address.setState("" + spinner_state.getValue());
             address.setZip("" + zip.getValue());
             address.setPhone("" + field_phone_number.getValue());
-          //  address.setCompany("" + field_company.getValue());
+            //  address.setCompany("" + field_company.getValue());
 
-            createCustomerRequest.setCompany("" + field_company.getValue());
 
             createCustomerRequest.setAddress(address);
 
@@ -216,17 +213,12 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
 
             @Override
             protected void onPostExecute(CustomerResponse customerResponse) {
-                if (customerResponse.hasError()) {
-                    dismissProgressBar(progressDialog);
-                    return;
-                }
 
-                if (customerResponse != null && customerResponse.getHttpStatusCode() == WPHttpResponse.HttpStatus.OK) {
+                if (customerResponse != null) {
                     createdDialog(customerResponse.getResult(), customerResponse, CreateCustomer.this);
+                } else {
+                    createdDialog("ERROR", customerResponse, CreateCustomer.this);
                 }
-//                else {
-//                    createdDialog(customerResponse.getResult(), customerResponse, CreateCustomer.this);
-//                }
 
                 dismissProgressBar(progressDialog);
             }

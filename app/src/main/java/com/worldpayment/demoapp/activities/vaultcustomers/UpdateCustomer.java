@@ -5,13 +5,13 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 
 import com.worldpay.library.domain.Address;
 import com.worldpay.library.domain.Customer;
+import com.worldpay.library.enums.ResponseCode;
 import com.worldpay.library.views.WPForm;
 import com.worldpay.library.views.WPFormEditText;
 import com.worldpay.library.views.WPNotEmptyValidator;
@@ -39,7 +39,6 @@ public class UpdateCustomer extends WorldBaseActivity implements View.OnClickLis
     WPFormEditText field_user_defined1, field_user_defined2, field_user_defined3, field_user_defined4;
     WPFormEditText spinner_state;
     private WPForm validateAlls;
-    String customer_id;
     private CheckBox check_mail;
 
     @Override
@@ -143,7 +142,7 @@ public class UpdateCustomer extends WorldBaseActivity implements View.OnClickLis
     public void validationFields() {
 
         UpdateCustomerRequest updateCustomerRequest = new UpdateCustomerRequest();
-        updateCustomerRequest.setId(customer_id);
+        updateCustomerRequest.setId(field_customer_id.getValue());
 
         if (validateAlls.validateAll()) {
 
@@ -199,26 +198,24 @@ public class UpdateCustomer extends WorldBaseActivity implements View.OnClickLis
             @Override
             protected void onPostExecute(CustomerResponse customerResponse) {
 
-                Log.d("customerResponse", "" + customerResponse.toJson());
-
-                if (customerResponse.hasError()) {
-                    dismissProgressBar(progressDialog);
-                    return;
-                }
-
                 if (customerResponse != null) {
                     dismissProgressBar(progressDialog);
-                    //    showDialog(getResources().getString(R.string.success), customerResponse.toJson(), UpdateCustomer.this);
-                    responseCustomerDetails = customerResponse;
-                    if (responseCustomerDetails != null) {
+
+                    if (customerResponse.getResponseCode() == ResponseCode.APPROVED) {
+                        responseCustomerDetails = customerResponse;
                         dismissProgressBar(progressDialog);
                         Intent intent = new Intent(UpdateCustomer.this, CustomerDetailsActivity.class);
-                        intent.putExtra("customer_id", customer_id);
+                        intent.putExtra("customer_id", field_customer_id.getValue());
                         startActivity(intent);
+                    } else if (customerResponse.getResponseCode() == ResponseCode.ERROR) {
+                        showDialog(getResources().getString(R.string.error), customerResponse.getResponseMessage(), UpdateCustomer.this);
+
+                    } else {
+                        showDialog(getResources().getString(R.string.error), customerResponse.getMessage(), UpdateCustomer.this);
                     }
                 } else {
                     dismissProgressBar(progressDialog);
-                    showDialog(getResources().getString(R.string.error), customerResponse.getMessage(), UpdateCustomer.this);
+                    showDialog(getResources().getString(R.string.error), "Service error!", UpdateCustomer.this);
                 }
                 dismissProgressBar(progressDialog);
             }

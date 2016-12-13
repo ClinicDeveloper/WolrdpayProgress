@@ -186,13 +186,17 @@ public class CreditDebitActivity extends WorldBaseActivity
 
         //Transaction Type Spinner
         List<String> categories = new ArrayList<String>();
+        categories.add("Authorize");
         categories.add("Charge");
-        categories.add("Authorized");
         categories.add("Credit");
         spn_transaction_types = (Spinner) findViewById(R.id.spn_transaction_types);
+        spn_transaction_types.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
+                categories));
+        spn_transaction_types.setSelection(1);
         spn_transaction_types.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.d("spn_transaction_types", "" + parent.getItemAtPosition(position).toString());
                 suitableForRequest(parent.getItemAtPosition(position).toString());
             }
 
@@ -200,8 +204,7 @@ public class CreditDebitActivity extends WorldBaseActivity
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        spn_transaction_types.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
-                categories));
+
     }
 
     public void suitableForRequest(String type) {
@@ -315,10 +318,10 @@ public class CreditDebitActivity extends WorldBaseActivity
                 }
                 break;
             case AMOUNT_REJECTED:
-                showDialog(getResources().getString(R.string.error), getResources().getString(R.string.transactionFailed) + "\n" + result, CreditDebitActivity.this);
+                showDialog(getResources().getString(R.string.error), paymentResponse.getResponseMessage(), CreditDebitActivity.this);
                 break;
             case CANCELED:
-                showDialog(getResources().getString(R.string.error), getResources().getString(R.string.transactionFailed) + "\n" + result, CreditDebitActivity.this);
+                showDialog(getResources().getString(R.string.error),paymentResponse.getResponseMessage(), CreditDebitActivity.this);
                 break;
             case NOT_EMV:
                 break;
@@ -327,10 +330,10 @@ public class CreditDebitActivity extends WorldBaseActivity
             case CARD_NOT_SUPPORTED:
                 break;
             case READER_ERROR:
-                showDialog(getResources().getString(R.string.error), getResources().getString(R.string.transactionFailed) + "\n" + result, CreditDebitActivity.this);
+                showDialog(getResources().getString(R.string.error), paymentResponse.getResponseMessage(), CreditDebitActivity.this);
                 break;
             case AUTHENTICATION_FAILURE:
-                showDialog(getResources().getString(R.string.error), getResources().getString(R.string.transactionFailed) + "\n" + result, CreditDebitActivity.this);
+                showDialog(getResources().getString(R.string.error),paymentResponse.getResponseMessage(), CreditDebitActivity.this);
                 break;
             case UNKNOWN_ERROR:
                 break;

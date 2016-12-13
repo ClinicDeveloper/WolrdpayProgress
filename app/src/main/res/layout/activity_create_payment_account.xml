@@ -166,7 +166,7 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="60"
+                        android:layout_weight="50"
                         android:orientation="vertical">
 
                         <TextView
@@ -190,7 +190,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
-                                android:layout_weight="50"
+                                android:layout_weight="40"
                                 android:background="@drawable/edittext_rounded"
                                 android:gravity="center"
                                 android:hint="mm"
@@ -201,7 +201,6 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:layout_marginLeft="5dp"
                                 android:drawableLeft="@mipmap/ic_slash"
                                 android:gravity="center" />
 
@@ -209,8 +208,7 @@
                                 android:id="@+id/card_year"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:layout_weight="50"
+                                android:layout_weight="60"
                                 android:background="@drawable/edittext_rounded"
                                 android:gravity="center"
                                 android:hint="yyyy"
@@ -224,7 +222,7 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="40"
+                        android:layout_weight="50"
                         android:orientation="vertical">
 
                         <TextView
@@ -248,7 +246,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
-                    android:text="Fisr Name" />
+                    android:text="First Name" />
 
                 <com.worldpay.library.views.WPFormEditText
                     android:id="@+id/card_first_name"
@@ -291,7 +289,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
-                    android:text="E-Mail" />
+                    android:text="E-Mail Address" />
 
                 <com.worldpay.library.views.WPFormEditText
                     android:id="@+id/card_email_address"

@@ -16,6 +16,7 @@ import android.widget.Spinner;
 import com.worldpay.library.domain.Address;
 import com.worldpay.library.domain.Card;
 import com.worldpay.library.domain.Check;
+import com.worldpay.library.enums.CardSourceType;
 import com.worldpay.library.enums.ResponseCode;
 import com.worldpay.library.views.WPCreditCardHelper;
 import com.worldpay.library.views.WPForm;
@@ -89,11 +90,11 @@ public class CreatePaymentMethod extends WorldBaseActivity implements View.OnCli
 
         card_first_name = (WPFormEditText) findViewById(R.id.card_first_name);
         card_first_name.addValidator(new WPNotEmptyValidator("First Name is required!"));
-        cardValidation.addItem(card_first_name);
+        // cardValidation.addItem(card_first_name);
 
         card_last_name = (WPFormEditText) findViewById(R.id.card_last_name);
         card_last_name.addValidator(new WPNotEmptyValidator("Last Name is required!"));
-        cardValidation.addItem(card_last_name);
+        // cardValidation.addItem(card_last_name);
 
         card_number = (WPFormEditText) findViewById(R.id.card_number);
         card_number.addValidator(new WPNotEmptyValidator("Card Number is required!"));
@@ -113,11 +114,11 @@ public class CreatePaymentMethod extends WorldBaseActivity implements View.OnCli
 
         check_first_name = (WPFormEditText) findViewById(R.id.check_first_name);
         check_first_name.addValidator(new WPNotEmptyValidator("First Name is required!"));
-        checkValidation.addItem(check_first_name);
+        //  checkValidation.addItem(check_first_name);
 
         check_last_name = (WPFormEditText) findViewById(R.id.check_last_name);
         check_last_name.addValidator(new WPNotEmptyValidator("Last Name is required!"));
-        checkValidation.addItem(check_last_name);
+        //  checkValidation.addItem(check_last_name);
 
         check_type = (WPFormEditText) findViewById(R.id.check_type);
         check_type.addValidator(new WPNotEmptyValidator("Check Type is required!"));
@@ -168,10 +169,8 @@ public class CreatePaymentMethod extends WorldBaseActivity implements View.OnCli
         });
         checkValidation.addItem(routing_number);
 
-        card_expiry_month =
-                (WPFormEditText) findViewById(R.id.card_month);
-        card_expiry_month
-                .addValidator(new WPNotEmptyValidator("Card expiration month is required!"));
+        card_expiry_month = (WPFormEditText) findViewById(R.id.card_month);
+        card_expiry_month.addValidator(new WPNotEmptyValidator("Card expiration month is required!"));
         card_expiry_month.addValidator(new WPFormValidator() {
             @Override
             public boolean isValid(String var1) {
@@ -240,7 +239,7 @@ public class CreatePaymentMethod extends WorldBaseActivity implements View.OnCli
 
         card_phone_number = (WPFormEditText) findViewById(R.id.card_phone_number);
         card_phone_number.addValidator(new WPNotEmptyValidator("Phone Number is required!"));
-        cardValidation.addItem(card_phone_number);
+        //   cardValidation.addItem(card_phone_number);
 
         card_email_address = (WPFormEditText) findViewById(R.id.card_email_address);
         card_email_address.addValidator(new WPNotEmptyValidator("Email address is required!"));
@@ -307,72 +306,85 @@ public class CreatePaymentMethod extends WorldBaseActivity implements View.OnCli
             case R.id.btn_create:
 
                 KeyboardUtility.closeKeyboard(this, v);
+                if (cardValidation.validateAll() || checkValidation.validateAll()) {
 
-                if (radio == 0 && cardValidation.validateAll()) {
+                    if (radio == 0) {
 
+                        CreatePaymentMethodRequest createPaymentMethodRequest = new CreatePaymentMethodRequest();
 
-                    CreatePaymentMethodRequest createPaymentMethodRequest = new CreatePaymentMethodRequest();
-                    String authToken = PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_AUTH_TOKEN, null);
-                    createPaymentMethodRequest.setAuthToken(authToken);
-                    createPaymentMethodRequest.setDeveloperId(BuildConfig.DEVELOPER_ID);
-                    createPaymentMethodRequest.setApplicationVersion(BuildConfig.VERSION_NAME);
-                    createPaymentMethodRequest.setMerchantId(MERCHANT_ID);
-                    createPaymentMethodRequest.setMerchantKey(MERCHANT_KEY);
+                        String authToken = PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_AUTH_TOKEN, null);
+                        createPaymentMethodRequest.setAuthToken(authToken);
+                        createPaymentMethodRequest.setDeveloperId(BuildConfig.DEVELOPER_ID);
+                        createPaymentMethodRequest.setApplicationVersion(BuildConfig.VERSION_NAME);
+                        createPaymentMethodRequest.setMerchantId(MERCHANT_ID);
+                        createPaymentMethodRequest.setMerchantKey(MERCHANT_KEY);
 
-                    createPaymentMethodRequest.setCustomerId("" + customer_id.getValue());
+                        createPaymentMethodRequest.setCustomerId("" + customer_id.getValue());
 
-                    Card card = new Card();
+                        Card card = new Card();
+                        card.setFallbackIndicator(false);
+                        card.setIccCardSwiped(false);
+                        card.setSwiper(null);
+                        card.setDebit(false);
 
-                    card.setFallbackIndicator(false);
-                    card.setIccCardSwiped(false);
-                    card.setSwiper(null);
-                    card.setDebit(false);
+                        card.setNumber("" + card_number.getValue());
+                        card.setCvv("" + card_cvv.getValue());
+                        card.setFirstName("" + card_first_name.getValue());
+                        card.setLastName("" + card_last_name.getValue());
+                        card.setEmail("" + card_email_address.getValue());
+                        if (card_expiry_month.getValue() != null && !card_expiry_month.getValue().equals(""))
+                            card.setExpirationMonth(Integer.parseInt(card_expiry_month.getValue()));
+                        if (card_expiry_year.getValue() != null && !card_expiry_year.getValue().equals(""))
+                            card.setExpirationYear(Integer.parseInt(card_expiry_year.getValue()));
+                        card.setPinBlock("" + pinBlock.getValue());
 
-                    card.setNumber("" + card_number.getValue());
-                    card.setCvv("" + card_cvv.getValue());
-                    card.setFirstName("" + card_first_name.getValue());
-                    card.setLastName("" + card_last_name.getValue());
-                    card.setEmail("" + card_email_address.getValue());
-                    card.setExpirationMonth(Integer.parseInt(card_expiry_month.getValue()));
-                    card.setExpirationYear(Integer.parseInt(card_expiry_year.getValue()));
-                    card.setPinBlock("" + pinBlock.getValue());
+                        card.setSourceType(CardSourceType.CREDIT_MANUAL);
 
-                    Address address = new Address();
-                    address.setPhone("" + card_phone_number.getValue());
+//                        Address address = new Address();
+//                        address.setPhone("" + card_phone_number.getValue());
 //                        address.setLine1("Line 1 Test");
 //                        address.setCity("Austin");
 //                        address.setState("NY");
 //                        address.setZip("56453");
 //                        address.setCountry("US");
-                    card.setAddress(address);
+//                        card.setAddress(address);
 
-                    createPaymentMethodRequest.setCard(card);
-                    creatingPaymentMethod(createPaymentMethodRequest);
+                        createPaymentMethodRequest.setCard(card);
+                        creatingPaymentMethod(createPaymentMethodRequest);
 
-                } else if (radio == 1 && checkValidation.validateAll()) {
-                    CreatePaymentMethodRequest createPaymentMethodRequest = new CreatePaymentMethodRequest();
+                    } else if (radio == 1) {
+                        CreatePaymentMethodRequest createPaymentMethodRequest = new CreatePaymentMethodRequest();
 
-                    String authToken = PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_AUTH_TOKEN, null);
-                    createPaymentMethodRequest.setAuthToken(authToken);
-                    createPaymentMethodRequest.setDeveloperId(BuildConfig.DEVELOPER_ID);
-                    createPaymentMethodRequest.setApplicationVersion(BuildConfig.VERSION_NAME);
-                    createPaymentMethodRequest.setMerchantId(MERCHANT_ID);
-                    createPaymentMethodRequest.setMerchantKey(MERCHANT_KEY);
+                        String authToken = PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_AUTH_TOKEN, null);
+                        createPaymentMethodRequest.setAuthToken(authToken);
+                        createPaymentMethodRequest.setDeveloperId(BuildConfig.DEVELOPER_ID);
+                        createPaymentMethodRequest.setApplicationVersion(BuildConfig.VERSION_NAME);
+                        createPaymentMethodRequest.setMerchantId(MERCHANT_ID);
+                        createPaymentMethodRequest.setMerchantKey(MERCHANT_KEY);
 
-                    createPaymentMethodRequest.setCustomerId("" + customer_id.getValue());
+                        createPaymentMethodRequest.setCustomerId("" + customer_id.getValue());
 
-                    Check check = new Check();
-                    check.setCheckNumber("" + check_number.getValue());
-                    check.setAccountNumber("" + account_number.getValue());
-                    check.setFirstName("" + check_first_name.getValue());
-                    check.setLastName("" + check_last_name.getValue());
-                    // check.setEmail("" + check_email_address.getValue());
-                    check.setRoutingNumber("" + routing_number.getValue());
-                    createPaymentMethodRequest.setCheck(check);
+                        Check check = new Check();
+                        check.setCheckNumber("" + check_number.getValue());
+                        check.setAccountNumber("" + account_number.getValue());
+                        check.setFirstName("" + check_first_name.getValue());
+                        check.setLastName("" + check_last_name.getValue());
+                        check.setEmail("" + check_email_address.getValue());
+                        check.setRoutingNumber("" + routing_number.getValue());
 
-                    creatingPaymentMethod(createPaymentMethodRequest);
+                        Address address = new Address();
+                        address.setPhone("" + card_phone_number.getValue());
+//                        address.setLine1("Line 1 Test");
+//                        address.setCity("Austin");
+//                        address.setState("NY");
+//                        address.setZip("56453");
+//                        address.setCountry("US");
+                        check.setAddress(address);
+
+                        createPaymentMethodRequest.setCheck(check);
+                        creatingPaymentMethod(createPaymentMethodRequest);
+                    }
                 }
-
 
                 break;
 

@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"
-                android:layout_weight="30"
+                android:layout_weight="25"
                 android:text="Batch Id :"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size20" />
@@ -36,8 +36,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginRight="5dp"
                 android:layout_weight="40"
                 android:background="@drawable/edittext_rounded"
                 android:gravity="center"
@@ -53,9 +52,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="30"
+                android:layout_weight="35"
                 android:text="@string/get_batch"
                 android:textAllCaps="false" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -63,18 +63,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:gravity="center"
             android:orientation="vertical">
-
 
             <Button
                 android:id="@+id/btn_close_current_batch"
                 style="@style/buttonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:text="@string/close_batch"
                 android:textAllCaps="false" />
+
         </LinearLayout>
 
     </LinearLayout>

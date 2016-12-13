@@ -12,7 +12,7 @@
         android:id="@+id/title"
         style="?android:attr/textAppearanceSearchResultTitle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:text="Title" />
 
@@ -84,7 +84,8 @@
     <LinearLayout
         android:id="@+id/wp_tx_dialog_container_action_buttons"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_weight="2.1">
 
         <Button
             android:id="@+id/dialog_btn_negative"
@@ -96,6 +97,12 @@
             android:text="@android:string/cancel"
             android:textColor="@color/worldPay_green"
             android:textStyle="bold" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".01"
+            android:background="@color/disable_gray" />
 
         <Button
             android:id="@+id/dialog_btn_positive"

@@ -108,7 +108,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
-                android:text="Notes (optional)" />
+                android:text="Notes " />
 
             <com.worldpay.library.views.WPFormEditText
                 android:id="@+id/field_notes"
@@ -172,9 +172,10 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edittext_rounded"
                         android:imeOptions="actionNext"
-                        android:inputType="text"
-                        android:maxLength="5"
-                        android:padding="10dp" />
+                        android:inputType="textCapCharacters"
+                        android:maxLength="2"
+                        android:padding="10dp"
+                        android:textAllCaps="true" />
                 </LinearLayout>
 
                 <LinearLayout

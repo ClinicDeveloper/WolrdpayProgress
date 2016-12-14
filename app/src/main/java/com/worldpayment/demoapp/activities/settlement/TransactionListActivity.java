@@ -2,7 +2,6 @@ package com.worldpayment.demoapp.activities.settlement;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -17,14 +16,12 @@ import com.worldpay.library.webservices.services.transactions.GetTransactionsBat
 import com.worldpay.library.webservices.services.transactions.GetTransactionsBatchResponse;
 import com.worldpay.library.webservices.tasks.BatchGetCurrentTask;
 import com.worldpay.library.webservices.tasks.TransactionGetBatchTask;
-import com.worldpayment.demoapp.BuildConfig;
 import com.worldpayment.demoapp.R;
 import com.worldpayment.demoapp.WorldBaseActivity;
 import com.worldpayment.demoapp.adapters.SettlementAdapter;
+import com.worldpayment.demoapp.utility.TokenUtility;
 
 import java.util.List;
-
-import static com.worldpayment.demoapp.activities.debitcredit.CreditDebitActivity.PREF_AUTH_TOKEN;
 
 public class TransactionListActivity extends WorldBaseActivity {
 
@@ -35,7 +32,7 @@ public class TransactionListActivity extends WorldBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_transaction_search);
+        setContentView(R.layout.master_recycler_toolbar);
         setActivity(TransactionListActivity.this);
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -43,27 +40,16 @@ public class TransactionListActivity extends WorldBaseActivity {
         AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
         toolbar_title = (TextView) appBarLayout.findViewById(R.id.toolbar_title);
 
-        String authToken = PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_AUTH_TOKEN, null);
-
         if (getIntent().getExtras() != null) {
-
             GetTransactionsBatchRequest getTransactionsBatchRequest = new GetTransactionsBatchRequest();
             batchId = getIntent().getExtras().getString("batchId");
             getTransactionsBatchRequest.setBatchId(batchId);
-            getTransactionsBatchRequest.setApplicationVersion(BuildConfig.VERSION_NAME);
-            getTransactionsBatchRequest.setMerchantId(BuildConfig.MERCHANT_ID);
-            getTransactionsBatchRequest.setMerchantKey(BuildConfig.MERCHANT_KEY);
-            getTransactionsBatchRequest.setAuthToken(authToken);
-            getTransactionsBatchRequest.setDeveloperId(BuildConfig.DEVELOPER_ID);
+            TokenUtility.populateRequestHeaderFields(getTransactionsBatchRequest, this);
             getBatchInformation(getTransactionsBatchRequest);
 
         } else {
             GetCurrentBatchRequest getCurrentBatchRequest = new GetCurrentBatchRequest();
-            getCurrentBatchRequest.setAuthToken(authToken);
-            getCurrentBatchRequest.setApplicationVersion(BuildConfig.VERSION_NAME);
-            getCurrentBatchRequest.setMerchantKey(BuildConfig.MERCHANT_KEY);
-            getCurrentBatchRequest.setMerchantId(BuildConfig.MERCHANT_ID);
-            getCurrentBatchRequest.setDeveloperId(BuildConfig.DEVELOPER_ID);
+            TokenUtility.populateRequestHeaderFields(getCurrentBatchRequest, this);
             getCurrentBatchInformation(getCurrentBatchRequest);
         }
     }

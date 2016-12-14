@@ -33,7 +33,8 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
             android:text="Search Result"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:visibility="gone" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"

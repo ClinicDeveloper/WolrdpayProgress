@@ -5,17 +5,17 @@ import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.worldpay.library.webservices.services.customers.CustomerResponse;
 import com.worldpayment.demoapp.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import static com.worldpayment.demoapp.activities.vaultcustomers.RetrieveCustomer.responseCustomerDetails;
 
 public class CustomerDetailsActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -29,13 +29,22 @@ public class CustomerDetailsActivity extends AppCompatActivity implements View.O
     Button btn_cancel, btn_edit, btn_delete, btn_payment_method;
     TextView toolbar_title;
 
+    String responseFromIntent, customerID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_details);
         initComponents();
 
-        settingFields(responseCustomerDetails);
+        if (getIntent().getExtras() != null) {
+            responseFromIntent = getIntent().getExtras().getString("response");
+            Log.d("responseFromIntent", "" + responseFromIntent);
+            Gson gson = new Gson();
+            CustomerResponse customerResponse = gson.fromJson(responseFromIntent, CustomerResponse.class);
+            settingFields(customerResponse);
+        }
+
     }
 
     public void initComponents() {
@@ -82,10 +91,10 @@ public class CustomerDetailsActivity extends AppCompatActivity implements View.O
     public void settingFields(CustomerResponse response) {
 
         //Customer OVERVIEW
-        toolbar_title.setText("Customer Details");
-
-//        toolbar_title.setText("Customer Id : " + response.getCustomerId());
-   //    tv_customer_id.setText("" + response.getI());
+        //   toolbar_title.setText("Customer Details");
+        customerID = response.getCustomerId();
+        toolbar_title.setText("Customer Id : " + response.getCustomerId());
+        tv_customer_id.setText("" + response.getCustomerId());
         tv_first_name.setText("" + response.getFirstName());
         tv_last_name.setText("" + response.getLastName());
         tv_email.setText("" + response.getEmail());
@@ -130,6 +139,21 @@ public class CustomerDetailsActivity extends AppCompatActivity implements View.O
         //USER DEFINED FIELDS
         if (response.getUserDefinedFields() != null) {
             try {
+//                String userDefineString = response.getUserDefinedFields().toString();
+//                String subString = userDefineString.substring(1, userDefineString.length() - 1);
+//                Log.d("menumenu", subString);
+//
+//                Map<String, String> map = new HashMap<String, String>();
+//                String[] entries = subString.split(",");
+//
+//                for (String entry : entries) {
+//                    String[] keyValue = entry.split("=");
+//                    map.put(keyValue[0], keyValue[1]);
+//
+//                    Log.d("keyValue", keyValue[0] + "  " + keyValue[1]);
+//
+//                }
+
                 JSONObject menu = new JSONObject(response.getUserDefinedFields().toString());
                 if (menu.length() > 0) {
                     StringBuilder stringBuilder = new StringBuilder();
@@ -143,6 +167,7 @@ public class CustomerDetailsActivity extends AppCompatActivity implements View.O
                 e.printStackTrace();
             }
         }
+
     }
 
     @Override
@@ -151,14 +176,19 @@ public class CustomerDetailsActivity extends AppCompatActivity implements View.O
 
             case R.id.btn_edit:
                 Intent update = new Intent(this, UpdateCustomer.class);
+                update.putExtra("response", responseFromIntent);
                 startActivity(update);
-                finish();
                 break;
 
             case R.id.btn_delete:
                 break;
 
             case R.id.btn_payment_method:
+
+                Intent retrieve = new Intent(CustomerDetailsActivity.this, PaymentMethodDetailsActivity.class);
+                retrieve.putExtra("response", responseFromIntent);
+                startActivity(retrieve);
+
                 break;
 
             case R.id.btn_cancel:

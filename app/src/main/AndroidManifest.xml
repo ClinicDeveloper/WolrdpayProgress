@@ -75,13 +75,11 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-
         <activity
             android:name=".activities.settlement.TransactionListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-
         <activity
             android:name=".activities.vaultcustomers.RetrieveCustomer"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -92,7 +90,8 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".activities.vaultcustomers.UpdateCustomer"></activity>
+        <activity android:name=".activities.vaultcustomers.UpdateCustomer" />
+        <activity android:name=".activities.vaultcustomers.PaymentMethodDetailsActivity"></activity>
     </application>
 
 </manifest>

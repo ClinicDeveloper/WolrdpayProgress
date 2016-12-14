@@ -3,7 +3,6 @@ package com.worldpayment.demoapp.activities.settlement;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,14 +11,10 @@ import com.worldpay.library.enums.ResponseCode;
 import com.worldpay.library.webservices.services.batches.BatchResponse;
 import com.worldpay.library.webservices.services.batches.CloseCurrentBatchRequest;
 import com.worldpay.library.webservices.tasks.BatchCloseCurrentTask;
-import com.worldpayment.demoapp.BuildConfig;
 import com.worldpayment.demoapp.R;
 import com.worldpayment.demoapp.WorldBaseActivity;
 import com.worldpayment.demoapp.utility.KeyboardUtility;
-
-import static com.worldpayment.demoapp.BuildConfig.MERCHANT_ID;
-import static com.worldpayment.demoapp.BuildConfig.MERCHANT_KEY;
-import static com.worldpayment.demoapp.activities.debitcredit.CreditDebitActivity.PREF_AUTH_TOKEN;
+import com.worldpayment.demoapp.utility.TokenUtility;
 
 public class ActivitySettlement extends WorldBaseActivity implements View.OnClickListener {
 
@@ -67,13 +62,8 @@ public class ActivitySettlement extends WorldBaseActivity implements View.OnClic
             case R.id.btn_close_current_batch:
 
                 KeyboardUtility.closeKeyboard(this, view);
-                String authToken = PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_AUTH_TOKEN, null);
                 CloseCurrentBatchRequest closeCurrentBatchRequest = new CloseCurrentBatchRequest();
-                closeCurrentBatchRequest.setMerchantId(MERCHANT_ID);
-                closeCurrentBatchRequest.setMerchantKey(MERCHANT_KEY);
-                closeCurrentBatchRequest.setApplicationVersion(BuildConfig.VERSION_NAME);
-                closeCurrentBatchRequest.setDeveloperId(BuildConfig.DEVELOPER_ID);
-                closeCurrentBatchRequest.setAuthToken(authToken);
+                TokenUtility.populateRequestHeaderFields(closeCurrentBatchRequest, this);
                 closeCurrentBatch(closeCurrentBatchRequest);
                 break;
 

@@ -3,12 +3,12 @@ package com.worldpayment.demoapp.activities.vaultcustomers;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.gson.Gson;
 import com.worldpay.library.enums.ResponseCode;
 import com.worldpay.library.views.WPForm;
 import com.worldpay.library.views.WPFormEditText;
@@ -16,14 +16,10 @@ import com.worldpay.library.views.WPNotEmptyValidator;
 import com.worldpay.library.webservices.services.customers.CustomerResponse;
 import com.worldpay.library.webservices.services.customers.GetCustomerRequest;
 import com.worldpay.library.webservices.tasks.CustomerGetTask;
-import com.worldpayment.demoapp.BuildConfig;
 import com.worldpayment.demoapp.R;
 import com.worldpayment.demoapp.WorldBaseActivity;
 import com.worldpayment.demoapp.utility.KeyboardUtility;
-
-import static com.worldpayment.demoapp.BuildConfig.MERCHANT_ID;
-import static com.worldpayment.demoapp.BuildConfig.MERCHANT_KEY;
-import static com.worldpayment.demoapp.activities.debitcredit.CreditDebitActivity.PREF_AUTH_TOKEN;
+import com.worldpayment.demoapp.utility.TokenUtility;
 
 public class RetrieveCustomer extends WorldBaseActivity implements View.OnClickListener {
 
@@ -31,7 +27,6 @@ public class RetrieveCustomer extends WorldBaseActivity implements View.OnClickL
     private WPFormEditText field_customer_id;
     WPForm validateID;
     RecyclerView recyclerView;
-    public static CustomerResponse responseCustomerDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,13 +76,9 @@ public class RetrieveCustomer extends WorldBaseActivity implements View.OnClickL
 
         GetCustomerRequest getCustomerRequest = new GetCustomerRequest();
         if (validateID.validateAll()) {
+
+            TokenUtility.populateRequestHeaderFields(getCustomerRequest, this);
             getCustomerRequest.setId(field_customer_id.getValue());
-            String authToken = PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_AUTH_TOKEN, null);
-            getCustomerRequest.setAuthToken(authToken);
-            getCustomerRequest.setDeveloperId(BuildConfig.DEVELOPER_ID);
-            getCustomerRequest.setApplicationVersion(BuildConfig.VERSION_NAME);
-            getCustomerRequest.setMerchantId(MERCHANT_ID);
-            getCustomerRequest.setMerchantKey(MERCHANT_KEY);
 
             new CustomerGetTask(getCustomerRequest) {
                 ProgressDialog progressDialog;
@@ -96,30 +87,40 @@ public class RetrieveCustomer extends WorldBaseActivity implements View.OnClickL
                 protected void onPreExecute() {
                     super.onPreExecute();
                     progressDialog = new ProgressDialog(RetrieveCustomer.this);
-                    startProgressBar(progressDialog, "Retrieving customers...");
+                    startProgressBar(progressDialog, "Retrieving customer...");
                 }
 
                 @Override
                 protected void onPostExecute(CustomerResponse customerResponse) {
 
+                    dismissProgressBar(progressDialog);
+
                     if (customerResponse != null) {
+
                         Log.d("customerResponse", "" + customerResponse.toJson());
-                        if (customerResponse.hasError()) {
-                            dismissProgressBar(progressDialog);
-                            showDialog(getResources().getString(R.string.error), customerResponse.getMessage(), RetrieveCustomer.this);
-                        }
+//                        VaultPaymentMethod[] vaultPaymentMethods = customerResponse.getPaymentMethods();
+//                        Log.d("vaultPaymentMethods", "" + vaultPaymentMethods.length + "   " + vaultPaymentMethods[0]);
+//
+//                        for (int i = 0; i < vaultPaymentMethods.length; i++) {
+//                            list.add(vaultPaymentMethods[i]);
+//                        }
+
                         if (customerResponse.getResponseCode() == ResponseCode.APPROVED) {
-                            responseCustomerDetails = customerResponse;
-                            dismissProgressBar(progressDialog);
+
                             Intent retrieve = new Intent(RetrieveCustomer.this, CustomerDetailsActivity.class);
-                            retrieve.putExtra("customer_id", field_customer_id.getValue());
+                            Gson gson = new Gson();
+                            String response = gson.toJson(customerResponse);
+                            retrieve.putExtra("response", response);
                             startActivity(retrieve);
+
+//                            responseCustomerDetails = customerResponse;
+
                         } else {
-                            dismissProgressBar(progressDialog);
                             showDialog(getResources().getString(R.string.error), customerResponse.getResponseMessage(), RetrieveCustomer.this);
                         }
+                    } else {
+                        showDialog(getResources().getString(R.string.error), "Web Service error!", RetrieveCustomer.this);
                     }
-                    dismissProgressBar(progressDialog);
                 }
             }.execute();
 

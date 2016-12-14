@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 
+import com.google.gson.Gson;
 import com.worldpay.library.domain.Address;
 import com.worldpay.library.domain.Customer;
 import com.worldpay.library.enums.ResponseCode;
@@ -24,12 +25,14 @@ import com.worldpayment.demoapp.R;
 import com.worldpayment.demoapp.WorldBaseActivity;
 import com.worldpayment.demoapp.utility.KeyboardUtility;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Locale;
 
 import static com.worldpayment.demoapp.BuildConfig.MERCHANT_ID;
 import static com.worldpayment.demoapp.BuildConfig.MERCHANT_KEY;
 import static com.worldpayment.demoapp.activities.debitcredit.CreditDebitActivity.PREF_AUTH_TOKEN;
-import static com.worldpayment.demoapp.activities.vaultcustomers.RetrieveCustomer.responseCustomerDetails;
 
 public class UpdateCustomer extends WorldBaseActivity implements View.OnClickListener {
 
@@ -48,9 +51,14 @@ public class UpdateCustomer extends WorldBaseActivity implements View.OnClickLis
         setActivity(UpdateCustomer.this);
         mappingViews();
 
-        if (responseCustomerDetails != null) {
-            settingFields(responseCustomerDetails);
+        if (getIntent().getExtras() != null) {
+            String responseFromIntent = getIntent().getExtras().getString("response");
+            Gson gson = new Gson();
+            CustomerResponse customerResponse = gson.fromJson(responseFromIntent, CustomerResponse.class);
+            settingFields(customerResponse);
+
         }
+
     }
 
     public void mappingViews() {
@@ -174,11 +182,36 @@ public class UpdateCustomer extends WorldBaseActivity implements View.OnClickLis
             address.setCity("" + field_city.getValue());
             address.setState("" + spinner_state.getValue());
             address.setZip("" + zip.getValue());
+            address.setPhone("" + field_phone_number.getValue());
 
             customer.setAddress(address);
             updateCustomerRequest.setCustomer(customer);
 
-//            createCustomerRequest.setUserDefinedFields();
+            try {
+                JSONObject jsonObject = new JSONObject();
+
+                if (field_user_defined1.getValue() != null) {
+                    jsonObject.put("UDF1", field_user_defined1.getValue());
+                }
+                if (field_user_defined2.getValue() != null) {
+                    jsonObject.put("UDF2", field_user_defined2.getValue());
+                }
+                if (field_user_defined3.getValue() != null) {
+                    jsonObject.put("UDF3", field_user_defined3.getValue());
+                }
+                if (field_user_defined4.getValue() != null) {
+                    jsonObject.put("UDF4", field_user_defined4.getValue());
+                }
+
+
+                if (jsonObject != null) {
+                    //     updateCustomerRequest.setUserDefinedFields(jsonObject);
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
             updateCustomer(updateCustomerRequest);
 
         }
@@ -203,7 +236,6 @@ public class UpdateCustomer extends WorldBaseActivity implements View.OnClickLis
                     dismissProgressBar(progressDialog);
 
                     if (customerResponse.getResponseCode() == ResponseCode.APPROVED) {
-                        responseCustomerDetails = customerResponse;
                         dismissProgressBar(progressDialog);
                         Intent intent = new Intent(UpdateCustomer.this, CustomerDetailsActivity.class);
                         intent.putExtra("customer_id", field_customer_id.getValue());
@@ -226,7 +258,7 @@ public class UpdateCustomer extends WorldBaseActivity implements View.OnClickLis
     public void settingFields(CustomerResponse response) {
 
         //Customer OVERVIEW
-        // field_customer_id.setText("" + response.getCustomerId());
+        field_customer_id.setText("" + response.getCustomerId());
         field_first_name.setText("" + response.getFirstName());
         field_last_name.setText("" + response.getLastName());
         field_email_address.setText("" + response.getEmail());
@@ -244,9 +276,9 @@ public class UpdateCustomer extends WorldBaseActivity implements View.OnClickLis
             if (response.getAddress().getCity() != null) {
                 field_city.setText("" + response.getAddress().getCity());
             }
-//            if (response.getAddress().getCompany() != null) {
-//                field_company.setText("" + response.getCompany());
-//            }
+            if (response.getAddress().getState() != null) {
+                spinner_state.setText("" + response.getAddress().getState());
+            }
             if (response.getAddress().getZip() != null) {
                 zip.setText("" + response.getAddress().getZip());
             }
@@ -256,6 +288,25 @@ public class UpdateCustomer extends WorldBaseActivity implements View.OnClickLis
         } else {
             check_mail.setChecked(false);
         }
+
+        try {
+            JSONObject jsonObject = new JSONObject(response.getUserDefinedFields().toString());
+            if (jsonObject.getString("UDF1") != null && !jsonObject.get("UDF1").equals("")) {
+                field_user_defined1.setText(jsonObject.getString("UDF1"));
+            }
+            if (jsonObject.getString("UDF2") != null && !jsonObject.get("UDF2").equals("")) {
+                field_user_defined2.setText(jsonObject.getString("UDF2"));
+            }
+            if (jsonObject.getString("UDF3") != null && !jsonObject.get("UDF3").equals("")) {
+                field_user_defined3.setText(jsonObject.getString("UDF3"));
+            }
+            if (jsonObject.getString("UDF4") != null && !jsonObject.get("UDF4").equals("")) {
+                field_user_defined4.setText(jsonObject.getString("UDF4"));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
+
 
 }

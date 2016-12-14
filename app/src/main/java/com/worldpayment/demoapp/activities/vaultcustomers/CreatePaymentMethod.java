@@ -2,7 +2,6 @@ package com.worldpayment.demoapp.activities.vaultcustomers;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,7 +12,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
-import com.worldpay.library.domain.Address;
 import com.worldpay.library.domain.Card;
 import com.worldpay.library.domain.Check;
 import com.worldpay.library.enums.CardSourceType;
@@ -27,20 +25,16 @@ import com.worldpay.library.views.WPSimpleFormSpinner;
 import com.worldpay.library.webservices.services.paymentmethods.CreatePaymentMethodRequest;
 import com.worldpay.library.webservices.services.paymentmethods.PaymentMethodResponse;
 import com.worldpay.library.webservices.tasks.PaymentMethodCreateTask;
-import com.worldpayment.demoapp.BuildConfig;
 import com.worldpayment.demoapp.R;
 import com.worldpayment.demoapp.WorldBaseActivity;
 import com.worldpayment.demoapp.utility.KeyboardUtility;
+import com.worldpayment.demoapp.utility.TokenUtility;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import static com.worldpayment.demoapp.BuildConfig.MERCHANT_ID;
-import static com.worldpayment.demoapp.BuildConfig.MERCHANT_KEY;
-import static com.worldpayment.demoapp.activities.debitcredit.CreditDebitActivity.PREF_AUTH_TOKEN;
 
 public class CreatePaymentMethod extends WorldBaseActivity implements View.OnClickListener {
 
@@ -311,16 +305,9 @@ public class CreatePaymentMethod extends WorldBaseActivity implements View.OnCli
                     if (radio == 0) {
 
                         CreatePaymentMethodRequest createPaymentMethodRequest = new CreatePaymentMethodRequest();
-
-                        String authToken = PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_AUTH_TOKEN, null);
-                        createPaymentMethodRequest.setAuthToken(authToken);
-                        createPaymentMethodRequest.setDeveloperId(BuildConfig.DEVELOPER_ID);
-                        createPaymentMethodRequest.setApplicationVersion(BuildConfig.VERSION_NAME);
-                        createPaymentMethodRequest.setMerchantId(MERCHANT_ID);
-                        createPaymentMethodRequest.setMerchantKey(MERCHANT_KEY);
-
+                        TokenUtility.populateRequestHeaderFields(createPaymentMethodRequest, this);
                         createPaymentMethodRequest.setCustomerId("" + customer_id.getValue());
-
+                        createPaymentMethodRequest.setId("" + payment_id.getValue());
                         Card card = new Card();
                         card.setFallbackIndicator(false);
                         card.setIccCardSwiped(false);
@@ -354,15 +341,10 @@ public class CreatePaymentMethod extends WorldBaseActivity implements View.OnCli
 
                     } else if (radio == 1) {
                         CreatePaymentMethodRequest createPaymentMethodRequest = new CreatePaymentMethodRequest();
-
-                        String authToken = PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_AUTH_TOKEN, null);
-                        createPaymentMethodRequest.setAuthToken(authToken);
-                        createPaymentMethodRequest.setDeveloperId(BuildConfig.DEVELOPER_ID);
-                        createPaymentMethodRequest.setApplicationVersion(BuildConfig.VERSION_NAME);
-                        createPaymentMethodRequest.setMerchantId(MERCHANT_ID);
-                        createPaymentMethodRequest.setMerchantKey(MERCHANT_KEY);
-
+                        TokenUtility.populateRequestHeaderFields(createPaymentMethodRequest, this);
                         createPaymentMethodRequest.setCustomerId("" + customer_id.getValue());
+                        createPaymentMethodRequest.setId("" + payment_id.getValue());
+
 
                         Check check = new Check();
                         check.setCheckNumber("" + check_number.getValue());
@@ -372,14 +354,14 @@ public class CreatePaymentMethod extends WorldBaseActivity implements View.OnCli
                         check.setEmail("" + check_email_address.getValue());
                         check.setRoutingNumber("" + routing_number.getValue());
 
-                        Address address = new Address();
-                        address.setPhone("" + card_phone_number.getValue());
+                        //                      Address address = new Address();
+//                        address.setPhone("" + card_phone_number.getValue());
 //                        address.setLine1("Line 1 Test");
 //                        address.setCity("Austin");
 //                        address.setState("NY");
 //                        address.setZip("56453");
 //                        address.setCountry("US");
-                        check.setAddress(address);
+                        //                      check.setAddress(address);
 
                         createPaymentMethodRequest.setCheck(check);
                         creatingPaymentMethod(createPaymentMethodRequest);

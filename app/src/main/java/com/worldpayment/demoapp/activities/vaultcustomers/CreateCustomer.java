@@ -5,13 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.worldpay.library.domain.Address;
 import com.worldpay.library.views.WPForm;
 import com.worldpay.library.views.WPFormEditText;
@@ -19,17 +20,13 @@ import com.worldpay.library.views.WPNotEmptyValidator;
 import com.worldpay.library.webservices.services.customers.CreateCustomerRequest;
 import com.worldpay.library.webservices.services.customers.CustomerResponse;
 import com.worldpay.library.webservices.tasks.CustomerCreateTask;
-import com.worldpayment.demoapp.BuildConfig;
 import com.worldpayment.demoapp.R;
 import com.worldpayment.demoapp.WorldBaseActivity;
 import com.worldpayment.demoapp.utility.KeyboardUtility;
+import com.worldpayment.demoapp.utility.TokenUtility;
 
-import java.util.HashMap;
-
-import static com.worldpayment.demoapp.BuildConfig.MERCHANT_ID;
-import static com.worldpayment.demoapp.BuildConfig.MERCHANT_KEY;
-import static com.worldpayment.demoapp.activities.debitcredit.CreditDebitActivity.PREF_AUTH_TOKEN;
-import static com.worldpayment.demoapp.activities.vaultcustomers.RetrieveCustomer.responseCustomerDetails;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class CreateCustomer extends WorldBaseActivity implements View.OnClickListener {
     Button btn_create, btn_cancel;
@@ -108,13 +105,6 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
         spinner_state = (WPFormEditText) findViewById(R.id.spinner_state);
         spinner_state.addValidator(new WPNotEmptyValidator("State is required!"));
         validateAlls.addItem(spinner_state);
-//
-//        spinner_state.addValidator(new WPStateCodeValidator("State is invalid!", Locale.US));
-//        spinner_state.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
-//                getResources().getStringArray(com.worldpay.library.R.array.states)));
-//        validateAlls.addItem(spinner_state);
-
-
     }
 
     @Override
@@ -144,7 +134,7 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
 
         if (validateAlls.validateAll()) {
 
-            //  createCustomerRequest.setCustomerID(field_customer_id.getValue());
+            createCustomerRequest.setId(field_customer_id.getValue());
             createCustomerRequest.setFirstName(field_first_name.getValue());
             createCustomerRequest.setLastName(field_last_name.getValue());
             createCustomerRequest.setEmail(field_email_address.getValue());
@@ -157,12 +147,7 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
             } else {
                 createCustomerRequest.setSendEmailReceipts(false);
             }
-            String authToken = PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_AUTH_TOKEN, null);
-            createCustomerRequest.setAuthToken(authToken);
-            createCustomerRequest.setDeveloperId(BuildConfig.DEVELOPER_ID);
-            createCustomerRequest.setApplicationVersion(BuildConfig.VERSION_NAME);
-            createCustomerRequest.setMerchantId(MERCHANT_ID);
-            createCustomerRequest.setMerchantKey(MERCHANT_KEY);
+            TokenUtility.populateRequestHeaderFields(createCustomerRequest, this);
 
             Address address = new Address();
             address.setCountry("US");
@@ -175,23 +160,30 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
 
 
             createCustomerRequest.setAddress(address);
+            try {
+                JSONObject jsonObject = new JSONObject();
 
-            HashMap jsonObject = new HashMap();
+                if (field_user_defined1.getValue() != null) {
+                    jsonObject.put("UDF1", field_user_defined1.getValue());
+                }
+                if (field_user_defined2.getValue() != null) {
+                    jsonObject.put("UDF2", field_user_defined2.getValue());
+                }
+                if (field_user_defined3.getValue() != null) {
+                    jsonObject.put("UDF3", field_user_defined3.getValue());
+                }
+                if (field_user_defined4.getValue() != null) {
+                    jsonObject.put("UDF4", field_user_defined4.getValue());
+                }
 
-            if (field_user_defined1.getValue() != null) {
-                jsonObject.put("UDF1", field_user_defined1.getValue());
-            }
-            if (field_user_defined2.getValue() != null) {
-                jsonObject.put("UDF2", field_user_defined2.getValue());
-            }
-            if (field_user_defined3.getValue() != null) {
-                jsonObject.put("UDF3", field_user_defined3.getValue());
-            }
-            if (field_user_defined4.getValue() != null) {
-                jsonObject.put("UDF4", field_user_defined4.getValue());
-            }
-            if (jsonObject != null) {
-                createCustomerRequest.setUserDefinedFields(jsonObject);
+                Log.d("jsonObject", "" + jsonObject);
+
+                if (jsonObject != null) {
+                    createCustomerRequest.setUserDefinedFields(jsonObject);
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
             createCustomer(createCustomerRequest);
 
@@ -256,13 +248,15 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
         final android.app.AlertDialog alert = alertDialogBuilder.create();
         alert.show();
 
-        responseCustomerDetails = response;
-
         dialog_btn_negative.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CreateCustomer.this, CustomerDetailsActivity.class);
-                startActivity(intent);
+                Intent retrieve = new Intent(CreateCustomer.this, CustomerDetailsActivity.class);
+                Gson gson = new Gson();
+                String responseStr = gson.toJson(response);
+                retrieve.putExtra("response", responseStr);
+                startActivity(retrieve);
+
             }
         });
 
@@ -279,5 +273,4 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
             }
         });
     }
-
 }

@@ -2,7 +2,6 @@ package com.worldpayment.demoapp.activities.refundvoid;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -29,20 +28,17 @@ import com.worldpay.library.webservices.services.payments.ReversalRequest;
 import com.worldpay.library.webservices.tasks.PaymentRefundTask;
 import com.worldpay.library.webservices.tasks.PaymentVoidTask;
 import com.worldpay.ui.TransactionDialogFragment;
-import com.worldpayment.demoapp.BuildConfig;
 import com.worldpayment.demoapp.R;
 import com.worldpayment.demoapp.WorldBaseActivity;
 import com.worldpayment.demoapp.activities.debitcredit.CreditDebitActivity;
 import com.worldpayment.demoapp.utility.KeyboardUtility;
+import com.worldpayment.demoapp.utility.TokenUtility;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import static com.worldpayment.demoapp.BuildConfig.MERCHANT_ID;
-import static com.worldpayment.demoapp.BuildConfig.MERCHANT_KEY;
-import static com.worldpayment.demoapp.activities.debitcredit.CreditDebitActivity.PREF_AUTH_TOKEN;
 import static com.worldpayment.demoapp.activities.debitcredit.CreditDebitActivity.openApprovedDialog;
 
 public class RefundVoidViewActivity extends WorldBaseActivity implements View.OnClickListener, TransactionDialogFragment.TransactionDialogFragmentListener {
@@ -177,13 +173,7 @@ public class RefundVoidViewActivity extends WorldBaseActivity implements View.On
     private void showTransactionFragment() {
 
         ReversalRequest reversalRequest = new ReversalRequest();
-        String authToken = PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_AUTH_TOKEN, null);
-
-        reversalRequest.setAuthToken(authToken);
-        reversalRequest.setMerchantId(MERCHANT_ID);
-        reversalRequest.setMerchantKey(MERCHANT_KEY);
-        reversalRequest.setApplicationVersion(BuildConfig.VERSION_NAME);
-        reversalRequest.setDeveloperId(BuildConfig.DEVELOPER_ID);
+        TokenUtility.populateRequestHeaderFields(reversalRequest, this);
 
         if (count == 0) {
             if (validateRefund.validateAll()) {

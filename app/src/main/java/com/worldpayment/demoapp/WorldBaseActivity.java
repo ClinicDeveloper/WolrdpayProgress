@@ -27,6 +27,7 @@ import com.worldpayment.demoapp.activities.settlement.ActivitySettlement;
 import com.worldpayment.demoapp.activities.settlement.TransactionListActivity;
 import com.worldpayment.demoapp.activities.vaultcustomers.CreateCustomer;
 import com.worldpayment.demoapp.activities.vaultcustomers.CreatePaymentMethod;
+import com.worldpayment.demoapp.activities.vaultcustomers.PaymentMethodDetailsActivity;
 import com.worldpayment.demoapp.activities.vaultcustomers.RetrieveCustomer;
 import com.worldpayment.demoapp.activities.vaultcustomers.UpdateCustomer;
 import com.worldpayment.demoapp.activities.vaultcustomers.VaultOperations;
@@ -53,15 +54,16 @@ public class WorldBaseActivity extends AppCompatActivity {
                 worldBaseActivity instanceof CreditDebitActivity ||
                 worldBaseActivity instanceof ActivitySettlement ||
                 worldBaseActivity instanceof VaultOperations) {
-            setUpToolBar();
+            setUpToolbarNoNavigation();
         }
 
         if (worldBaseActivity instanceof TransactionListActivity ||
                 worldBaseActivity instanceof CreateCustomer ||
                 worldBaseActivity instanceof UpdateCustomer ||
                 worldBaseActivity instanceof CreatePaymentMethod ||
-                worldBaseActivity instanceof RetrieveCustomer) {
-            setUpToolbarNoNavigation();
+                worldBaseActivity instanceof RetrieveCustomer ||
+                worldBaseActivity instanceof PaymentMethodDetailsActivity) {
+            setUpToolBar();
         }
 
     }
@@ -76,6 +78,102 @@ public class WorldBaseActivity extends AppCompatActivity {
     }
 
     public void setUpToolBar() {
+
+        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
+        Toolbar toolbar = (Toolbar) appBarLayout.findViewById(R.id.toolbar);
+        TextView toolbar_title = (TextView) appBarLayout.findViewById(R.id.toolbar_title);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        if (worldBaseActivity instanceof CreateCustomer) {
+            toolbar_title.setText("Create Customer");
+        }
+        if (worldBaseActivity instanceof UpdateCustomer) {
+            toolbar_title.setText("Edit Customer");
+        }
+        if (worldBaseActivity instanceof TransactionListActivity) {
+            toolbar_title.setText("Batch Details");
+        }
+        if (worldBaseActivity instanceof CreatePaymentMethod) {
+            toolbar_title.setText("Create Payment Account");
+        }
+        if (worldBaseActivity instanceof RetrieveCustomer) {
+            toolbar_title.setText("Retrieve Customer");
+        }
+
+        if (worldBaseActivity instanceof PaymentMethodDetailsActivity) {
+            toolbar_title.setText("Payment Method Details");
+        }
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+
+    public static void startProgressBar(ProgressDialog masterProgress, String message) {
+        masterProgress.setMessage(message);
+        masterProgress.setIndeterminate(true);
+        masterProgress.setCancelable(false);
+        masterProgress.show();
+    }
+
+    public static void dismissProgressBar(ProgressDialog masterProgress) {
+        masterProgress.dismiss();
+    }
+
+    public static void showDialog(final String titleStr, final String messageStr, final Context context) {
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        final View dialogView = layoutInflater.inflate(R.layout.master_popup, null);
+
+        final android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(
+                context);
+
+
+        alertDialogBuilder.setView(dialogView);
+        TextView title = (TextView) dialogView.findViewById(R.id.title);
+        TextView message = (TextView) dialogView.findViewById(R.id.message);
+
+        if (titleStr.toString().trim().equals("ERROR!")) {
+            title.setTextColor(Color.parseColor("#f11e15"));
+        } else if (titleStr.toString().trim().equals("SUCCESS")) {
+            title.setTextColor(Color.parseColor("#007867"));
+        }
+        title.setText(titleStr);
+        message.setText(messageStr);
+
+        Button dialog_btn_negative = (Button) dialogView.findViewById(R.id.dialog_btn_negative);
+        dialog_btn_negative.setVisibility(View.GONE);
+        Button dialog_btn_positive = (Button) dialogView.findViewById(R.id.dialog_btn_positive);
+
+        final android.app.AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
+
+        dialog_btn_positive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alert.dismiss();
+            }
+        });
+    }
+
+    public static void buttonEnabled(Button btn1, Button btn2) {
+        btn1.setTextColor(Color.WHITE);
+        btn1.setBackgroundResource(R.drawable.button_shap);
+        btn1.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_done, 0, 0, 0);
+
+        btn2.setTextColor(Color.WHITE);
+        btn2.setBackgroundResource(R.drawable.button_disable);
+        btn2.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_cancel, 0, 0, 0);
+
+    }
+
+    public void setUpToolbarNoNavigation() {
+
         AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
         Toolbar toolbar = (Toolbar) appBarLayout.findViewById(R.id.toolbar);
         TextView toolbar_title = (TextView) appBarLayout.findViewById(R.id.toolbar_title);
@@ -194,97 +292,6 @@ public class WorldBaseActivity extends AppCompatActivity {
             actionBarDrawerToggle.syncState();
 
         }
-    }
-
-    public static void startProgressBar(ProgressDialog masterProgress, String message) {
-        masterProgress.setMessage(message);
-        masterProgress.setIndeterminate(true);
-        masterProgress.setCancelable(false);
-        masterProgress.show();
-    }
-
-    public static void dismissProgressBar(ProgressDialog masterProgress) {
-        masterProgress.dismiss();
-    }
-
-    public static void showDialog(final String titleStr, final String messageStr, final Context context) {
-        LayoutInflater layoutInflater = LayoutInflater.from(context);
-        final View dialogView = layoutInflater.inflate(R.layout.master_popup, null);
-
-        final android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(
-                context);
-
-
-        alertDialogBuilder.setView(dialogView);
-        TextView title = (TextView) dialogView.findViewById(R.id.title);
-        TextView message = (TextView) dialogView.findViewById(R.id.message);
-
-        if (titleStr.toString().trim().equals("ERROR!")) {
-            title.setTextColor(Color.parseColor("#f11e15"));
-        } else if (titleStr.toString().trim().equals("SUCCESS")) {
-            title.setTextColor(Color.parseColor("#007867"));
-        }
-        title.setText(titleStr);
-        message.setText(messageStr);
-
-        Button dialog_btn_negative = (Button) dialogView.findViewById(R.id.dialog_btn_negative);
-        dialog_btn_negative.setVisibility(View.GONE);
-        Button dialog_btn_positive = (Button) dialogView.findViewById(R.id.dialog_btn_positive);
-
-        final android.app.AlertDialog alert = alertDialogBuilder.create();
-        alert.show();
-
-        dialog_btn_positive.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alert.dismiss();
-            }
-        });
-    }
-
-    public static void buttonEnabled(Button btn1, Button btn2) {
-        btn1.setTextColor(Color.WHITE);
-        btn1.setBackgroundResource(R.drawable.button_shap);
-        btn1.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_done, 0, 0, 0);
-
-        btn2.setTextColor(Color.WHITE);
-        btn2.setBackgroundResource(R.drawable.button_disable);
-        btn2.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_cancel, 0, 0, 0);
-
-    }
-
-    public void setUpToolbarNoNavigation() {
-
-        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
-        Toolbar toolbar = (Toolbar) appBarLayout.findViewById(R.id.toolbar);
-        TextView toolbar_title = (TextView) appBarLayout.findViewById(R.id.toolbar_title);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        if (worldBaseActivity instanceof CreateCustomer) {
-            toolbar_title.setText("Create Customer");
-        }
-        if (worldBaseActivity instanceof UpdateCustomer) {
-            toolbar_title.setText("Edit Customer");
-        }
-        if (worldBaseActivity instanceof TransactionListActivity) {
-            toolbar_title.setText("Batch Details");
-        }
-        if (worldBaseActivity instanceof CreatePaymentMethod) {
-            toolbar_title.setText("Create Payment Account");
-        }
-        if (worldBaseActivity instanceof RetrieveCustomer) {
-            toolbar_title.setText("Retrieve Customer");
-        }
-
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
 
     }
 

@@ -1,5 +1,6 @@
 package com.worldpayment.demoapp.activities.vaultcustomers;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -12,10 +13,17 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.worldpay.library.webservices.services.customers.CustomerResponse;
+import com.worldpay.library.webservices.services.paymentmethods.DeletePaymentMethodRequest;
+import com.worldpay.library.webservices.services.paymentmethods.PaymentMethodResponse;
+import com.worldpay.library.webservices.tasks.PaymentMethodDeleteTask;
 import com.worldpayment.demoapp.R;
+import com.worldpayment.demoapp.utility.TokenUtility;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import static com.worldpayment.demoapp.WorldBaseActivity.dismissProgressBar;
+import static com.worldpayment.demoapp.WorldBaseActivity.startProgressBar;
 
 public class CustomerDetailsActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -181,6 +189,7 @@ public class CustomerDetailsActivity extends AppCompatActivity implements View.O
                 break;
 
             case R.id.btn_delete:
+                deleteCustomer();
                 break;
 
             case R.id.btn_payment_method:
@@ -199,46 +208,42 @@ public class CustomerDetailsActivity extends AppCompatActivity implements View.O
         }
     }
 
-//    public void deleteCustomer() {
-//        DeletePaymentMethodRequest deletePaymentMethodRequest = new DeletePaymentMethodRequest();
-//        String authToken = PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_AUTH_TOKEN, null);
-//        deletePaymentMethodRequest.setAuthToken(authToken);
-//        deletePaymentMethodRequest.setDeveloperId(BuildConfig.DEVELOPER_ID);
-//        deletePaymentMethodRequest.setApplicationVersion(BuildConfig.VERSION_NAME);
-//        deletePaymentMethodRequest.setMerchantId(MERCHANT_ID);
-//        deletePaymentMethodRequest.setMerchantKey(MERCHANT_KEY);
-//
-//        new PaymentMethodDeleteTask(deletePaymentMethodRequest) {
-//            ProgressDialog progressDialog;
-//
-//            @Override
-//            protected void onPreExecute() {
-//                super.onPreExecute();
-//                progressDialog = new ProgressDialog(CustomerDetailsActivity.this);
-//                startProgressBar(progressDialog, "Updating...");
-//            }
-//
-//            @Override
-//            protected void onPostExecute(PaymentMethodResponse paymentMethodResponse) {
-//
-//                Log.d("customerResponse", "" + paymentMethodResponse.toJson());
-//
-//                if (paymentMethodResponse.hasError()) {
-//                    dismissProgressBar(progressDialog);
-//                    return;
-//                }
-//
-//                if (paymentMethodResponse != null) {
-//                    dismissProgressBar(progressDialog);
-//
-//                } else {
-//                }
-//                dismissProgressBar(progressDialog);
-//            }
-//        }.execute();
-//
-//
-//    }
+    public void deleteCustomer() {
+        DeletePaymentMethodRequest deletePaymentMethodRequest = new DeletePaymentMethodRequest();
+        TokenUtility.populateRequestHeaderFields(deletePaymentMethodRequest, this);
+        deletePaymentMethodRequest.setCustomerId("" + customerID);
+        deletePaymentMethodRequest.setPaymentMethodId("1");
+        new PaymentMethodDeleteTask(deletePaymentMethodRequest) {
+            ProgressDialog progressDialog;
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                progressDialog = new ProgressDialog(CustomerDetailsActivity.this);
+                startProgressBar(progressDialog, "Updating...");
+            }
+
+            @Override
+            protected void onPostExecute(PaymentMethodResponse paymentMethodResponse) {
+
+                Log.d("customerResponse", "" + paymentMethodResponse.toJson());
+
+                if (paymentMethodResponse.hasError()) {
+                    dismissProgressBar(progressDialog);
+                    return;
+                }
+
+                if (paymentMethodResponse != null) {
+                    dismissProgressBar(progressDialog);
+
+                } else {
+                }
+                dismissProgressBar(progressDialog);
+            }
+        }.execute();
+
+
+    }
 
     @Override
     public void onBackPressed() {

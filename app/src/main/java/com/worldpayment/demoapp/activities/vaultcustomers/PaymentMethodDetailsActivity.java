@@ -91,7 +91,7 @@ public class PaymentMethodDetailsActivity extends WorldBaseActivity {
             VaultPaymentMethod item = paymentMethodList.get(position);
 
             //   holder.payment_id.setText("" + item.getClass().toString());
-
+            holder.btn_delete.setTag(position);
             holder.btn_delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -116,10 +116,10 @@ public class RetrieveCustomer extends WorldBaseActivity implements View.OnClickL
 //                            responseCustomerDetails = customerResponse;
 
                         } else {
-                            showDialog(getResources().getString(R.string.error), customerResponse.getResponseMessage(), RetrieveCustomer.this);
+                            showDialogView(getResources().getString(R.string.error), customerResponse.getResponseMessage(), RetrieveCustomer.this);
                         }
                     } else {
-                        showDialog(getResources().getString(R.string.error), "Web Service error!", RetrieveCustomer.this);
+                        showDialogView(getResources().getString(R.string.error), "Web Service error!", RetrieveCustomer.this);
                     }
                 }
             }.execute();

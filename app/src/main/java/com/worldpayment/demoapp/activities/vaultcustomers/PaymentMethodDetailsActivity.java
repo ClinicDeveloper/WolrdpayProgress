@@ -1,5 +1,6 @@
 package com.worldpayment.demoapp.activities.vaultcustomers;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -12,10 +13,15 @@ import android.widget.Button;
 
 import com.google.gson.Gson;
 import com.worldpay.library.domain.VaultPaymentMethod;
+import com.worldpay.library.enums.ResponseCode;
 import com.worldpay.library.views.WPTextView;
 import com.worldpay.library.webservices.services.customers.CustomerResponse;
+import com.worldpay.library.webservices.services.paymentmethods.DeletePaymentMethodRequest;
+import com.worldpay.library.webservices.services.paymentmethods.PaymentMethodResponse;
+import com.worldpay.library.webservices.tasks.PaymentMethodDeleteTask;
 import com.worldpayment.demoapp.R;
 import com.worldpayment.demoapp.WorldBaseActivity;
+import com.worldpayment.demoapp.utility.TokenUtility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,7 +90,44 @@ public class PaymentMethodDetailsActivity extends WorldBaseActivity {
         public void onBindViewHolder(UserViewHolder holder, int position) {
             VaultPaymentMethod item = paymentMethodList.get(position);
 
-         //   holder.payment_id.setText("" + item.getClass().toString());
+            //   holder.payment_id.setText("" + item.getClass().toString());
+
+            holder.btn_delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DeletePaymentMethodRequest deletePaymentMethodRequest = new DeletePaymentMethodRequest();
+                    TokenUtility.populateRequestHeaderFields(deletePaymentMethodRequest, context);
+                    deletePaymentMethodRequest.setCustomerId("50000037");
+                    deletePaymentMethodRequest.setPaymentMethodId("1");
+                    new PaymentMethodDeleteTask(deletePaymentMethodRequest) {
+                        ProgressDialog progressDialog;
+
+                        @Override
+                        protected void onPreExecute() {
+                            super.onPreExecute();
+                            progressDialog = new ProgressDialog(context);
+                            startProgressBar(progressDialog, "Deleting account...");
+                        }
+
+                        @Override
+                        protected void onPostExecute(PaymentMethodResponse paymentMethodResponse) {
+                            super.onPostExecute(paymentMethodResponse);
+
+                            if (paymentMethodResponse != null) {
+
+                                if (paymentMethodResponse.getResponseCode() == ResponseCode.APPROVED) {
+                                    showDialogView(context.getResources().getString(R.string.success), paymentMethodResponse.getResponseMessage(), context);
+
+                                } else {
+                                    showDialogView(context.getResources().getString(R.string.error), paymentMethodResponse.getResponseMessage(), context);
+                                }
+                            } else {
+                                showDialogView(context.getResources().getString(R.string.error), "Web Service Error!", context);
+                            }
+                        }
+                    };
+                }
+            });
         }
 
         @Override

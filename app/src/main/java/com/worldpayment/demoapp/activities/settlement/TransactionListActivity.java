@@ -87,10 +87,10 @@ public class TransactionListActivity extends WorldBaseActivity {
                             recyclerView.setAdapter(adapter);
                         }
                     } else {
-                        showDialog(getResources().getString(R.string.error), batchResponse.getResponseMessage(), TransactionListActivity.this);
+                        showDialogView(getResources().getString(R.string.error), batchResponse.getResponseMessage(), TransactionListActivity.this);
                     }
                 } else {
-                    showDialog(getResources().getString(R.string.error), getResources().getString(R.string.noTransaction), TransactionListActivity.this);
+                    showDialogView(getResources().getString(R.string.error), getResources().getString(R.string.noTransaction), TransactionListActivity.this);
                 }
                 dismissProgressBar(progressDialog);
             }
@@ -132,10 +132,10 @@ public class TransactionListActivity extends WorldBaseActivity {
 
                         }
                     } else {
-                        showDialog(getResources().getString(R.string.error), getTransactionsBatchResponse.getResponseMessage(), TransactionListActivity.this);
+                        showDialogView(getResources().getString(R.string.error), getTransactionsBatchResponse.getResponseMessage(), TransactionListActivity.this);
                     }
                 } else {
-                    showDialog(getResources().getString(R.string.error), getResources().getString(R.string.noTransaction), TransactionListActivity.this);
+                    showDialogView(getResources().getString(R.string.error), getResources().getString(R.string.noTransaction), TransactionListActivity.this);
                 }
                 dismissProgressBar(progressDialog);
             }

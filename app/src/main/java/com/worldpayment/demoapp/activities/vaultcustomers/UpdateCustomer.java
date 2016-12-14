@@ -241,14 +241,14 @@ public class UpdateCustomer extends WorldBaseActivity implements View.OnClickLis
                         intent.putExtra("customer_id", field_customer_id.getValue());
                         startActivity(intent);
                     } else if (customerResponse.getResponseCode() == ResponseCode.ERROR) {
-                        showDialog(getResources().getString(R.string.error), customerResponse.getResponseMessage(), UpdateCustomer.this);
+                        showDialogView(getResources().getString(R.string.error), customerResponse.getResponseMessage(), UpdateCustomer.this);
 
                     } else {
-                        showDialog(getResources().getString(R.string.error), customerResponse.getMessage(), UpdateCustomer.this);
+                        showDialogView(getResources().getString(R.string.error), customerResponse.getMessage(), UpdateCustomer.this);
                     }
                 } else {
                     dismissProgressBar(progressDialog);
-                    showDialog(getResources().getString(R.string.error), "Service error!", UpdateCustomer.this);
+                    showDialogView(getResources().getString(R.string.error), "Service error!", UpdateCustomer.this);
                 }
                 dismissProgressBar(progressDialog);
             }

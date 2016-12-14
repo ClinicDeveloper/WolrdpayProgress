@@ -88,12 +88,12 @@ public class ActivitySettlement extends WorldBaseActivity implements View.OnClic
             protected void onPostExecute(BatchResponse batchResponse) {
                 if (batchResponse != null) {
                     if (batchResponse.getResponseCode() == ResponseCode.APPROVED) {
-                        showDialog(getResources().getString(R.string.success), "Batch " + batchResponse.getId() + " " + getResources().getString(R.string.batchClosed), ActivitySettlement.this);
+                        showDialogView(getResources().getString(R.string.success), "Batch " + batchResponse.getId() + " " + getResources().getString(R.string.batchClosed), ActivitySettlement.this);
                     } else {
-                        showDialog(getResources().getString(R.string.error), batchResponse.getResponseMessage(), ActivitySettlement.this);
+                        showDialogView(getResources().getString(R.string.error), batchResponse.getResponseMessage(), ActivitySettlement.this);
                     }
                 } else {
-                    showDialog(getResources().getString(R.string.error), "Null response! Service Error!", ActivitySettlement.this);
+                    showDialogView(getResources().getString(R.string.error), "Null response! Service Error!", ActivitySettlement.this);
                 }
 
                 dismissProgressBar(progressDialog);

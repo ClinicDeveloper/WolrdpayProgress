@@ -65,6 +65,7 @@ import java.util.List;
 import java.util.Locale;
 
 import static com.worldpayment.demoapp.Navigation.swiper;
+import static com.worldpayment.demoapp.R.string.error;
 import static com.worldpayment.demoapp.activities.refundvoid.RefundVoidViewActivity.count;
 
 public class CreditDebitActivity extends WorldBaseActivity
@@ -215,7 +216,7 @@ public class CreditDebitActivity extends WorldBaseActivity
                 transactionType = TransactionType.SALE;
                 break;
 
-            case "Authorized":
+            case "Authorize":
                 transactionType = TransactionType.AUTH;
                 break;
 
@@ -307,56 +308,59 @@ public class CreditDebitActivity extends WorldBaseActivity
                             paymentResponse.toJson());
             Log.d("getHttpStatusCode() =  ", "" + paymentResponse.getHttpStatusCode());
             Log.d("getMessage() =  ", "" + paymentResponse.getMessage());
-        }
-        switch (result) {
-            case APPROVED:
-                if (paymentResponse != null && paymentResponse.getTransactionResponse() != null) {
-                    if (addToVaultCheckBox.isChecked())
-                        openApprovedDialog(result.toString(), paymentResponse, this);
-                    else
-                        openApprovedDialog(result.toString(), paymentResponse, this);
-                }
-                break;
-            case AMOUNT_REJECTED:
-                showDialog(getResources().getString(R.string.error), paymentResponse.getResponseMessage(), CreditDebitActivity.this);
-                break;
-            case CANCELED:
-                showDialog(getResources().getString(R.string.error),paymentResponse.getResponseMessage(), CreditDebitActivity.this);
-                break;
-            case NOT_EMV:
-                break;
-            case EMV_CARD_REMOVED:
-                break;
-            case CARD_NOT_SUPPORTED:
-                break;
-            case READER_ERROR:
-                showDialog(getResources().getString(R.string.error), paymentResponse.getResponseMessage(), CreditDebitActivity.this);
-                break;
-            case AUTHENTICATION_FAILURE:
-                showDialog(getResources().getString(R.string.error),paymentResponse.getResponseMessage(), CreditDebitActivity.this);
-                break;
-            case UNKNOWN_ERROR:
-                break;
-            case DECLINED_CALL_ISSUER:
-                break;
-            case DECLINED_PIN_ERROR:
-                break;
-            case DECLINED_WITH_REFUND:
-                break;
-            case REVERSAL_FAILED:
-                break;
-            case DECLINED_REVERSAL_FAILED:
-                break;
-            case DECLINED:
-                if (paymentResponse != null && paymentResponse.getTransactionResponse() != null) {
-                    if (addToVaultCheckBox.isChecked())
-                        openApprovedDialog(result.toString(), paymentResponse, this);
-                    else
-                        openApprovedDialog(result.toString(), paymentResponse, this);
-                }
-                break;
-            default:
-                break;
+
+            switch (result) {
+                case APPROVED:
+                    if (paymentResponse != null && paymentResponse.getTransactionResponse() != null) {
+                        if (addToVaultCheckBox.isChecked())
+                            openApprovedDialog(result.toString(), paymentResponse, this);
+                        else
+                            openApprovedDialog(result.toString(), paymentResponse, this);
+                    }
+                    break;
+                case AMOUNT_REJECTED:
+                    showDialogView(getResources().getString(error), paymentResponse.getResponseMessage(), CreditDebitActivity.this);
+                    break;
+                case CANCELED:
+                    showDialogView(getResources().getString(error), paymentResponse.getResponseMessage(), CreditDebitActivity.this);
+                    break;
+                case NOT_EMV:
+                    break;
+                case EMV_CARD_REMOVED:
+                    break;
+                case CARD_NOT_SUPPORTED:
+                    break;
+                case READER_ERROR:
+                    showDialogView(getResources().getString(error), paymentResponse.getResponseMessage(), CreditDebitActivity.this);
+                    break;
+                case AUTHENTICATION_FAILURE:
+                    showDialogView(getResources().getString(error), paymentResponse.getResponseMessage(), CreditDebitActivity.this);
+                    break;
+                case UNKNOWN_ERROR:
+                    break;
+                case DECLINED_CALL_ISSUER:
+                    break;
+                case DECLINED_PIN_ERROR:
+                    break;
+                case DECLINED_WITH_REFUND:
+                    break;
+                case REVERSAL_FAILED:
+                    break;
+                case DECLINED_REVERSAL_FAILED:
+                    break;
+                case DECLINED:
+                    if (paymentResponse != null && paymentResponse.getResponseCode() != null) {
+                        if (addToVaultCheckBox.isChecked())
+                            openApprovedDialog(result.toString(), paymentResponse, this);
+                        else
+                            openApprovedDialog(result.toString(), paymentResponse, this);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            Toast.makeText(this, "SDK Null pointer exception", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -398,6 +402,12 @@ public class CreditDebitActivity extends WorldBaseActivity
             transaction_id.setText("" + response.getTransactionResponse().getId());
             message.setText("" + response.getResponseMessage());
         } else if (messageStr.equals("DECLINED")) {
+            title.setTextColor(Color.parseColor("#f11e15"));
+            transaction_layout.setVisibility(View.GONE);
+            message.setText("" + response.getResponseMessage());
+            dialog_btn_negative.setVisibility(View.GONE);
+            dialog_btn_positive.setText("OK");
+        } else {
             title.setTextColor(Color.parseColor("#f11e15"));
             transaction_layout.setVisibility(View.GONE);
             message.setText("" + response.getResponseMessage());

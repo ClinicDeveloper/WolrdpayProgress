@@ -126,7 +126,7 @@ public class WorldBaseActivity extends AppCompatActivity {
         masterProgress.dismiss();
     }
 
-    public static void showDialog(final String titleStr, final String messageStr, final Context context) {
+    public static void showDialogView(final String titleStr, final String messageStr, final Context context) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         final View dialogView = layoutInflater.inflate(R.layout.master_popup, null);
 

@@ -24,7 +24,7 @@ import com.worldpayment.demoapp.WorldBaseActivity;
 import com.worldpayment.demoapp.utility.KeyboardUtility;
 import com.worldpayment.demoapp.utility.TokenUtility;
 
-import org.json.JSONObject;
+import java.util.HashMap;
 
 public class CreateCustomer extends WorldBaseActivity implements View.OnClickListener {
     Button btn_create, btn_cancel;
@@ -158,7 +158,8 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
             createCustomerRequest.setAddress(address);
 
             try {
-                JSONObject jsonObject = new JSONObject();
+                HashMap jsonObject = new HashMap() {
+                };
 
                 if (field_user_defined1.getValue() != null) {
                     jsonObject.put("UDF1", field_user_defined1.getValue());

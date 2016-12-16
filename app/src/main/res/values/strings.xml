@@ -54,4 +54,6 @@
     <string name="retry">Retry</string>
     <string name="requiredKeyID">Please add Merchant KEY and Id inside the gradle!</string>
 
+    <string name="noPaymentID">There is no Payment Id at the moment</string>
+
 </resources>

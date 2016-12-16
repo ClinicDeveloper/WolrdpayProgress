@@ -147,30 +147,28 @@ public class CustomerDetailsActivity extends AppCompatActivity implements View.O
         //USER DEFINED FIELDS
         if (response.getUserDefinedFields() != null) {
             try {
-//                String userDefineString = response.getUserDefinedFields().toString();
-//                String subString = userDefineString.substring(1, userDefineString.length() - 1);
-//                Log.d("menumenu", subString);
-//
-//                Map<String, String> map = new HashMap<String, String>();
-//                String[] entries = subString.split(",");
-//
-//                for (String entry : entries) {
-//                    String[] keyValue = entry.split("=");
-//                    map.put(keyValue[0], keyValue[1]);
-//
-//                    Log.d("keyValue", keyValue[0] + "  " + keyValue[1]);
-//
-//                }
 
-                JSONObject menu = new JSONObject(response.getUserDefinedFields().toString());
-                if (menu.length() > 0) {
-                    StringBuilder stringBuilder = new StringBuilder();
-                    int count = menu.length();
-                    for (int i = 1; i <= count; i++) {
-                        stringBuilder.append("User Defined Field #" + i + ":\t\t" + menu.getString("UDF" + i) + "\n");
-                    }
-                    tv_udfname.setText(stringBuilder);
+                Log.d("response.getUserDefinedFields()", "" + response.getUserDefinedFields());
+                Log.d("response.loans", "" + response.getUserDefinedFields().toString().replace("=", ":"));
+
+                JSONObject menu = new JSONObject(response.getUserDefinedFields().toString().replace("=", ":"));
+                StringBuilder stringBuilder = new StringBuilder();
+
+                if (menu.getString("UDF1") != null) {
+                    stringBuilder.append("User Defined Field #1: \t\t" + menu.getString("UDF1" + "\n"));
                 }
+                if (menu.getString("UDF2") != null) {
+                    stringBuilder.append("User Defined Field #2: \t\t" + menu.getString("UDF2") + "\n");
+                }
+                if (menu.getString("UDF3") != null) {
+                    stringBuilder.append("User Defined Field #3: \t\t" + menu.getString("UDF3") + "\n");
+                }
+                if (menu.getString("UDF4") != null) {
+                    stringBuilder.append("User Defined Field #4: \t\t" + menu.getString("UDF4"));
+                }
+
+                tv_udfname.setText("" + stringBuilder);
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }

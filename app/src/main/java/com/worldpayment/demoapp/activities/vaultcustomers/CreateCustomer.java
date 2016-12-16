@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -25,7 +24,6 @@ import com.worldpayment.demoapp.WorldBaseActivity;
 import com.worldpayment.demoapp.utility.KeyboardUtility;
 import com.worldpayment.demoapp.utility.TokenUtility;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 public class CreateCustomer extends WorldBaseActivity implements View.OnClickListener {
@@ -134,12 +132,12 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
 
         if (validateAlls.validateAll()) {
 
-            createCustomerRequest.setId(field_customer_id.getValue());
-            createCustomerRequest.setFirstName(field_first_name.getValue());
-            createCustomerRequest.setLastName(field_last_name.getValue());
-            createCustomerRequest.setEmail(field_email_address.getValue());
-            createCustomerRequest.setPhone(field_phone_number.getValue());
-            createCustomerRequest.setNotes(field_notes.getValue());
+            createCustomerRequest.setId("" + field_customer_id.getValue());
+            createCustomerRequest.setFirstName("" + field_first_name.getValue());
+            createCustomerRequest.setLastName("" + field_last_name.getValue());
+            createCustomerRequest.setEmail("" + field_email_address.getValue());
+            createCustomerRequest.setPhone("" + field_phone_number.getValue());
+            createCustomerRequest.setNotes("" + field_notes.getValue());
             createCustomerRequest.setCompany("" + field_company.getValue());
 
             if (check_mail.isChecked()) {
@@ -157,9 +155,8 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
             address.setZip("" + zip.getValue());
             address.setPhone("" + field_phone_number.getValue());
             //  address.setCompany("" + field_company.getValue());
-
-
             createCustomerRequest.setAddress(address);
+
             try {
                 JSONObject jsonObject = new JSONObject();
 
@@ -176,18 +173,10 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
                     jsonObject.put("UDF4", field_user_defined4.getValue());
                 }
 
-                Log.d("jsonObject", "" + jsonObject);
-
-                if (jsonObject != null) {
-                    createCustomerRequest.setUserDefinedFields(jsonObject);
-                }
-
-            } catch (JSONException e) {
-                e.printStackTrace();
+                createCustomerRequest.setUserDefinedFields(jsonObject);
+            } catch (Exception e) {
             }
             createCustomer(createCustomerRequest);
-
-
         }
     }
 

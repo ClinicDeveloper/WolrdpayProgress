@@ -740,7 +740,7 @@ public class CreditDebitActivity extends WorldBaseActivity
                         BigDecimal gratitudeAmount = new BigDecimal(
                                 gratitude_amount.getValue().replaceAll("[^\\d.]", ""));
                         transactionData.setGratuityAmount(gratitudeAmount);
-                        transactionData.setAmount(transactionAmount.add(gratitudeAmount));
+                        transactionData.setAmount(transactionAmount);
                     } else {
                         transactionData.setAmount(transactionAmount);
                     }
@@ -765,7 +765,7 @@ public class CreditDebitActivity extends WorldBaseActivity
                         BigDecimal gratitudeAmount = new BigDecimal(
                                 gratitude_amount.getValue().replaceAll("[^\\d.]", ""));
                         transactionData.setGratuityAmount(gratitudeAmount);
-                        transactionData.setAmount(transactionAmount.add(gratitudeAmount));
+                        transactionData.setAmount(transactionAmount);
                     } else {
                         transactionData.setAmount(transactionAmount);
                     }
@@ -779,7 +779,7 @@ public class CreditDebitActivity extends WorldBaseActivity
                 if (!TextUtils.isEmpty(field_payment_id.getValue())) {
                     String payment_id = field_payment_id.getValue();
                     transactionData.setPaymentToken(payment_id);
-                  //  transactionData.setId(payment_id);
+                    //  transactionData.setId(payment_id);
 
                 }
 

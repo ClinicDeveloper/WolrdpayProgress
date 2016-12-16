@@ -2,6 +2,7 @@ package com.worldpayment.demoapp.activities.vaultcustomers;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -10,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.worldpay.library.domain.VaultPaymentMethod;
@@ -26,12 +29,15 @@ import com.worldpayment.demoapp.utility.TokenUtility;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PaymentMethodDetailsActivity extends WorldBaseActivity {
+public class PaymentMethodDetailsActivity extends WorldBaseActivity implements View.OnClickListener {
 
     WPTextView tv_customer_id;
     RecyclerView recycler_view;
+    TextView error;
     String responseFromIntent;
     List<VaultPaymentMethod> paymentMethodsList = new ArrayList<VaultPaymentMethod>();
+    Button create_payment_account_button, btn_cancel;
+    LinearLayout linearLayoutButtons;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,20 +57,53 @@ public class PaymentMethodDetailsActivity extends WorldBaseActivity {
                 paymentMethodsList.add(vaultPaymentMethods[i]);
             }
 
-            PaymentMethodAdapter paymentMethodAdapter = new PaymentMethodAdapter(this, paymentMethodsList);
-            RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 1);
-            recycler_view.setLayoutManager(layoutManager);
-            recycler_view.setHasFixedSize(true);
-            recycler_view.setItemAnimator(new DefaultItemAnimator());
-            recycler_view.setAdapter(paymentMethodAdapter);
+            if (paymentMethodsList.size() < 1) {
+                recycler_view.setVisibility(View.GONE);
+                error.setVisibility(View.VISIBLE);
+                linearLayoutButtons.setVisibility(View.VISIBLE);
+                error.setText("" + getResources().getString(R.string.noPaymentID));
+            } else {
+                recycler_view.setVisibility(View.VISIBLE);
+                error.setVisibility(View.GONE);
+                linearLayoutButtons.setVisibility(View.GONE);
+                PaymentMethodAdapter paymentMethodAdapter = new PaymentMethodAdapter(this, paymentMethodsList);
+                RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 1);
+                recycler_view.setLayoutManager(layoutManager);
+                recycler_view.setHasFixedSize(true);
+                recycler_view.setItemAnimator(new DefaultItemAnimator());
+                recycler_view.setAdapter(paymentMethodAdapter);
+            }
         }
     }
 
     public void mappingViews() {
         tv_customer_id = (WPTextView) findViewById(R.id.tv_customer_id);
         recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
+        create_payment_account_button = (Button) findViewById(R.id.create_payment_account_button);
+        btn_cancel = (Button) findViewById(R.id.btn_cancel);
+        linearLayoutButtons = (LinearLayout) findViewById(R.id.linearLayoutButtons);
+
+        error = (TextView) findViewById(R.id.error);
+        create_payment_account_button.setOnClickListener(this);
+        btn_cancel.setOnClickListener(this);
         // tv_customer_id.setText("" + "");
 
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.create_payment_account_button:
+                Intent createPayment = new Intent(PaymentMethodDetailsActivity.this, CreatePaymentMethod.class);
+                startActivity(createPayment);
+                break;
+
+            case R.id.btn_cancel:
+                finish();
+
+            default:
+                break;
+        }
     }
 
 

@@ -11,18 +11,20 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/button_LL"
         android:layout_below="@+id/appBarLayout"
-        android:orientation="vertical">
+        android:layout_margin="@dimen/text_size5"
+        android:orientation="vertical"
+        android:padding="@dimen/text_size5">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/textView"
+            style="@style/TextBold"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
             android:text="Customer Id" />
 
         <com.worldpay.library.views.WPFormEditText
             android:id="@+id/field_customer_id"
-            style="@style/EditTextField"
+            style="@style/TextBold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number" />
@@ -30,8 +32,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
             android:text="Search Result"
             android:textColor="@color/black"
             android:visibility="gone" />
@@ -40,9 +40,7 @@
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="@dimen/text_size5"
             android:clipToPadding="false"
             android:scrollbars="vertical" />
     </LinearLayout>
@@ -53,6 +51,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/text_size10"
         android:orientation="horizontal"
         android:weightSum="100">
 
@@ -61,7 +60,6 @@
             style="@style/buttonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
             android:layout_weight="50"
             android:drawableLeft="@mipmap/ic_search"
             android:padding="10dp"
@@ -72,7 +70,7 @@
             style="@style/buttonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_marginLeft="@dimen/text_size5"
             android:layout_weight="50"
             android:drawableLeft="@mipmap/ic_cancel"
             android:padding="10dp"

@@ -50,6 +50,7 @@ public class PaymentMethodDetailsActivity extends WorldBaseActivity implements V
             responseFromIntent = getIntent().getExtras().getString("response");
             Gson gson = new Gson();
             CustomerResponse customerResponse = gson.fromJson(responseFromIntent, CustomerResponse.class);
+            tv_customer_id.setText("" + customerResponse.getCustomerId());
 
             VaultPaymentMethod[] vaultPaymentMethods = customerResponse.getPaymentMethods();
 
@@ -86,7 +87,6 @@ public class PaymentMethodDetailsActivity extends WorldBaseActivity implements V
         error = (TextView) findViewById(R.id.error);
         create_payment_account_button.setOnClickListener(this);
         btn_cancel.setOnClickListener(this);
-        // tv_customer_id.setText("" + "");
 
     }
 
@@ -126,18 +126,23 @@ public class PaymentMethodDetailsActivity extends WorldBaseActivity implements V
         }
 
         @Override
-        public void onBindViewHolder(UserViewHolder holder, int position) {
-            VaultPaymentMethod item = paymentMethodList.get(position);
+        public void onBindViewHolder(UserViewHolder holder, final int position) {
+            final VaultPaymentMethod item = paymentMethodList.get(position);
 
-            //   holder.payment_id.setText("" + item.getClass().toString());
-            holder.btn_delete.setTag(position);
+            holder.payment_id.setText("" + item.getmId());
+            holder.card_no.setText("" + item.getmVaultCard().getMaskedNumber());
+            holder.expiration_date.setText("" + item.getmVaultCard().getExpirationMonth() + "/" + item.getmVaultCard().getExpirationYear());
+            holder.pin_block.setText("" + item.getmVaultCard().getLastFourDigits());
+
             holder.btn_delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     DeletePaymentMethodRequest deletePaymentMethodRequest = new DeletePaymentMethodRequest();
                     TokenUtility.populateRequestHeaderFields(deletePaymentMethodRequest, context);
-                    deletePaymentMethodRequest.setCustomerId("50000037");
-                    deletePaymentMethodRequest.setPaymentMethodId("1");
+                    deletePaymentMethodRequest.setCustomerId("" + item.getmCustomerId());
+                    deletePaymentMethodRequest.setPaymentMethodId("" + item.getmId());
+
                     new PaymentMethodDeleteTask(deletePaymentMethodRequest) {
                         ProgressDialog progressDialog;
 
@@ -163,8 +168,20 @@ public class PaymentMethodDetailsActivity extends WorldBaseActivity implements V
                             } else {
                                 showDialogView(context.getResources().getString(R.string.error), "Web Service Error!", context);
                             }
+                            dismissProgressBar(progressDialog);
                         }
-                    };
+                    }.execute();
+                }
+            });
+
+            holder.btn_edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, UpdatePaymentMethod.class);
+                    Gson gson = new Gson();
+                    String vaultPaymentMethod = gson.toJson(item);
+                    intent.putExtra("cardItem", vaultPaymentMethod);
+                    startActivity(intent);
                 }
             });
         }

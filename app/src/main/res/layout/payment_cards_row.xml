@@ -1,14 +1,15 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    app:cardUseCompatPadding="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/text_size5">
+        android:padding="@dimen/text_size10">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,14 +26,14 @@
 
                 <com.worldpay.library.views.WPTextView
                     style="@style/noBoldText"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Payment Id" />
 
                 <com.worldpay.library.views.WPTextView
                     android:id="@+id/payment_id"
                     style="@style/TextBold"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:text="Payment ID"
@@ -45,12 +46,12 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="5dp"
                 android:layout_weight="25"
-                android:drawableLeft="@mipmap/ic_edit"
+                android:drawableStart="@mipmap/ic_edit"
                 android:gravity="center"
                 android:padding="5dp"
-                android:text="Edit" />
+                android:text="Edit"
+                android:textSize="@dimen/text_size13" />
 
             <Button
                 android:id="@+id/btn_delete"
@@ -60,10 +61,11 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"
                 android:layout_weight="25"
-                android:drawableLeft="@mipmap/ic_delete"
+                android:drawableStart="@mipmap/ic_delete"
                 android:gravity="center"
                 android:padding="5dp"
-                android:text="Delete" />
+                android:text="Delete"
+                android:textSize="@dimen/text_size13" />
         </LinearLayout>
 
         <LinearLayout
@@ -126,12 +128,6 @@
                 android:text="1001"
                 android:textSize="26dp" />
         </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/disable_gray" />
-
     </LinearLayout>
 
-</RelativeLayout>
+</android.support.v7.widget.CardView>

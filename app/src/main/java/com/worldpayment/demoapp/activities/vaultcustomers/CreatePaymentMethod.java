@@ -57,9 +57,6 @@ public class CreatePaymentMethod extends WorldBaseActivity implements View.OnCli
     private WPFormEditText card_phone_number;
     private Spinner mSpinnerCreditCardType;
     String creditCardType;
-//    //Card
-//    private
-//
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

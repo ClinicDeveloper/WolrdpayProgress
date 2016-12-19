@@ -28,6 +28,12 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="spinner">
+        <item name="android:layout_marginLeft">@dimen/text_size5</item>
+        <item name="android:layout_marginRight">@dimen/text_size5</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
     <style name="TextBold">
         <item name="android:textSize">15dp</item>
         <item name="android:textStyle">bold</item>
@@ -46,7 +52,6 @@
     </style>
 
     <style name="EditTextField">
-        <item name="android:background">@drawable/edittext_rounded</item>
         <item name="android:textStyle">bold</item>
         <item name="android:padding">10dp</item>
         <item name="android:imeOptions">actionNext</item>

@@ -30,6 +30,7 @@ import com.worldpayment.demoapp.activities.vaultcustomers.CreatePaymentMethod;
 import com.worldpayment.demoapp.activities.vaultcustomers.PaymentMethodDetailsActivity;
 import com.worldpayment.demoapp.activities.vaultcustomers.RetrieveCustomer;
 import com.worldpayment.demoapp.activities.vaultcustomers.UpdateCustomer;
+import com.worldpayment.demoapp.activities.vaultcustomers.UpdatePaymentMethod;
 import com.worldpayment.demoapp.activities.vaultcustomers.VaultOperations;
 import com.worldpayment.demoapp.utility.KeyboardUtility;
 
@@ -62,7 +63,8 @@ public class WorldBaseActivity extends AppCompatActivity {
                 worldBaseActivity instanceof UpdateCustomer ||
                 worldBaseActivity instanceof CreatePaymentMethod ||
                 worldBaseActivity instanceof RetrieveCustomer ||
-                worldBaseActivity instanceof PaymentMethodDetailsActivity) {
+                worldBaseActivity instanceof PaymentMethodDetailsActivity ||
+                worldBaseActivity instanceof UpdatePaymentMethod) {
             setUpToolBar();
         }
 
@@ -102,9 +104,11 @@ public class WorldBaseActivity extends AppCompatActivity {
         if (worldBaseActivity instanceof RetrieveCustomer) {
             toolbar_title.setText("Retrieve Customer");
         }
-
         if (worldBaseActivity instanceof PaymentMethodDetailsActivity) {
             toolbar_title.setText("Payment Method Details");
+        }
+        if (worldBaseActivity instanceof UpdatePaymentMethod) {
+            toolbar_title.setText("Edit Payment Account");
         }
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {

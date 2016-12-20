@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.worldpay.library.domain.Card;
@@ -304,7 +303,7 @@ public class CreatePaymentMethod extends WorldBaseActivity implements View.OnCli
         switch (v.getId()) {
 
             case R.id.btn_create:
-                Toast.makeText(this, "" + customer_id.getValue(), Toast.LENGTH_SHORT).show();
+
                 KeyboardUtility.closeKeyboard(this, v);
                 if (cardValidation.validateAll() || checkValidation.validateAll()) {
 

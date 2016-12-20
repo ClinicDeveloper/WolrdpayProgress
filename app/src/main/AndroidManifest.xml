@@ -90,9 +90,21 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".activities.vaultcustomers.UpdateCustomer" />
-        <activity android:name=".activities.vaultcustomers.PaymentMethodDetailsActivity" />
-        <activity android:name=".activities.vaultcustomers.UpdatePaymentMethod"></activity>
+        <activity
+            android:name=".activities.vaultcustomers.UpdateCustomer"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activities.vaultcustomers.PaymentMethodDetailsActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activities.vaultcustomers.UpdatePaymentMethod"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"></activity>
     </application>
 
 </manifest>

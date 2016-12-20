@@ -47,7 +47,6 @@ public class CustomerDetailsActivity extends AppCompatActivity implements View.O
 
         if (getIntent().getExtras() != null) {
             responseFromIntent = getIntent().getExtras().getString("response");
-            Log.d("responseFromIntent", "" + responseFromIntent);
             Gson gson = new Gson();
             CustomerResponse customerResponse = gson.fromJson(responseFromIntent, CustomerResponse.class);
             settingFields(customerResponse);

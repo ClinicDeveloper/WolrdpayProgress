@@ -58,6 +58,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/text_size5"
         android:gravity="center"
         android:orientation="horizontal"
         android:weightSum="100">
@@ -72,7 +73,8 @@
             android:layout_weight="50"
             android:drawableLeft="@mipmap/ic_plus"
             android:padding="10dp"
-            android:text="Create Payment" />
+            android:text="New Payment Account"
+            android:textSize="@dimen/text_size12" />
 
         <Button
             android:id="@+id/btn_cancel"

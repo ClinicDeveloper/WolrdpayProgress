@@ -11,7 +11,9 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.worldpay.library.domain.Card;
 import com.worldpay.library.domain.Check;
 import com.worldpay.library.enums.CardSourceType;
@@ -22,6 +24,7 @@ import com.worldpay.library.views.WPFormEditText;
 import com.worldpay.library.views.WPFormValidator;
 import com.worldpay.library.views.WPNotEmptyValidator;
 import com.worldpay.library.views.WPSimpleFormSpinner;
+import com.worldpay.library.webservices.services.customers.CustomerResponse;
 import com.worldpay.library.webservices.services.paymentmethods.CreatePaymentMethodRequest;
 import com.worldpay.library.webservices.services.paymentmethods.PaymentMethodResponse;
 import com.worldpay.library.webservices.tasks.PaymentMethodCreateTask;
@@ -54,7 +57,6 @@ public class CreatePaymentMethod extends WorldBaseActivity implements View.OnCli
     private WPFormEditText card_expiry_year;
     private WPFormEditText pinBlock;
     private WPFormEditText card_email_address, check_email_address;
-    private WPFormEditText card_phone_number;
     private Spinner mSpinnerCreditCardType;
     String creditCardType;
 
@@ -64,8 +66,19 @@ public class CreatePaymentMethod extends WorldBaseActivity implements View.OnCli
         setContentView(R.layout.activity_create_payment_account);
         setActivity(CreatePaymentMethod.this);
         mappingViews();
+
+        if (getIntent().getExtras() != null) {
+            String createResponse = getIntent().getExtras().getString("createResponse");
+            Gson gson = new Gson();
+            CustomerResponse customerResponse = gson.fromJson(createResponse, CustomerResponse.class);
+            setResponseData(customerResponse);
+        }
     }
 
+    public void setResponseData(CustomerResponse response) {
+        customer_id.setText("" + response.getCustomerId());
+        customer_id.setEnabled(false);
+    }
 
     public void mappingViews() {
 
@@ -228,10 +241,6 @@ public class CreatePaymentMethod extends WorldBaseActivity implements View.OnCli
         pinBlock.addValidator(new WPNotEmptyValidator("Pin Block is required!"));
         cardValidation.addItem(pinBlock);
 
-        card_phone_number = (WPFormEditText) findViewById(R.id.card_phone_number);
-        card_phone_number.addValidator(new WPNotEmptyValidator("Phone Number is required!"));
-        //   cardValidation.addItem(card_phone_number);
-
         card_email_address = (WPFormEditText) findViewById(R.id.card_email_address);
         card_email_address.addValidator(new WPNotEmptyValidator("Email address is required!"));
         cardValidation.addItem(card_email_address);
@@ -295,7 +304,7 @@ public class CreatePaymentMethod extends WorldBaseActivity implements View.OnCli
         switch (v.getId()) {
 
             case R.id.btn_create:
-
+                Toast.makeText(this, "" + customer_id.getValue(), Toast.LENGTH_SHORT).show();
                 KeyboardUtility.closeKeyboard(this, v);
                 if (cardValidation.validateAll() || checkValidation.validateAll()) {
 

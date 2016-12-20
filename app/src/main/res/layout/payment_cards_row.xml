@@ -86,7 +86,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1234 5678 9012 3456"
-                android:textSize="26dp" />
+                android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout
@@ -106,7 +106,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1111 1111 1111 1111"
-                android:textSize="26dp" />
+                android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout
@@ -126,7 +126,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1001"
-                android:textSize="26dp" />
+                android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
 

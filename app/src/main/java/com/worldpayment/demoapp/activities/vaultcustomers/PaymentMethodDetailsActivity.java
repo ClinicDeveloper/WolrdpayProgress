@@ -61,12 +61,10 @@ public class PaymentMethodDetailsActivity extends WorldBaseActivity implements V
             if (paymentMethodsList.size() < 1) {
                 recycler_view.setVisibility(View.GONE);
                 error.setVisibility(View.VISIBLE);
-                linearLayoutButtons.setVisibility(View.VISIBLE);
                 error.setText("" + getResources().getString(R.string.noPaymentID));
             } else {
                 recycler_view.setVisibility(View.VISIBLE);
                 error.setVisibility(View.GONE);
-                linearLayoutButtons.setVisibility(View.GONE);
                 PaymentMethodAdapter paymentMethodAdapter = new PaymentMethodAdapter(this, paymentMethodsList);
                 RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 1);
                 recycler_view.setLayoutManager(layoutManager);
@@ -95,6 +93,7 @@ public class PaymentMethodDetailsActivity extends WorldBaseActivity implements V
         switch (view.getId()) {
             case R.id.create_payment_account_button:
                 Intent createPayment = new Intent(PaymentMethodDetailsActivity.this, CreatePaymentMethod.class);
+                createPayment.putExtra("createResponse", responseFromIntent);
                 startActivity(createPayment);
                 break;
 

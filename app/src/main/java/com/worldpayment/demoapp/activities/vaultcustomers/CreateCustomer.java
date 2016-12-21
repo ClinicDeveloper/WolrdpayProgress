@@ -16,12 +16,16 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.worldpay.library.domain.Address;
+import com.worldpay.library.domain.Customer;
+import com.worldpay.library.enums.ResponseCode;
 import com.worldpay.library.views.WPForm;
 import com.worldpay.library.views.WPFormEditText;
 import com.worldpay.library.views.WPNotEmptyValidator;
 import com.worldpay.library.webservices.services.customers.CreateCustomerRequest;
 import com.worldpay.library.webservices.services.customers.CustomerResponse;
+import com.worldpay.library.webservices.services.customers.UpdateCustomerRequest;
 import com.worldpay.library.webservices.tasks.CustomerCreateTask;
+import com.worldpay.library.webservices.tasks.CustomerUpdateTask;
 import com.worldpayment.demoapp.R;
 import com.worldpayment.demoapp.WorldBaseActivity;
 import com.worldpayment.demoapp.utility.KeyboardUtility;
@@ -32,7 +36,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class CreateCustomer extends WorldBaseActivity implements View.OnClickListener {
-    Button btn_create, btn_cancel;
+    Button btn_create;
     WPFormEditText field_customer_id, field_first_name, field_last_name, field_phone_number, field_email_address, field_notes;
     WPFormEditText field_street_address, field_city, zip, field_company;
     WPFormEditText field_user_defined1, field_user_defined2, field_user_defined3, field_user_defined4;
@@ -40,35 +44,49 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
     private WPForm validateAlls;
     private CheckBox check_mail;
     private AutoCompleteTextView auto_state;
-    String selectionValue, selectionKey;
+    String selectionValue, selectionKey, keyState, original;
+    String[] keysState, valuesState;
+    HashMap<String, String> getStatesValues;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_customer);
-        setActivity(CreateCustomer.this);
+
         mappingViews();
+
+        if (getIntent().getExtras() != null) {
+
+            String responseFromIntent = getIntent().getExtras().getString("response");
+            Gson gson = new Gson();
+            CustomerResponse customerResponse = gson.fromJson(responseFromIntent, CustomerResponse.class);
+            settingFields(customerResponse);
+            btn_create.setText("Update");
+            setActivityTitle(CreateCustomer.this, "Update");
+        } else {
+            setActivityTitle(CreateCustomer.this, "Create");
+        }
+
     }
 
     public void mappingViews() {
 
         btn_create = (Button) findViewById(R.id.btn_create);
-        btn_cancel = (Button) findViewById(R.id.btn_cancel);
+        // btn_cancel = (Button) findViewById(btn_cancel);
 
         btn_create.setOnClickListener(this);
-        btn_cancel.setOnClickListener(this);
+        //   btn_cancel.setOnClickListener(this);
 
         validateAlls = new WPForm();
-
-        final HashMap<String, String> getStatesValues = new TokenUtility().getStates();
+        getStatesValues = new TokenUtility().getStates();
 
         // States Spinner
         TreeMap<String, String> sortedMapState = new TreeMap<String, String>();
         for (Map.Entry entry : getStatesValues.entrySet()) {
             sortedMapState.put((String) entry.getKey(), (String) entry.getValue());
         }
-        final String[] keysState = new String[sortedMapState.size()];
-        String[] valuesState = new String[sortedMapState.size()];
+        keysState = new String[sortedMapState.size()];
+        valuesState = new String[sortedMapState.size()];
 
         int i = 0;
         for (Map.Entry<String, String> entry : sortedMapState.entrySet()) {
@@ -154,13 +172,17 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
 
             case R.id.btn_create:
                 KeyboardUtility.closeKeyboard(this, view);
-                validationFields();
+                if (btn_create.getText().equals("Update")) {
+                    updateCustomer();
+                } else {
+                    createCustomer();
+                }
                 break;
 
-            case R.id.btn_cancel:
-                KeyboardUtility.closeKeyboard(this, view);
-                finish();
-                break;
+//            case btn_cancel:
+//                KeyboardUtility.closeKeyboard(this, view);
+//                finish();
+//                break;
 
             default:
                 break;
@@ -168,7 +190,7 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
     }
 
 
-    public void validationFields() {
+    public void createCustomer() {
 
         CreateCustomerRequest createCustomerRequest = new CreateCustomerRequest();
 
@@ -218,10 +240,11 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
                 createCustomerRequest.setUserDefinedFields(hashMap);
             } catch (Exception e) {
             }
-            if (selectionValue.length() == auto_state.getText().length() && selectionValue != null && !selectionValue.equals("") && !auto_state.getText().toString().equals("")) {
+            if (selectionValue != null && selectionValue.length() == auto_state.getText().length() && !selectionValue.equals("") && !auto_state.getText().toString().equals("")) {
+
                 address.setState("" + selectionKey);
                 auto_state.setError(null);
-                createCustomer(createCustomerRequest);
+                createCustomerTask(createCustomerRequest);
 
             } else {
                 auto_state.setError("Invalid State!");
@@ -229,7 +252,7 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
         }
     }
 
-    public void createCustomer(CreateCustomerRequest createCustomerRequest) {
+    public void createCustomerTask(CreateCustomerRequest createCustomerRequest) {
 
         new CustomerCreateTask(createCustomerRequest) {
             ProgressDialog progressDialog;
@@ -311,4 +334,169 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
             }
         });
     }
+
+    public void settingFields(CustomerResponse response) {
+
+        //Customer OVERVIEW
+        field_customer_id.setText("" + response.getCustomerId());
+        field_first_name.setText("" + response.getFirstName());
+        field_last_name.setText("" + response.getLastName());
+        field_email_address.setText("" + response.getEmail());
+        field_company.setText("" + response.getCompany());
+
+        if (response.getPhone() != null) {
+            field_phone_number.setText("" + response.getPhone());
+        }
+        field_notes.setText("" + response.getNotes());
+
+        if (response.getAddress() != null) {
+            if (response.getAddress().getLine1() != null) {
+                field_street_address.setText("" + response.getAddress().getLine1());
+            }
+            if (response.getAddress().getCity() != null) {
+                field_city.setText("" + response.getAddress().getCity());
+            }
+
+            if (auto_state.getText() != null) {
+
+
+                if (response.getAddress().getState() != null) {
+                    original = getStatesValues.get(response.getAddress().getState());
+                    keyState = response.getAddress().getState();
+                    auto_state.setText("" + original);
+                }
+            }
+            if (response.getAddress().getZip() != null) {
+                zip.setText("" + response.getAddress().getZip());
+            }
+        }
+        if (response.isSendEmailReceipts()) {
+            check_mail.setChecked(true);
+        } else {
+            check_mail.setChecked(false);
+        }
+
+        HashMap<String, String> map = response.getUserDefinedFields();
+        if (map.get("UDF1") != null && !map.get("UDF1").equals("")) {
+            field_user_defined1.setText(map.get("UDF1"));
+        }
+        if (map.get("UDF2") != null && !map.get("UDF2").equals("")) {
+            field_user_defined2.setText(map.get("UDF2"));
+        }
+        if (map.get("UDF3") != null && !map.get("UDF3").equals("")) {
+            field_user_defined3.setText(map.get("UDF3"));
+        }
+        if (map.get("UDF4") != null && !map.get("UDF4").equals("")) {
+            field_user_defined4.setText(map.get("UDF4"));
+        }
+    }
+
+    public void updateCustomer() {
+
+        UpdateCustomerRequest updateCustomerRequest = new UpdateCustomerRequest();
+        updateCustomerRequest.setId(field_customer_id.getValue());
+
+        if (validateAlls.validateAll()) {
+
+            Customer customer = new Customer();
+
+            customer.setFirstName("" + field_first_name.getValue());
+            customer.setLastName("" + field_last_name.getValue());
+            customer.setEmail("" + field_email_address.getValue());
+            customer.setPhone("" + field_phone_number.getValue());
+            customer.setNotes("" + field_notes.getValue());
+
+            if (check_mail.isChecked()) {
+                customer.setSendEmailReceipts(true);
+            } else {
+                customer.setSendEmailReceipts(false);
+            }
+
+            TokenUtility.populateRequestHeaderFields(updateCustomerRequest, this);
+
+            Address address = new Address();
+            address.setCountry("US");
+            address.setLine1("" + field_street_address.getValue());
+            address.setCity("" + field_city.getValue());
+
+            address.setZip("" + zip.getValue());
+            address.setPhone("" + field_phone_number.getValue());
+
+            HashMap<String, String> map = new HashMap<String, String>();
+
+            if (field_user_defined1.getValue() != null) {
+                map.put("UDF1", field_user_defined1.getValue());
+            }
+            if (field_user_defined2.getValue() != null) {
+                map.put("UDF2", field_user_defined2.getValue());
+            }
+            if (field_user_defined3.getValue() != null) {
+                map.put("UDF3", field_user_defined3.getValue());
+            }
+            if (field_user_defined4.getValue() != null) {
+                map.put("UDF4", field_user_defined4.getValue());
+            }
+
+
+            if (map != null) {
+                customer.setUserDefinedFields(map);
+            }
+
+            if (selectionValue != null && selectionValue.length() == auto_state.getText().length() && !selectionValue.equals("") && !auto_state.getText().toString().equals("")) {
+                address.setState("" + selectionKey);
+                auto_state.setError(null);
+
+                customer.setAddress(address);
+                updateCustomerRequest.setCustomer(customer);
+                updateCustomerTask(updateCustomerRequest);
+
+            } else {
+                auto_state.setText("" + original);
+                address.setState("" + keyState);
+                customer.setAddress(address);
+                updateCustomerRequest.setCustomer(customer);
+                updateCustomerTask(updateCustomerRequest);
+            }
+
+        }
+    }
+
+    public void updateCustomerTask(UpdateCustomerRequest createCustomerRequest) {
+
+        new CustomerUpdateTask(createCustomerRequest) {
+            ProgressDialog progressDialog;
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                progressDialog = new ProgressDialog(CreateCustomer.this);
+                startProgressBar(progressDialog, "Updating Customer...");
+            }
+
+            @Override
+            protected void onPostExecute(CustomerResponse customerResponse) {
+
+                if (customerResponse != null) {
+                    dismissProgressBar(progressDialog);
+
+                    if (customerResponse.getResponseCode() == ResponseCode.APPROVED) {
+                        dismissProgressBar(progressDialog);
+                        Intent intent = new Intent(CreateCustomer.this, CustomerDetailsActivity.class);
+                        intent.putExtra("customer_id", field_customer_id.getValue());
+                        startActivity(intent);
+                    } else if (customerResponse.getResponseCode() == ResponseCode.ERROR) {
+                        showDialogView(getResources().getString(R.string.error), customerResponse.getResponseMessage(), CreateCustomer.this);
+
+                    } else {
+                        showDialogView(getResources().getString(R.string.error), customerResponse.getMessage(), CreateCustomer.this);
+                    }
+                } else {
+                    dismissProgressBar(progressDialog);
+                    showDialogView(getResources().getString(R.string.error), "Service error!", CreateCustomer.this);
+                }
+                dismissProgressBar(progressDialog);
+            }
+        }.execute();
+    }
+
 }

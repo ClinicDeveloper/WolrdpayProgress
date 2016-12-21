@@ -9,7 +9,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/button_layout"
+        android:layout_above="@+id/btn_save"
         android:layout_below="@+id/appBarLayout">
 
         <LinearLayout
@@ -198,36 +198,49 @@
         </LinearLayout>
     </ScrollView>
 
-    <LinearLayout
-        android:id="@+id/button_layout"
+    <Button
+        android:id="@+id/btn_save"
+        style="@style/buttonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="5dp"
+        android:drawableLeft="@mipmap/ic_done"
+        android:padding="10dp"
+        android:text="Save" />
 
-        <Button
-            android:id="@+id/btn_save"
-            style="@style/buttonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:drawableLeft="@mipmap/ic_done"
-            android:padding="10dp"
-            android:text="Save" />
 
-        <Button
-            android:id="@+id/btn_cancel"
-            style="@style/buttonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:drawableLeft="@mipmap/ic_cancel"
-            android:padding="10dp"
-            android:text="Cancel" />
-    </LinearLayout>
+    <!--<LinearLayout-->
+    <!--android:id="@+id/button_layout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:orientation="horizontal">-->
+
+    <!--<Button-->
+    <!--android:id="@+id/btn_save"-->
+    <!--style="@style/buttonStyle"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center_horizontal"-->
+    <!--android:layout_margin="5dp"-->
+    <!--android:layout_weight="1"-->
+    <!--android:drawableLeft="@mipmap/ic_done"-->
+    <!--android:padding="10dp"-->
+    <!--android:text="Save" />-->
+
+    <!--<Button-->
+    <!--android:id="@+id/btn_cancel"-->
+    <!--style="@style/buttonStyle"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center_horizontal"-->
+    <!--android:layout_margin="5dp"-->
+    <!--android:layout_weight="1"-->
+    <!--android:drawableLeft="@mipmap/ic_cancel"-->
+    <!--android:padding="10dp"-->
+    <!--android:text="Cancel" />-->
+    <!--</LinearLayout>-->
 
 </RelativeLayout>

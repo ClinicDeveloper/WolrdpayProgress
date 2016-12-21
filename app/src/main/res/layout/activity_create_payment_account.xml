@@ -11,8 +11,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/btn_create"
         android:layout_below="@+id/appBarLayout"
-        android:fillViewport="true"
         android:orientation="vertical">
 
         <LinearLayout
@@ -337,39 +337,50 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/button_LL"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_margin="10dp"
-                android:orientation="horizontal"
-                android:weightSum="100">
+            <!--<LinearLayout-->
+            <!--android:id="@+id/button_LL"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_margin="10dp"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:weightSum="100">-->
 
-                <Button
-                    android:id="@+id/btn_create"
-                    style="@style/buttonStyle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="50"
-                    android:drawableLeft="@mipmap/ic_create"
-                    android:padding="10dp"
-                    android:text="@string/create" />
+            <!--<Button-->
+            <!--android:id="@+id/btn_create"-->
+            <!--style="@style/buttonStyle"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_weight="50"-->
+            <!--android:drawableLeft="@mipmap/ic_create"-->
+            <!--android:padding="10dp"-->
+            <!--android:text="@string/create" />-->
 
-                <Button
-                    android:id="@+id/btn_cancel"
-                    style="@style/buttonStyle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:layout_weight="50"
-                    android:drawableLeft="@mipmap/ic_cancel"
-                    android:padding="10dp"
-                    android:text="@string/cancel" />
-            </LinearLayout>
+            <!--<Button-->
+            <!--android:id="@+id/btn_cancel"-->
+            <!--style="@style/buttonStyle"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:layout_weight="50"-->
+            <!--android:drawableLeft="@mipmap/ic_cancel"-->
+            <!--android:padding="10dp"-->
+            <!--android:text="@string/cancel" />-->
+            <!--</LinearLayout>-->
         </LinearLayout>
     </ScrollView>
 
+    <Button
+        android:id="@+id/btn_create"
+        style="@style/buttonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        android:drawableLeft="@mipmap/ic_create"
+        android:padding="10dp"
+        android:text="@string/create" />
 </RelativeLayout>

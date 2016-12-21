@@ -36,6 +36,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.worldpay.library.domain.TransactionData;
 import com.worldpay.library.enums.CaptureMode;
 import com.worldpay.library.enums.TransactionResult;
@@ -74,8 +75,6 @@ public class CreditDebitActivity extends WorldBaseActivity
     public static String TAG = CreditDebitActivity.class.getSimpleName();
 
     public static String PREF_AUTH_TOKEN = "auth_token";
-
-    public static TransactionResponse responseTransactionDetails;
 
     private Button btn_start_transaction;
     private Button btn_no_card, btn_card, btn_vault_pay;
@@ -414,7 +413,6 @@ public class CreditDebitActivity extends WorldBaseActivity
             dialog_btn_negative.setVisibility(View.GONE);
             dialog_btn_positive.setText("OK");
         }
-        responseTransactionDetails = response.getTransactionResponse();
 
         final android.app.AlertDialog alert = alertDialogBuilder.create();
         alert.show();
@@ -423,6 +421,10 @@ public class CreditDebitActivity extends WorldBaseActivity
             @Override
             public void onClick(View v) {
                 Intent transactionDetails = new Intent(context, TransactionDetails.class);
+                transactionDetails.putExtra("from", "approved");
+                Gson gson = new Gson();
+                String transactionResponse = gson.toJson(response.getTransactionResponse(), TransactionResponse.class);
+                transactionDetails.putExtra("approvedResponse", transactionResponse);
                 context.startActivity(transactionDetails);
             }
         });

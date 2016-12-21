@@ -9,13 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.worldpay.library.webservices.services.payments.TransactionResponse;
 import com.worldpayment.demoapp.R;
 import com.worldpayment.demoapp.activities.debitcredit.TransactionDetails;
 
 import java.util.List;
-
-import static com.worldpayment.demoapp.activities.debitcredit.CreditDebitActivity.responseTransactionDetails;
 
 public class SettlementAdapter extends RecyclerView.Adapter<SettlementAdapter.RecyclerViewHolders> {
 
@@ -42,8 +41,12 @@ public class SettlementAdapter extends RecyclerView.Adapter<SettlementAdapter.Re
 
         holder.field_transaction_id.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                responseTransactionDetails = itemList.get(position);
+//                responseTransactionDetails = itemList.get(position);
+                Gson gson = new Gson();
+                String batchResponse = gson.toJson(itemList.get(position), TransactionResponse.class);
                 Intent transactionDetails = new Intent(context, TransactionDetails.class);
+                transactionDetails.putExtra("from", "adapter");
+                transactionDetails.putExtra("batchResponse", batchResponse);
                 context.startActivity(transactionDetails);
             }
         });

@@ -10,7 +10,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/button_LL"
+        android:layout_above="@+id/btn_create"
         android:layout_below="@+id/appBarLayout"
         android:orientation="vertical">
 
@@ -314,52 +314,66 @@
         </LinearLayout>
     </ScrollView>
 
-    <LinearLayout
-        android:id="@+id/button_LL"
+    <Button
+        android:id="@+id/btn_create"
+        style="@style/buttonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
+        android:drawableLeft="@mipmap/ic_create"
         android:gravity="center"
-        android:orientation="horizontal"
-        android:weightSum="100">
+        android:padding="10dp"
+        android:text="@string/create"
+        android:textSize="@dimen/text_size12" />
 
-        <Button
-            android:id="@+id/btn_create"
-            style="@style/buttonStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="30"
-            android:drawableLeft="@mipmap/ic_create"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="@string/create"
-            android:textSize="@dimen/text_size12" />
+    <!--<LinearLayout-->
+    <!--android:id="@+id/button_LL"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_margin="10dp"-->
+    <!--android:gravity="center"-->
+    <!--android:visibility="gone"-->
+    <!--android:orientation="horizontal"-->
+    <!--android:weightSum="100">-->
 
-        <Button
-            android:id="@+id/payment_method"
-            style="@style/buttonStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_weight="40"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="@string/payment_method"
-            android:textSize="@dimen/text_size12" />
+    <!--<Button-->
+    <!--android:id="@+id/btn_create"-->
+    <!--style="@style/buttonStyle"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_weight="30"-->
+    <!--android:drawableLeft="@mipmap/ic_create"-->
+    <!--android:gravity="center"-->
+    <!--android:padding="10dp"-->
+    <!--android:text="@string/create"-->
+    <!--android:textSize="@dimen/text_size12" />-->
 
-        <Button
-            android:id="@+id/btn_cancel"
-            style="@style/buttonStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_weight="30"
-            android:drawableLeft="@mipmap/ic_cancel"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="@string/cancel"
-            android:textSize="@dimen/text_size12" />
-    </LinearLayout>
+    <!--<Button-->
+    <!--android:id="@+id/payment_method"-->
+    <!--style="@style/buttonStyle"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginLeft="5dp"-->
+    <!--android:layout_weight="40"-->
+    <!--android:gravity="center"-->
+    <!--android:padding="10dp"-->
+    <!--android:text="@string/payment_method"-->
+    <!--android:textSize="@dimen/text_size12" />-->
+
+    <!--<Button-->
+    <!--android:id="@+id/btn_cancel"-->
+    <!--style="@style/buttonStyle"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginLeft="5dp"-->
+    <!--android:layout_weight="30"-->
+    <!--android:drawableLeft="@mipmap/ic_cancel"-->
+    <!--android:gravity="center"-->
+    <!--android:padding="10dp"-->
+    <!--android:text="@string/cancel"-->
+    <!--android:textSize="@dimen/text_size12" />-->
+    <!--</LinearLayout>-->
 
 </RelativeLayout>

@@ -14,7 +14,7 @@ import com.worldpayment.demoapp.WorldBaseActivity;
 public class UpdatePaymentMethod extends WorldBaseActivity implements View.OnClickListener {
 
     WPEditText tv_customer_id, tv_payment_id, tv_card_no, tv_cvv, tv_expiration_month, tv_expiration_year, tv_pin_block;
-    Button btn_save, btn_cancel;
+    Button btn_save;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,10 +34,10 @@ public class UpdatePaymentMethod extends WorldBaseActivity implements View.OnCli
     public void mappingViews() {
 
         btn_save = (Button) findViewById(R.id.btn_save);
-        btn_cancel = (Button) findViewById(R.id.btn_cancel);
+//        btn_cancel = (Button) findViewById(btn_cancel);
 
         btn_save.setOnClickListener(this);
-        btn_cancel.setOnClickListener(this);
+//        btn_cancel.setOnClickListener(this);
 
         tv_customer_id = (WPEditText) findViewById(R.id.tv_customer_id);
         tv_payment_id = (WPEditText) findViewById(R.id.tv_payment_id);
@@ -68,10 +68,10 @@ public class UpdatePaymentMethod extends WorldBaseActivity implements View.OnCli
         switch (view.getId()) {
             case R.id.btn_save:
                 break;
-
-            case R.id.btn_cancel:
-                finish();
-                break;
+//
+//            case btn_cancel:
+//                finish();
+//                break;
 
             default:
                 break;

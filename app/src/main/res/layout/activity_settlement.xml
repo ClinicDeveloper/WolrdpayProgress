@@ -26,21 +26,24 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
                 android:text="Batch Id: "
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size15" />
 
             <com.worldpay.library.views.WPFormEditText
-                android:id="@+id/field_transaction_id"
+                android:id="@+id/field_batch_id"
                 style="@style/noBoldText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/text_size5"
                 android:layout_weight="40"
                 android:gravity="center"
                 android:hint="Current"
-                android:maxLength="10"
-                android:inputType="number" />
+                android:inputType="number"
+                android:maxLength="10" />
 
             <Button
                 android:id="@+id/btn_get_batch"
@@ -50,6 +53,7 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/text_size5"
                 android:layout_weight="40"
+                android:gravity="center"
                 android:text="@string/get_batch"
                 android:textAllCaps="false" />
 

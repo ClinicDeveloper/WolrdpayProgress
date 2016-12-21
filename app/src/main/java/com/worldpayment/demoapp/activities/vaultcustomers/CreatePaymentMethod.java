@@ -40,7 +40,7 @@ import java.util.Locale;
 
 public class CreatePaymentMethod extends WorldBaseActivity implements View.OnClickListener {
 
-    private Button btn_create, btn_cancel;
+    private Button btn_create;
     private RadioGroup radioPaymentType;
     private RadioButton radioButton;
     private LinearLayout card_layout, check_layout;
@@ -77,6 +77,11 @@ public class CreatePaymentMethod extends WorldBaseActivity implements View.OnCli
     public void setResponseData(CustomerResponse response) {
         customer_id.setText("" + response.getCustomerId());
         customer_id.setEnabled(false);
+
+        card_first_name.setText("" + response.getFirstName());
+        card_last_name.setText("" + response.getLastName());
+
+        card_email_address.setText("" + response.getEmail());
     }
 
     public void mappingViews() {
@@ -290,10 +295,10 @@ public class CreatePaymentMethod extends WorldBaseActivity implements View.OnCli
             }
         });
         btn_create = (Button) findViewById(R.id.btn_create);
-        btn_cancel = (Button) findViewById(R.id.btn_cancel);
+//        btn_cancel = (Button) findViewById(btn_cancel);
 
         btn_create.setOnClickListener(this);
-        btn_cancel.setOnClickListener(this);
+//        btn_cancel.setOnClickListener(this);
 
     }
 
@@ -375,9 +380,9 @@ public class CreatePaymentMethod extends WorldBaseActivity implements View.OnCli
 
                 break;
 
-            case R.id.btn_cancel:
-                KeyboardUtility.closeKeyboard(this, v);
-                finish();
+//            case btn_cancel:
+//                KeyboardUtility.closeKeyboard(this, v);
+//                finish();
 
             default:
                 break;

@@ -8,8 +8,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.worldpay.library.webservices.services.payments.TransactionResponse;
 import com.worldpayment.demoapp.Navigation;
 import com.worldpayment.demoapp.R;
@@ -25,17 +25,27 @@ public class TransactionDetails extends AppCompatActivity implements View.OnClic
     TextView tv_customer_id, tv_email;
 
     Button btn_continue_pay;
-    Toolbar toolbar;
+    String from;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaction_details);
         initComponents();
-        if (CreditDebitActivity.responseTransactionDetails != null) {
-            settingFields();
-        } else {
-            Toast.makeText(this, "Null response", Toast.LENGTH_SHORT).show();
+        if (getIntent().getExtras() != null) {
+            from = getIntent().getExtras().getString("from");
+
+            if (from.equals("adapter")) {
+                String batchResponse = getIntent().getExtras().getString("batchResponse");
+                Gson gson = new Gson();
+                TransactionResponse response = gson.fromJson(batchResponse, TransactionResponse.class);
+                settingFields(response);
+            } else if (from.equals("approved")) {
+                String approvedResponse = getIntent().getExtras().getString("approvedResponse");
+                Gson gson = new Gson();
+                TransactionResponse response = gson.fromJson(approvedResponse, TransactionResponse.class);
+                settingFields(response);
+            }
         }
     }
 
@@ -79,9 +89,7 @@ public class TransactionDetails extends AppCompatActivity implements View.OnClic
 
     }
 
-    public void settingFields() {
-
-        TransactionResponse response = CreditDebitActivity.responseTransactionDetails;
+    public void settingFields(TransactionResponse response) {
 
         //TRANSACTION OVERVIEW
         tv_transaction_id.setText("" + response.getId());
@@ -138,9 +146,13 @@ public class TransactionDetails extends AppCompatActivity implements View.OnClic
         switch (view.getId()) {
 
             case R.id.btn_continue_pay:
-                Intent credit = new Intent(TransactionDetails.this, Navigation.class);
-                startActivity(credit);
-                finish();
+                if (from.equals("adapter")) {
+                    finish();
+                } else {
+                    Intent credit = new Intent(TransactionDetails.this, Navigation.class);
+                    startActivity(credit);
+                    finish();
+                }
                 break;
         }
     }

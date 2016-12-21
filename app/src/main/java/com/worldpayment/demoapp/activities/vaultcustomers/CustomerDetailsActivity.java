@@ -129,7 +129,7 @@ public class CustomerDetailsActivity extends AppCompatActivity implements View.O
             }
 
             if (response.getAddress().getState() != null) {
-                HashMap<String , String> hashMap = new TokenUtility().getStates();
+                HashMap<String, String> hashMap = new TokenUtility().getStates();
                 tv_state.setText("" + hashMap.get(response.getAddress().getState()));
             }
 
@@ -175,7 +175,7 @@ public class CustomerDetailsActivity extends AppCompatActivity implements View.O
         switch (view.getId()) {
 
             case R.id.btn_edit:
-                Intent update = new Intent(this, UpdateCustomer.class);
+                Intent update = new Intent(this, CreateCustomer.class);
                 update.putExtra("response", responseFromIntent);
                 startActivity(update);
                 break;
@@ -212,7 +212,7 @@ public class CustomerDetailsActivity extends AppCompatActivity implements View.O
             protected void onPreExecute() {
                 super.onPreExecute();
                 progressDialog = new ProgressDialog(CustomerDetailsActivity.this);
-                startProgressBar(progressDialog, "Updating...");
+                startProgressBar(progressDialog, "Deleting...");
             }
 
             @Override

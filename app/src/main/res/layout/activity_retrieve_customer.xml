@@ -9,7 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/button_LL"
+        android:layout_above="@+id/btn_search"
         android:layout_below="@+id/appBarLayout"
         android:layout_margin="@dimen/text_size5"
         android:orientation="vertical"
@@ -45,35 +45,46 @@
             android:scrollbars="vertical" />
     </LinearLayout>
 
-
-    <LinearLayout
-        android:id="@+id/button_LL"
+    <Button
+        android:id="@+id/btn_search"
+        style="@style/buttonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/text_size10"
-        android:orientation="horizontal"
-        android:weightSum="100">
+        android:layout_margin="@dimen/text_size5"
+        android:drawableLeft="@mipmap/ic_search"
+        android:padding="10dp"
+        android:text="@string/search" />
 
-        <Button
-            android:id="@+id/btn_search"
-            style="@style/buttonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="50"
-            android:drawableLeft="@mipmap/ic_search"
-            android:padding="10dp"
-            android:text="@string/search" />
 
-        <Button
-            android:id="@+id/btn_cancel"
-            style="@style/buttonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/text_size5"
-            android:layout_weight="50"
-            android:drawableLeft="@mipmap/ic_cancel"
-            android:padding="10dp"
-            android:text="@string/cancel" />
-    </LinearLayout>
+    <!--<LinearLayout-->
+    <!--android:id="@+id/button_LL"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_margin="@dimen/text_size10"-->
+    <!--android:orientation="horizontal"-->
+    <!--android:weightSum="100">-->
+
+    <!--<Button-->
+    <!--android:id="@+id/btn_search"-->
+    <!--style="@style/buttonStyle"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_weight="50"-->
+    <!--android:drawableLeft="@mipmap/ic_search"-->
+    <!--android:padding="10dp"-->
+    <!--android:text="@string/search" />-->
+
+    <!--<Button-->
+    <!--android:id="@+id/btn_cancel"-->
+    <!--style="@style/buttonStyle"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginLeft="@dimen/text_size5"-->
+    <!--android:layout_weight="50"-->
+    <!--android:drawableLeft="@mipmap/ic_cancel"-->
+    <!--android:padding="10dp"-->
+    <!--android:text="@string/cancel" />-->
+    <!--</LinearLayout>-->
 </RelativeLayout>

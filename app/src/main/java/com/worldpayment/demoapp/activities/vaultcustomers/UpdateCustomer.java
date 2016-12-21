@@ -215,12 +215,12 @@ public class UpdateCustomer extends WorldBaseActivity implements View.OnClickLis
                 e.printStackTrace();
             }
 
-            updateCustomer(updateCustomerRequest);
+            updateCustomerTask(updateCustomerRequest);
 
         }
     }
 
-    public void updateCustomer(UpdateCustomerRequest createCustomerRequest) {
+    public void updateCustomerTask(UpdateCustomerRequest createCustomerRequest) {
 
         new CustomerUpdateTask(createCustomerRequest) {
             ProgressDialog progressDialog;

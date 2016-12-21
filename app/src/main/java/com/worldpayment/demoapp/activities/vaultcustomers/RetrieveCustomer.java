@@ -23,7 +23,7 @@ import com.worldpayment.demoapp.utility.TokenUtility;
 
 public class RetrieveCustomer extends WorldBaseActivity implements View.OnClickListener {
 
-    Button btn_search, btn_cancel;
+    Button btn_search;
     private WPFormEditText field_customer_id;
     WPForm validateID;
     RecyclerView recyclerView;
@@ -41,10 +41,10 @@ public class RetrieveCustomer extends WorldBaseActivity implements View.OnClickL
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         field_customer_id = (WPFormEditText) findViewById(R.id.field_customer_id);
         btn_search = (Button) findViewById(R.id.btn_search);
-        btn_cancel = (Button) findViewById(R.id.btn_cancel);
+//        btn_cancel = (Button) findViewById(btn_cancel);
 
         btn_search.setOnClickListener(this);
-        btn_cancel.setOnClickListener(this);
+//        btn_cancel.setOnClickListener(this);
 
         validateID = new WPForm();
         field_customer_id = (WPFormEditText) findViewById(R.id.field_customer_id);
@@ -62,9 +62,9 @@ public class RetrieveCustomer extends WorldBaseActivity implements View.OnClickL
                 fetchCustomers();
                 break;
 
-            case R.id.btn_cancel:
-                finish();
-                break;
+//            case btn_cancel:
+//                finish();
+//                break;
 
             default:
                 break;

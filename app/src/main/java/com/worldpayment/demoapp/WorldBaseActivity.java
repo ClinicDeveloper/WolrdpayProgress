@@ -37,6 +37,7 @@ import com.worldpayment.demoapp.utility.KeyboardUtility;
 public class WorldBaseActivity extends AppCompatActivity {
 
     private WorldBaseActivity worldBaseActivity;
+    private String title;
 
     @Override
     public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
@@ -75,6 +76,12 @@ public class WorldBaseActivity extends AppCompatActivity {
         this.worldBaseActivity = worldBaseActivity;
     }
 
+    public void setActivityTitle(WorldBaseActivity worldBaseActivity, String title) {
+        this.worldBaseActivity = worldBaseActivity;
+        this.title = title;
+    }
+
+
     public WorldBaseActivity getActivity() {
         return worldBaseActivity;
     }
@@ -90,13 +97,19 @@ public class WorldBaseActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         if (worldBaseActivity instanceof CreateCustomer) {
-            toolbar_title.setText("Create Customer");
+            if (title.equals("Update")) {
+                toolbar_title.setText("Edit Customer");
+
+            } else if (title.equals("Create")) {
+                toolbar_title.setText("Create Customer");
+            }
         }
         if (worldBaseActivity instanceof UpdateCustomer) {
             toolbar_title.setText("Edit Customer");
         }
         if (worldBaseActivity instanceof TransactionListActivity) {
-            toolbar_title.setText("Batch Details");
+
+            toolbar_title.setText("Batch Id #" + title);
         }
         if (worldBaseActivity instanceof CreatePaymentMethod) {
             toolbar_title.setText("Create Payment Account");
@@ -290,17 +303,20 @@ public class WorldBaseActivity extends AppCompatActivity {
                 }
             };
 
-            //Setting the actionbarToggle to member_menu_items layout
             drawer.setDrawerListener(actionBarDrawerToggle);
-            //calling sync state is necessay or else your hamburger icon wont show up
             actionBarDrawerToggle.syncState();
 
         }
 
     }
 
-
     public static boolean isTablet(Context context) {
         return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

@@ -10,7 +10,7 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/linearLayoutButtons"
+        android:layout_above="@+id/create_payment_account_button"
         android:layout_below="@+id/appBarLayout"
         android:orientation="vertical">
 
@@ -53,39 +53,50 @@
         <include layout="@layout/error_text" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayoutButtons"
+    <Button
+        android:id="@+id/create_payment_account_button"
+        style="@style/buttonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/text_size5"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:weightSum="100">
+        android:layout_margin="5dp"
+        android:drawableLeft="@mipmap/ic_plus"
+        android:padding="10dp"
+        android:text="New Payment Account" />
 
-        <Button
-            android:id="@+id/create_payment_account_button"
-            style="@style/buttonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="5dp"
-            android:layout_weight="50"
-            android:drawableLeft="@mipmap/ic_plus"
-            android:padding="10dp"
-            android:text="New Payment Account"
-            android:textSize="@dimen/text_size12" />
+    <!--<LinearLayout-->
+    <!--android:id="@+id/linearLayoutButtons"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_margin="@dimen/text_size5"-->
+    <!--android:gravity="center"-->
+    <!--android:orientation="horizontal"-->
+    <!--android:weightSum="100">-->
 
-        <Button
-            android:id="@+id/btn_cancel"
-            style="@style/buttonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_weight="50"
-            android:drawableLeft="@mipmap/ic_cancel"
-            android:padding="10dp"
-            android:text="Cancel" />
-    </LinearLayout>
+    <!--<Button-->
+    <!--android:id="@+id/create_payment_account_button"-->
+    <!--style="@style/buttonStyle"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_margin="5dp"-->
+    <!--android:layout_weight="50"-->
+    <!--android:drawableLeft="@mipmap/ic_plus"-->
+    <!--android:padding="10dp"-->
+    <!--android:text="New Payment Account"-->
+    <!--android:textSize="@dimen/text_size12" />-->
+
+    <!--<Button-->
+    <!--android:id="@+id/btn_cancel"-->
+    <!--style="@style/buttonStyle"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_margin="5dp"-->
+    <!--android:layout_weight="50"-->
+    <!--android:drawableLeft="@mipmap/ic_cancel"-->
+    <!--android:padding="10dp"-->
+    <!--android:text="Cancel" />-->
+    <!--</LinearLayout>-->
 
 </RelativeLayout>

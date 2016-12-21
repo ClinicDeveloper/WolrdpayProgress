@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -36,8 +35,8 @@ public class PaymentMethodDetailsActivity extends WorldBaseActivity implements V
     TextView error;
     String responseFromIntent;
     List<VaultPaymentMethod> paymentMethodsList = new ArrayList<VaultPaymentMethod>();
-    Button create_payment_account_button, btn_cancel;
-    LinearLayout linearLayoutButtons;
+    Button create_payment_account_button;
+//    LinearLayout linearLayoutButtons;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,12 +78,12 @@ public class PaymentMethodDetailsActivity extends WorldBaseActivity implements V
         tv_customer_id = (WPTextView) findViewById(R.id.tv_customer_id);
         recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
         create_payment_account_button = (Button) findViewById(R.id.create_payment_account_button);
-        btn_cancel = (Button) findViewById(R.id.btn_cancel);
-        linearLayoutButtons = (LinearLayout) findViewById(R.id.linearLayoutButtons);
+//        btn_cancel = (Button) findViewById(btn_cancel);
+//        linearLayoutButtons = (LinearLayout) findViewById(R.id.linearLayoutButtons);
 
         error = (TextView) findViewById(R.id.error);
         create_payment_account_button.setOnClickListener(this);
-        btn_cancel.setOnClickListener(this);
+//        btn_cancel.setOnClickListener(this);
 
     }
 
@@ -96,9 +95,9 @@ public class PaymentMethodDetailsActivity extends WorldBaseActivity implements V
                 createPayment.putExtra("createResponse", responseFromIntent);
                 startActivity(createPayment);
                 break;
-
-            case R.id.btn_cancel:
-                finish();
+//
+//            case btn_cancel:
+//                finish();
 
             default:
                 break;

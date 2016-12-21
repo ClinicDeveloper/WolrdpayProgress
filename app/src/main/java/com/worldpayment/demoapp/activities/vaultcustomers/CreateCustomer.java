@@ -7,6 +7,9 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
@@ -25,15 +28,19 @@ import com.worldpayment.demoapp.utility.KeyboardUtility;
 import com.worldpayment.demoapp.utility.TokenUtility;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class CreateCustomer extends WorldBaseActivity implements View.OnClickListener {
     Button btn_create, btn_cancel;
     WPFormEditText field_customer_id, field_first_name, field_last_name, field_phone_number, field_email_address, field_notes;
     WPFormEditText field_street_address, field_city, zip, field_company;
     WPFormEditText field_user_defined1, field_user_defined2, field_user_defined3, field_user_defined4;
-    WPFormEditText spinner_state;
+    //    WPFormEditText spinner_state;
     private WPForm validateAlls;
     private CheckBox check_mail;
+    private AutoCompleteTextView auto_state;
+    String selectionValue, selectionKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +60,41 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
 
         validateAlls = new WPForm();
 
+        final HashMap<String, String> getStatesValues = new TokenUtility().getStates();
+
+        // States Spinner
+        TreeMap<String, String> sortedMapState = new TreeMap<String, String>();
+        for (Map.Entry entry : getStatesValues.entrySet()) {
+            sortedMapState.put((String) entry.getKey(), (String) entry.getValue());
+        }
+        final String[] keysState = new String[sortedMapState.size()];
+        String[] valuesState = new String[sortedMapState.size()];
+
+        int i = 0;
+        for (Map.Entry<String, String> entry : sortedMapState.entrySet()) {
+            keysState[i] = entry.getKey();
+            valuesState[i] = entry.getValue();
+            i++;
+        }
+        ArrayAdapter<String> adapterStateKeys =
+                new ArrayAdapter<String>(
+                        this,
+                        android.R.layout.simple_spinner_dropdown_item,
+                        valuesState);
+
+
+        auto_state = (AutoCompleteTextView) findViewById(R.id.auto_state);
+        auto_state.setThreshold(1);
+        auto_state.setAdapter(adapterStateKeys);
+
+        auto_state.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectionValue = (String) parent.getItemAtPosition(position);
+                selectionKey = keysState[position];
+                auto_state.setError(null);
+            }
+        });
         field_customer_id = (WPFormEditText) findViewById(R.id.field_customer_id);
 
         field_first_name = (WPFormEditText) findViewById(R.id.field_first_name);
@@ -100,9 +142,9 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
         field_user_defined3 = (WPFormEditText) findViewById(R.id.field_user_defined3);
         field_user_defined4 = (WPFormEditText) findViewById(R.id.field_user_defined4);
 
-        spinner_state = (WPFormEditText) findViewById(R.id.spinner_state);
-        spinner_state.addValidator(new WPNotEmptyValidator("State is required!"));
-        validateAlls.addItem(spinner_state);
+//        spinner_state = (WPFormEditText) findViewById(spinner_state);
+//        spinner_state.addValidator(new WPNotEmptyValidator("State is required!"));
+//        validateAlls.addItem(spinner_state);
     }
 
     @Override
@@ -151,33 +193,39 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
             address.setCountry("US");
             address.setLine1("" + field_street_address.getValue());
             address.setCity("" + field_city.getValue());
-            address.setState("" + spinner_state.getValue());
+
+
             address.setZip("" + zip.getValue());
             address.setPhone("" + field_phone_number.getValue());
             //  address.setCompany("" + field_company.getValue());
             createCustomerRequest.setAddress(address);
 
             try {
-                HashMap jsonObject = new HashMap() {
-                };
+                HashMap<String, String> hashMap = new HashMap<String, String>();
 
                 if (field_user_defined1.getValue() != null) {
-                    jsonObject.put("UDF1", field_user_defined1.getValue());
+                    hashMap.put("UDF1", field_user_defined1.getValue());
                 }
                 if (field_user_defined2.getValue() != null) {
-                    jsonObject.put("UDF2", field_user_defined2.getValue());
+                    hashMap.put("UDF2", field_user_defined2.getValue());
                 }
                 if (field_user_defined3.getValue() != null) {
-                    jsonObject.put("UDF3", field_user_defined3.getValue());
+                    hashMap.put("UDF3", field_user_defined3.getValue());
                 }
                 if (field_user_defined4.getValue() != null) {
-                    jsonObject.put("UDF4", field_user_defined4.getValue());
+                    hashMap.put("UDF4", field_user_defined4.getValue());
                 }
-
-                createCustomerRequest.setUserDefinedFields(jsonObject);
+                createCustomerRequest.setUserDefinedFields(hashMap);
             } catch (Exception e) {
             }
-            createCustomer(createCustomerRequest);
+            if (selectionValue.length() == auto_state.getText().length() && selectionValue != null && !selectionValue.equals("") && !auto_state.getText().toString().equals("")) {
+                address.setState("" + selectionKey);
+                auto_state.setError(null);
+                createCustomer(createCustomerRequest);
+
+            } else {
+                auto_state.setError("Invalid State!");
+            }
         }
     }
 

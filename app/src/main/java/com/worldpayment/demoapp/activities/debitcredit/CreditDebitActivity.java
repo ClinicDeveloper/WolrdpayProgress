@@ -684,7 +684,6 @@ public class CreditDebitActivity extends WorldBaseActivity
 
                 transactionDialogFragment.setTransactionData(transactionData);
                 transactionDialogFragment.setApplicationVersion(BuildConfig.VERSION_NAME);
-                Log.d("transactionType", "" + transactionType);
                 transactionDialogFragment.setTransactionType(transactionType);
                 transactionDialogFragment.setSwiper(swiper);
 

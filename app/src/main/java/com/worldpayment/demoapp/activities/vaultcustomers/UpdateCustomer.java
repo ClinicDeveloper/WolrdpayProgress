@@ -28,6 +28,7 @@ import com.worldpayment.demoapp.utility.KeyboardUtility;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.Locale;
 
 import static com.worldpayment.demoapp.BuildConfig.MERCHANT_ID;
@@ -40,7 +41,7 @@ public class UpdateCustomer extends WorldBaseActivity implements View.OnClickLis
     WPFormEditText field_customer_id, field_first_name, field_last_name, field_phone_number, field_email_address, field_notes;
     WPFormEditText field_street_address, field_city, zip, field_company;
     WPFormEditText field_user_defined1, field_user_defined2, field_user_defined3, field_user_defined4;
-    WPFormEditText spinner_state;
+//    WPFormEditText spinner_state;
     private WPForm validateAlls;
     private CheckBox check_mail;
 
@@ -114,9 +115,9 @@ public class UpdateCustomer extends WorldBaseActivity implements View.OnClickLis
         field_user_defined3 = (WPFormEditText) findViewById(R.id.field_user_defined3);
         field_user_defined4 = (WPFormEditText) findViewById(R.id.field_user_defined4);
 
-        spinner_state = (WPFormEditText) findViewById(R.id.spinner_state);
-        spinner_state.addValidator(new WPNotEmptyValidator("City is required!"));
-        validateAlls.addItem(spinner_state);
+//        spinner_state = (WPFormEditText) findViewById(R.id.spinner_state);
+//        spinner_state.addValidator(new WPNotEmptyValidator("City is required!"));
+//        validateAlls.addItem(spinner_state);
 
 //        spinner_state = (WPFormEditText) findViewById(R.id.spinner_state);
 //        spinner_state.addValidator(new WPStateCodeValidator("State is invalid!", Locale.US));
@@ -180,7 +181,9 @@ public class UpdateCustomer extends WorldBaseActivity implements View.OnClickLis
             address.setCountry("US");
             address.setLine1("" + field_street_address.getValue());
             address.setCity("" + field_city.getValue());
-            address.setState("" + spinner_state.getValue());
+
+           // address.setState("" + spinner_state.getValue());
+
             address.setZip("" + zip.getValue());
             address.setPhone("" + field_phone_number.getValue());
 
@@ -277,7 +280,7 @@ public class UpdateCustomer extends WorldBaseActivity implements View.OnClickLis
                 field_city.setText("" + response.getAddress().getCity());
             }
             if (response.getAddress().getState() != null) {
-                spinner_state.setText("" + response.getAddress().getState());
+               // spinner_state.setText("" + response.getAddress().getState());
             }
             if (response.getAddress().getZip() != null) {
                 zip.setText("" + response.getAddress().getZip());
@@ -289,24 +292,18 @@ public class UpdateCustomer extends WorldBaseActivity implements View.OnClickLis
             check_mail.setChecked(false);
         }
 
-        try {
-            JSONObject jsonObject = new JSONObject(response.getUserDefinedFields().toString());
-            if (jsonObject.getString("UDF1") != null && !jsonObject.get("UDF1").equals("")) {
-                field_user_defined1.setText(jsonObject.getString("UDF1"));
-            }
-            if (jsonObject.getString("UDF2") != null && !jsonObject.get("UDF2").equals("")) {
-                field_user_defined2.setText(jsonObject.getString("UDF2"));
-            }
-            if (jsonObject.getString("UDF3") != null && !jsonObject.get("UDF3").equals("")) {
-                field_user_defined3.setText(jsonObject.getString("UDF3"));
-            }
-            if (jsonObject.getString("UDF4") != null && !jsonObject.get("UDF4").equals("")) {
-                field_user_defined4.setText(jsonObject.getString("UDF4"));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
+        HashMap<String, String> map = response.getUserDefinedFields();
+        if (map.get("UDF1") != null && !map.get("UDF1").equals("")) {
+            field_user_defined1.setText(map.get("UDF1"));
+        }
+        if (map.get("UDF2") != null && !map.get("UDF2").equals("")) {
+            field_user_defined2.setText(map.get("UDF2"));
+        }
+        if (map.get("UDF3") != null && !map.get("UDF3").equals("")) {
+            field_user_defined3.setText(map.get("UDF3"));
+        }
+        if (map.get("UDF4") != null && !map.get("UDF4").equals("")) {
+            field_user_defined4.setText(map.get("UDF4"));
         }
     }
-
-
 }

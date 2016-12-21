@@ -19,8 +19,7 @@ import com.worldpay.library.webservices.tasks.PaymentMethodDeleteTask;
 import com.worldpayment.demoapp.R;
 import com.worldpayment.demoapp.utility.TokenUtility;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.HashMap;
 
 import static com.worldpayment.demoapp.WorldBaseActivity.dismissProgressBar;
 import static com.worldpayment.demoapp.WorldBaseActivity.startProgressBar;
@@ -130,7 +129,8 @@ public class CustomerDetailsActivity extends AppCompatActivity implements View.O
             }
 
             if (response.getAddress().getState() != null) {
-                tv_state.setText("" + response.getAddress().getState());
+                HashMap<String , String> hashMap = new TokenUtility().getStates();
+                tv_state.setText("" + hashMap.get(response.getAddress().getState()));
             }
 
             if (response.getAddress().getZip() != null) {
@@ -145,32 +145,27 @@ public class CustomerDetailsActivity extends AppCompatActivity implements View.O
 
         //USER DEFINED FIELDS
         if (response.getUserDefinedFields() != null) {
-            try {
 
-                Log.d("response.getUserDefinedFields()", "" + response.getUserDefinedFields());
-                Log.d("response.loans", "" + response.getUserDefinedFields().toString().replace("=", ":"));
+            HashMap<String, String> user = response.getUserDefinedFields();
 
-                JSONObject menu = new JSONObject(response.getUserDefinedFields().toString().replace("=", ":"));
-                StringBuilder stringBuilder = new StringBuilder();
+            StringBuilder stringBuilder = new StringBuilder();
 
-                if (menu.getString("UDF1") != null) {
-                    stringBuilder.append("User Defined Field #1: \t\t" + menu.getString("UDF1" + "\n"));
-                }
-                if (menu.getString("UDF2") != null) {
-                    stringBuilder.append("User Defined Field #2: \t\t" + menu.getString("UDF2") + "\n");
-                }
-                if (menu.getString("UDF3") != null) {
-                    stringBuilder.append("User Defined Field #3: \t\t" + menu.getString("UDF3") + "\n");
-                }
-                if (menu.getString("UDF4") != null) {
-                    stringBuilder.append("User Defined Field #4: \t\t" + menu.getString("UDF4"));
-                }
-
-                tv_udfname.setText("" + stringBuilder);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
+            if (user.get("UDF1") != null) {
+                stringBuilder.append("User Defined Field #1: \t\t" + user.get("UDF1") + "\n");
             }
+            if (user.get("UDF2") != null) {
+                stringBuilder.append("User Defined Field #2: \t\t" + user.get("UDF2") + "\n");
+            }
+            if (user.get("UDF3") != null) {
+                stringBuilder.append("User Defined Field #3: \t\t" + user.get("UDF3") + "\n");
+            }
+            if (user.get("UDF4") != null) {
+                stringBuilder.append("User Defined Field #4: \t\t" + user.get("UDF4"));
+            }
+
+            tv_udfname.setText("" + stringBuilder);
+
+
         }
 
     }

@@ -12,7 +12,6 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/btn_continue_pay"
         android:layout_below="@+id/appBarLayout"
-        android:fillViewport="true"
         android:orientation="vertical">
 
         <LinearLayout

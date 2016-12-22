@@ -148,7 +148,7 @@
                         style="@style/noBoldText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="start"
+                        android:layout_weight="1"
                         android:text="Response Message : " />
 
                     <com.worldpay.library.views.WPTextView
@@ -156,7 +156,7 @@
                         style="@style/noBoldText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="end"
+                        android:layout_weight="1"
                         android:text="" />
                 </LinearLayout>
 

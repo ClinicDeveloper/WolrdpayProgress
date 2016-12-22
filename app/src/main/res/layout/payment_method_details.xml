@@ -59,7 +59,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="5dp"
+        android:layout_margin="10dp"
         android:drawableLeft="@mipmap/ic_plus"
         android:padding="10dp"
         android:text="New Payment Account" />

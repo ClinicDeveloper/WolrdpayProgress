@@ -580,7 +580,7 @@ public class CreditDebitActivity extends WorldBaseActivity
             dialog_save.setClickable(true);
             dialog_save.setEnabled(true);
             dialog_save.setTextColor(getResources().getColor(R.color.white));
-            dialog_save.setBackgroundResource(R.drawable.button_shap);
+            dialog_save.setBackgroundResource(R.drawable.button_shape);
 
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:

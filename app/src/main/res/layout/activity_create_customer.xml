@@ -320,12 +320,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="5dp"
+        android:layout_margin="10dp"
         android:drawableLeft="@mipmap/ic_create"
         android:gravity="center"
         android:padding="10dp"
-        android:text="@string/create"
-        android:textSize="@dimen/text_size12" />
+        android:text="@string/create" />
 
     <!--<LinearLayout-->
     <!--android:id="@+id/button_LL"-->

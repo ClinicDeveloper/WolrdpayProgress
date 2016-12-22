@@ -51,7 +51,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/text_size5"
+        android:layout_margin="@dimen/text_size10"
         android:drawableLeft="@mipmap/ic_search"
         android:padding="10dp"
         android:text="@string/search" />

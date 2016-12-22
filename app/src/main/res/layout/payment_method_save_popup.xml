@@ -28,7 +28,7 @@
             android:id="@+id/dialog_btn_negative"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/button_shap"
+            android:background="@drawable/button_shape"
             android:duplicateParentState="true"
             android:text="Dismiss"
             android:textColor="@color/white" />

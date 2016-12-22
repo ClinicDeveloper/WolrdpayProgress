@@ -65,7 +65,7 @@
             style="@style/buttonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="@dimen/text_size10"
             android:text="@string/close_batch"
             android:textAllCaps="false" />
 

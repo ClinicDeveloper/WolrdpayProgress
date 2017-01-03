@@ -69,6 +69,21 @@ import static com.worldpayment.demoapp.Navigation.swiper;
 import static com.worldpayment.demoapp.R.string.error;
 import static com.worldpayment.demoapp.activities.refundvoid.RefundVoidViewActivity.count;
 
+//import com.worldpay.library.domain.TransactionData;
+//import com.worldpay.library.enums.CaptureMode;
+//import com.worldpay.library.enums.TransactionResult;
+//import com.worldpay.library.enums.TransactionType;
+//import com.worldpay.library.utils.WPLogger;
+//import com.worldpay.library.views.WPCurrencyTextWatcher;
+//import com.worldpay.library.views.WPForm;
+//import com.worldpay.library.views.WPFormEditText;
+//import com.worldpay.library.views.WPNotEmptyValidator;
+//import com.worldpay.library.views.WPTextView;
+//import com.worldpay.library.webservices.services.payments.PaymentResponse;
+//import com.worldpay.library.webservices.services.payments.ReversalRequest;
+//import com.worldpay.library.webservices.services.payments.TransactionResponse;
+//import com.worldpay.ui.TransactionDialogFragment;
+
 public class CreditDebitActivity extends WorldBaseActivity
         implements View.OnClickListener, TransactionDialogFragment.TransactionDialogFragmentListener {
 
@@ -681,7 +696,7 @@ public class CreditDebitActivity extends WorldBaseActivity
                     Date orderDate = new Date(order_date.getValue());
                     transactionData.setOrderDate(orderDate);
                 }
-                transactionData.setPurchaseOrderNumber("" + purchase_order_no.getValue());
+                transactionData.setPurchaseOrder("" + purchase_order_no.getValue());
                 transactionData.setTransactionNotes("" + notes.getValue());
 
                 transactionDialogFragment.setTransactionData(transactionData);
@@ -729,7 +744,7 @@ public class CreditDebitActivity extends WorldBaseActivity
             Date orderDate = new Date(order_date.getValue());
             transactionData.setOrderDate(orderDate);
         }
-        transactionData.setPurchaseOrderNumber("" + purchase_order_no.getValue());
+        transactionData.setPurchaseOrder("" + purchase_order_no.getValue());
         transactionData.setTransactionNotes("" + notes.getValue());
 
         if (count == 1) {

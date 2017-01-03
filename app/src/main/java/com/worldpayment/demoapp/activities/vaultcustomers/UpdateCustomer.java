@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 
 import com.google.gson.Gson;
-import com.worldpay.library.domain.Address;
+import com.worldpay.library.domain.BillAddress;
 import com.worldpay.library.domain.Customer;
 import com.worldpay.library.enums.ResponseCode;
 import com.worldpay.library.views.WPForm;
@@ -177,7 +177,7 @@ public class UpdateCustomer extends WorldBaseActivity implements View.OnClickLis
             updateCustomerRequest.setMerchantId(MERCHANT_ID);
             updateCustomerRequest.setMerchantKey(MERCHANT_KEY);
 
-            Address address = new Address();
+            BillAddress address = new BillAddress();
             address.setCountry("US");
             address.setLine1("" + field_street_address.getValue());
             address.setCity("" + field_city.getValue());

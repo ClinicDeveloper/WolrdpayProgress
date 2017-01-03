@@ -13,8 +13,12 @@ android {
         versionName "1.1"
 
         buildConfigField 'String', 'DEVELOPER_ID', '"12345678"'
-        buildConfigField 'String', 'MERCHANT_ID', '"8005812"'
-        buildConfigField 'String', 'MERCHANT_KEY', '"tcfOg/GvPNm8"'
+//        buildConfigField 'String', 'MERCHANT_ID', '"8005812"'
+//        buildConfigField 'String', 'MERCHANT_KEY', '"tcfOg/GvPNm8"'
+
+        buildConfigField 'String', 'MERCHANT_ID', '"1179577"'
+        buildConfigField 'String', 'MERCHANT_KEY', '"WzJMwJ2cec0Y"'
+        
         buildConfigField 'com.worldpay.library.enums.MerchantGatewayType', 'MERCHANT_GATEWAY',
                 'com.worldpay.library.enums.MerchantGatewayType.SECURENET'
     }

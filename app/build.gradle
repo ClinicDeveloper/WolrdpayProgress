@@ -18,7 +18,7 @@ android {
 
         buildConfigField 'String', 'MERCHANT_ID', '"1179577"'
         buildConfigField 'String', 'MERCHANT_KEY', '"WzJMwJ2cec0Y"'
-        
+
         buildConfigField 'com.worldpay.library.enums.MerchantGatewayType', 'MERCHANT_GATEWAY',
                 'com.worldpay.library.enums.MerchantGatewayType.SECURENET'
     }
@@ -49,7 +49,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-    compile(name: 'miura-debug', ext: 'aar')
+    compile(name: 'miura-debug_qa', ext: 'aar')
 
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:cardview-v7:24.2.0'

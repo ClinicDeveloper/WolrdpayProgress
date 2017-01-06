@@ -267,10 +267,15 @@ public class CreateCustomer extends WorldBaseActivity implements View.OnClickLis
             @Override
             protected void onPostExecute(CustomerResponse customerResponse) {
 
+
                 if (customerResponse != null) {
-                    createdDialog(customerResponse.getResult(), customerResponse, CreateCustomer.this);
+                    if (customerResponse.getResponseCode() == ResponseCode.APPROVED) {
+                        createdDialog(customerResponse.getResult(), customerResponse, CreateCustomer.this);
+                    } else {
+                        showDialogView(customerResponse.getResult(), "" + customerResponse.getResponseMessage(), CreateCustomer.this);
+                    }
                 } else {
-                    createdDialog("ERROR", customerResponse, CreateCustomer.this);
+                    showDialogView("ERROR!", "Web service error!", CreateCustomer.this);
                 }
 
                 dismissProgressBar(progressDialog);
